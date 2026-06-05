@@ -104,12 +104,10 @@ export function RoiCalculator() {
 
   return (
     <section
-      className="section-padding relative overflow-hidden"
-      style={{ borderBottom: '1px solid var(--border-2)' }}
+      className="section-padding"
+      style={{ borderBottom: '1px solid var(--border-2)', background: 'var(--black-2)' }}
     >
-      <MatrixBackground />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.6) 50%, rgba(8,8,8,0.2) 100%)', zIndex: 2 }} />
-      <div className="container max-w-2xl relative" style={{ zIndex: 3 }}>
+      <div className="container max-w-2xl">
         <p className="text-label mb-2">Calculadora de ROI</p>
         <h2 className="text-d2 mb-8">
           ¿Cuánto puedes
