@@ -2,7 +2,6 @@
 
 /* ─── WEBSY DESIGN TOKENS ─────────────────────────────── */
 :root {
-  /* Colors */
   --red:        #E53E3E;
   --red-dark:   #cc3333;
   --red-dim:    rgba(229, 62, 62, 0.12);
@@ -17,33 +16,17 @@
   --gray-4:     #1a1a1a;
   --border:     #1e1e1e;
   --border-2:   #141414;
-
-  /* Typography */
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body:    'Barlow', sans-serif;
-
-  /* Spacing */
   --nav-h:      64px;
   --section-px: clamp(24px, 5vw, 80px);
   --section-py: clamp(64px, 8vw, 120px);
-
-  /* Transitions */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
 }
 
-/* ─── RESET ───────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: auto; /* Lenis handles this */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+html { scroll-behavior: auto; -webkit-font-smoothing: antialiased; }
 
 body {
   background: var(--black);
@@ -54,10 +37,9 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── TYPOGRAPHY ──────────────────────────────────────── */
+/* ─── TYPOGRAPHY ── */
 .font-display { font-family: var(--font-display); }
 
-/* Display sizes */
 .text-d1 {
   font-family: var(--font-display);
   font-weight: 900;
@@ -66,7 +48,6 @@ body {
   letter-spacing: -0.01em;
   text-transform: uppercase;
 }
-
 .text-d2 {
   font-family: var(--font-display);
   font-weight: 900;
@@ -74,7 +55,6 @@ body {
   line-height: 0.9;
   text-transform: uppercase;
 }
-
 .text-d3 {
   font-family: var(--font-display);
   font-weight: 900;
@@ -82,7 +62,6 @@ body {
   line-height: 0.95;
   text-transform: uppercase;
 }
-
 .text-label {
   font-family: var(--font-display);
   font-size: 10px;
@@ -92,84 +71,89 @@ body {
   color: var(--red);
 }
 
-/* ─── LAYOUT ──────────────────────────────────────────── */
-.section-padding {
-  padding: var(--section-py) var(--section-px);
-}
+/* ─── LAYOUT ── */
+.section-padding { padding: var(--section-py) var(--section-px); }
+.container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 var(--section-px); }
 
-.container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--section-px);
-}
+/* ─── BUTTONS ── */
+.btn-clip { clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+.btn-clip-sm { clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%); }
 
-/* ─── COMPONENTS ──────────────────────────────────────── */
-
-/* Diagonal button clip */
-.btn-clip {
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
-}
-
-.btn-clip-sm {
-  clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
-}
-
-/* Border */
+/* ─── BORDERS ── */
 .border-ws { border: 1px solid var(--border); }
-.border-ws-2 { border: 1px solid var(--border-2); }
 .border-red { border: 1px solid var(--red); }
 .border-red-dim { border: 1px solid rgba(229, 62, 62, 0.3); }
 
-/* Grid overlay */
+/* ─── BACKGROUNDS ── */
+/* Subtle red grid */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(229, 62, 62, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(229, 62, 62, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(229, 62, 62, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229, 62, 62, 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
 }
 
-/* Red glow text */
+/* Noise texture overlay */
+.noise-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Red atmosphere bg */
+.atmo-bg {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(229,62,62,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(229,62,62,0.05) 0%, transparent 60%),
+    var(--black);
+}
+
+/* Section alternating */
+.section-alt { background: linear-gradient(180deg, #0a0a0a 0%, #080808 100%); }
+
+/* ─── TEXT COLORS ── */
 .text-red { color: var(--red); }
 .text-dim { color: var(--gray-2); }
 .text-muted { color: var(--gray-1); }
 
-/* ─── ANIMATIONS ──────────────────────────────────────── */
+/* ─── ANIMATIONS ── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; transform: scale(1); }
   50%       { opacity: 0.3; transform: scale(0.7); }
 }
-
 @keyframes scanline {
   0%   { top: -2px; opacity: 0; }
   5%   { opacity: 0.5; }
   95%  { opacity: 0.3; }
   100% { top: 100%; opacity: 0; }
 }
-
 @keyframes marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-12px); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(229,62,62,0.3); }
+  50%       { box-shadow: 0 0 40px rgba(229,62,62,0.6); }
 }
 
 .animate-pulse-dot   { animation: pulse-dot 1.4s ease-in-out infinite; }
 .animate-scanline    { animation: scanline 4s ease-in-out infinite; }
 .animate-marquee     { animation: marquee 22s linear infinite; }
 .animate-float       { animation: float 4s ease-in-out infinite; }
+.animate-glow        { animation: glow-pulse 2s ease-in-out infinite; }
 
-/* ─── SCROLLBAR ───────────────────────────────────────── */
+/* ─── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--black); }
 ::-webkit-scrollbar-thumb { background: var(--gray-4); }
 ::-webkit-scrollbar-thumb:hover { background: var(--red); }
 
-/* ─── SELECTION ───────────────────────────────────────── */
-::selection {
-  background: var(--red);
-  color: white;
-}
+/* ─── SELECTION ── */
+::selection { background: var(--red); color: white; }

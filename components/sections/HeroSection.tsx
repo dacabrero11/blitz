@@ -4,14 +4,13 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
 
-const WA_URL =
-  'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
+const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
 export function HeroSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
 
-  /* ── Vortex animation ── */
+  /* ── Enhanced Vortex ── */
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -33,16 +32,16 @@ export function HeroSection() {
       const h = canvas!.height
       ctx.clearRect(0, 0, w, h)
 
-      const cx = w / 2
-      const cy = h * 0.54
+      const cx = w * 0.72
+      const cy = h * 0.6
 
-      // Ambient glow layers
-      for (let i = 6; i >= 1; i--) {
-        const r = i * 70 + Math.sin(t * 0.4 + i) * 10
-        const alpha = (7 - i) * 0.015
+      // Deep atmosphere — multiple large glow layers
+      for (let i = 8; i >= 1; i--) {
+        const r = i * 90 + Math.sin(t * 0.3 + i) * 15
+        const alpha = (9 - i) * 0.012
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
-        g.addColorStop(0, `rgba(229,62,62,${alpha * 2.5})`)
-        g.addColorStop(0.6, `rgba(229,62,62,${alpha})`)
+        g.addColorStop(0, `rgba(229,62,62,${alpha * 3})`)
+        g.addColorStop(0.5, `rgba(229,62,62,${alpha})`)
         g.addColorStop(1, 'rgba(229,62,62,0)')
         ctx.beginPath()
         ctx.arc(cx, cy, r, 0, Math.PI * 2)
@@ -50,14 +49,14 @@ export function HeroSection() {
         ctx.fill()
       }
 
-      // Perspective rings
-      const rings = 12
+      // Wide perspective rings — more rings, more visible
+      const rings = 18
       for (let i = rings; i >= 1; i--) {
         const p = i / rings
-        const rx = p * (w * 0.48)
-        const ry = p * (h * 0.1) + 5
-        const alpha = (1 - p) * 0.6 + 0.02
-        const lw = (1 - p) * 1.8 + 0.3
+        const rx = p * (w * 0.55)
+        const ry = p * (h * 0.14) + 4
+        const alpha = (1 - p) * 0.75 + 0.03
+        const lw = (1 - p) * 2.2 + 0.3
 
         ctx.beginPath()
         ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2)
@@ -66,42 +65,62 @@ export function HeroSection() {
         ctx.stroke()
       }
 
-      // Animated spokes
-      const spokes = 32
+      // Rotating spokes — more visible
+      const spokes = 48
       for (let i = 0; i < spokes; i++) {
-        const angle = (i / spokes) * Math.PI * 2 + t * 0.08
-        const len = w * 0.48
+        const angle = (i / spokes) * Math.PI * 2 + t * 0.06
+        const len = w * 0.55
         const ex = cx + Math.cos(angle) * len
-        const ey = cy + Math.sin(angle) * (h * 0.1)
-        const alpha = 0.04 + Math.abs(Math.sin(angle + t * 0.3)) * 0.05
+        const ey = cy + Math.sin(angle) * (h * 0.14)
+        const alpha = 0.06 + Math.abs(Math.sin(angle + t * 0.4)) * 0.08
         ctx.beginPath()
         ctx.moveTo(cx, cy)
         ctx.lineTo(ex, ey)
         ctx.strokeStyle = `rgba(229,62,62,${alpha})`
-        ctx.lineWidth = 0.5
+        ctx.lineWidth = 0.6
         ctx.stroke()
       }
 
-      // Horizon line
+      // Moving particles along rings
+      for (let i = 0; i < 8; i++) {
+        const ringP = (i + 1) / 9
+        const angle = t * (0.5 + i * 0.1) + (i * Math.PI * 2) / 8
+        const rx = ringP * (w * 0.55)
+        const ry = ringP * (h * 0.14) + 4
+        const px = cx + Math.cos(angle) * rx
+        const py = cy + Math.sin(angle) * ry
+        const alpha = (1 - ringP) * 0.9
+        ctx.beginPath()
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255,100,100,${alpha})`
+        ctx.fill()
+      }
+
+      // Horizon glow line
       ctx.beginPath()
-      ctx.moveTo(0, cy)
-      ctx.lineTo(w, cy)
-      ctx.strokeStyle = 'rgba(229,62,62,0.06)'
-      ctx.lineWidth = 1
+      ctx.moveTo(cx - w * 0.55, cy)
+      ctx.lineTo(cx + w * 0.55, cy)
+      const hg = ctx.createLinearGradient(cx - w * 0.55, 0, cx + w * 0.55, 0)
+      hg.addColorStop(0, 'rgba(229,62,62,0)')
+      hg.addColorStop(0.5, 'rgba(229,62,62,0.15)')
+      hg.addColorStop(1, 'rgba(229,62,62,0)')
+      ctx.strokeStyle = hg
+      ctx.lineWidth = 1.5
       ctx.stroke()
 
-      // Core pulse
-      const pulse = Math.sin(t * 2) * 4
-      const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 32 + pulse)
-      cg.addColorStop(0, 'rgba(255,130,130,0.95)')
-      cg.addColorStop(0.4, 'rgba(229,62,62,0.6)')
+      // Bright pulsing core
+      const pulse = Math.sin(t * 2.5) * 6
+      const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40 + pulse)
+      cg.addColorStop(0, 'rgba(255,150,150,1)')
+      cg.addColorStop(0.3, 'rgba(229,62,62,0.8)')
+      cg.addColorStop(0.7, 'rgba(229,62,62,0.2)')
       cg.addColorStop(1, 'rgba(229,62,62,0)')
       ctx.beginPath()
-      ctx.arc(cx, cy, 32 + pulse, 0, Math.PI * 2)
+      ctx.arc(cx, cy, 40 + pulse, 0, Math.PI * 2)
       ctx.fillStyle = cg
       ctx.fill()
 
-      t += 0.006
+      t += 0.007
       raf = requestAnimationFrame(draw)
     }
 
@@ -116,31 +135,11 @@ export function HeroSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from('.hero-tag', { opacity: 0, y: 20, duration: 0.8, delay: 0.3, ease: 'power3.out' })
-      gsap.from('.hero-h1 span', {
-        opacity: 0,
-        y: 40,
-        duration: 1,
-        delay: 0.5,
-        stagger: 0.15,
-        ease: 'power3.out',
-      })
+      gsap.from('.hero-h1 span', { opacity: 0, y: 40, duration: 1, delay: 0.5, stagger: 0.15, ease: 'power3.out' })
       gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 1.1, ease: 'power3.out' })
       gsap.from('.hero-actions', { opacity: 0, y: 20, duration: 0.8, delay: 1.3, ease: 'power3.out' })
-      gsap.from('.hero-agent', {
-        opacity: 0,
-        y: 60,
-        duration: 1.2,
-        delay: 0.8,
-        ease: 'power3.out',
-      })
-      gsap.from('.hero-stats > div', {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 1.5,
-        stagger: 0.1,
-        ease: 'power3.out',
-      })
+      gsap.from('.hero-agent', { opacity: 0, y: 60, duration: 1.2, delay: 0.8, ease: 'power3.out' })
+      gsap.from('.hero-stats > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.5, stagger: 0.1, ease: 'power3.out' })
     }, heroRef)
     return () => ctx.revert()
   }, [])
@@ -155,42 +154,28 @@ export function HeroSection() {
         paddingBottom: 80,
         paddingLeft: 'var(--section-px)',
         paddingRight: 'var(--section-px)',
+        background: 'radial-gradient(ellipse 60% 80% at 70% 60%, rgba(229,62,62,0.06) 0%, transparent 70%), #080808',
       }}
     >
       {/* Vortex canvas */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ zIndex: 0 }}
-      />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
 
       {/* Scan line */}
       <div
         className="absolute left-0 right-0 pointer-events-none animate-scanline"
-        style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.5), transparent)', zIndex: 1 }}
+        style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.6), transparent)', zIndex: 1 }}
       />
 
       {/* Content */}
       <div className="relative z-10 max-w-[640px]">
-        {/* Eyebrow */}
         <div
           className="hero-tag inline-flex items-center gap-2 mb-6"
-          style={{
-            background: 'rgba(229,62,62,0.1)',
-            border: '1px solid rgba(229,62,62,0.25)',
-            padding: '5px 12px',
-          }}
+          style={{ background: 'rgba(229,62,62,0.1)', border: '1px solid rgba(229,62,62,0.25)', padding: '5px 12px' }}
         >
-          <span
-            className="animate-pulse-dot rounded-full"
-            style={{ width: 5, height: 5, background: 'var(--red)', display: 'inline-block' }}
-          />
-          <span className="text-label" style={{ fontSize: 10 }}>
-            Agentes IA · El Salvador
-          </span>
+          <span className="animate-pulse-dot rounded-full" style={{ width: 5, height: 5, background: 'var(--red)', display: 'inline-block' }} />
+          <span className="text-label" style={{ fontSize: 10 }}>Agentes IA · El Salvador</span>
         </div>
 
-        {/* Headline */}
         <h1 className="hero-h1 text-d1 mb-4">
           <span style={{ display: 'block' }}>Automatiza.</span>
           <span style={{ display: 'block' }}>Conecta.</span>
@@ -201,14 +186,13 @@ export function HeroSection() {
           Páginas web con inteligencia artificial que trabajan por tu negocio las 24 horas, los 7 días de la semana.
         </p>
 
-        {/* Actions */}
         <div className="hero-actions flex flex-wrap gap-3">
           <a
             href={WA_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-clip inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase text-white px-6 py-3 transition-opacity hover:opacity-90"
-            style={{ background: 'var(--red)' }}
+            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase text-white px-6 py-3 transition-opacity hover:opacity-90"
+            style={{ background: '#25D366', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
@@ -218,35 +202,27 @@ export function HeroSection() {
           </a>
           <a
             href="/agentes"
-            className="btn-clip inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-6 py-3 transition-colors hover:text-white"
-            style={{
-              background: 'transparent',
-              border: '1px solid var(--border)',
-              color: 'var(--gray-1)',
-            }}
+            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-6 py-3 transition-all hover:text-white hover:border-red-500"
+            style={{ background: 'transparent', border: '1px solid var(--gray-3)', color: 'var(--gray-1)', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
           >
             Ver agentes ↓
           </a>
         </div>
       </div>
 
-      {/* APEX agent emerging from vortex */}
+      {/* APEX emerging from vortex */}
       <div
         className="hero-agent absolute pointer-events-none"
-        style={{
-          bottom: 0,
-          right: 'clamp(32px, 8vw, 160px)',
-          zIndex: 5,
-        }}
+        style={{ bottom: 0, right: 'clamp(16px, 6vw, 120px)', zIndex: 5 }}
       >
         <Image
           src="/agents/super-agente.png"
           alt="APEX — Super Agente Blitz"
-          width={380}
-          height={520}
+          width={420}
+          height={580}
           className="animate-float"
           style={{
-            filter: 'drop-shadow(0 0 48px rgba(229,62,62,0.45)) drop-shadow(0 -16px 64px rgba(229,62,62,0.2))',
+            filter: 'drop-shadow(0 0 60px rgba(229,62,62,0.5)) drop-shadow(0 -20px 80px rgba(229,62,62,0.25))',
             objectFit: 'contain',
           }}
           priority
@@ -254,35 +230,21 @@ export function HeroSection() {
       </div>
 
       {/* Stats */}
-      <div
-        className="hero-stats absolute flex gap-8"
-        style={{ bottom: 32, left: 'var(--section-px)', zIndex: 10 }}
-      >
+      <div className="hero-stats absolute flex gap-8" style={{ bottom: 32, left: 'var(--section-px)', zIndex: 10 }}>
         {[
           { n: '20+', label: 'Sucursales activas' },
           { n: '5', label: 'Agentes IA' },
           { n: '24/7', label: 'Sin parar' },
         ].map(({ n, label }) => (
           <div key={label}>
-            <div
-              className="font-display font-black leading-none"
-              style={{ fontSize: 28, color: 'var(--white)' }}
-            >
+            <div className="font-display font-black leading-none" style={{ fontSize: 28, color: 'var(--white)' }}>
               {n.includes('/') ? (
-                <>
-                  {n.split('/')[0]}
-                  <span style={{ color: 'var(--red)' }}>/{n.split('/')[1]}</span>
-                </>
+                <>{n.split('/')[0]}<span style={{ color: 'var(--red)' }}>/{n.split('/')[1]}</span></>
               ) : (
-                <>
-                  {n.replace('+', '')}
-                  {n.includes('+') && <span style={{ color: 'var(--red)' }}>+</span>}
-                </>
+                <>{n.replace('+', '')}{n.includes('+') && <span style={{ color: 'var(--red)' }}>+</span>}</>
               )}
             </div>
-            <div className="text-xs tracking-widest uppercase mt-0.5" style={{ color: 'var(--gray-2)', letterSpacing: '0.12em' }}>
-              {label}
-            </div>
+            <div style={{ fontSize: 10, color: 'var(--gray-2)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 2 }}>{label}</div>
           </div>
         ))}
       </div>
