@@ -1,8 +1,8 @@
-import { CircuitBackground } from '@/components/ui/CircuitBackground'
 'use client'
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { CircuitBackground } from '@/components/ui/CircuitBackground'
 
 /* ─── PROCESS ── */
 const STEPS = [
@@ -11,28 +11,24 @@ const STEPS = [
     title: 'Brief',
     desc: 'Hablamos por WhatsApp en 30 minutos. Entendemos tu negocio, tus clientes, tus metas y los dolores que necesitas resolver.',
     detail: 'Sin formularios largos. Sin reuniones innecesarias. Una conversación directa donde escuchamos más de lo que hablamos.',
-    icon: '💬',
   },
   {
     n: '02',
     title: 'Diseño',
     desc: 'Diseñamos el sitio y definimos qué agentes necesitas. Te mostramos el plan antes de escribir una sola línea de código.',
     detail: 'Mockups del sitio, arquitectura de agentes, integraciones necesarias. Tú apruebas cada decisión.',
-    icon: '✏️',
   },
   {
     n: '03',
     title: 'Desarrollo',
     desc: 'Construimos con Next.js 15 y Claude IA. Cada agente se configura con el contexto exacto de tu negocio.',
     detail: 'Stack moderno, código limpio, deploy en Vercel. Los agentes aprenden de tu negocio desde el día uno.',
-    icon: '⚡',
   },
   {
     n: '04',
     title: 'Lanzamiento',
-    desc: 'Tu sitio en vivo. Los agentes operando. Seguimiento post-lanzamiento para asegurar que todo funcione a la perfección.',
+    desc: 'Tu sitio en vivo. Los agentes operando. Seguimiento post-lanzamiento para asegurar que todo funcione.',
     detail: 'No desaparecemos después del deploy. Monitoreamos el rendimiento y ajustamos lo que sea necesario.',
-    icon: '🚀',
   },
 ]
 
@@ -42,9 +38,7 @@ export function ProcessSection() {
   return (
     <section
       className="section-padding relative overflow-hidden"
-      style={{
-        borderBottom: '1px solid var(--border-2)',
-      }}
+      style={{ borderBottom: '1px solid var(--border-2)' }}
     >
       <CircuitBackground />
       <div className="absolute inset-0" style={{ background: 'rgba(8,8,8,0.88)', zIndex: 1 }} />
@@ -54,9 +48,8 @@ export function ProcessSection() {
           Del brief al
           <span style={{ color: 'var(--red)', display: 'block' }}>lanzamiento.</span>
         </h2>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {STEPS.map(({ n, title, desc, detail, icon }, i) => (
+          {STEPS.map(({ n, title, desc, detail }, i) => (
             <div
               key={n}
               className="relative cursor-pointer transition-all duration-300"
@@ -67,9 +60,7 @@ export function ProcessSection() {
               }}
               onClick={() => setActive(active === i ? null : i)}
             >
-              {/* Top accent */}
               <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: active === i ? 'var(--red)' : 'var(--border)' }} />
-
               <div className="flex items-start gap-4">
                 <div
                   className="flex-shrink-0 flex items-center justify-center font-display font-black"
@@ -104,7 +95,6 @@ export function ProcessSection() {
           ))}
         </div>
       </div>
-      </div>
     </section>
   )
 }
@@ -125,10 +115,7 @@ export function FaqSection() {
   return (
     <section
       className="section-padding"
-      style={{
-        borderBottom: '1px solid var(--border-2)',
-        background: 'linear-gradient(180deg, #080808 0%, #0a0a0a 100%)',
-      }}
+      style={{ borderBottom: '1px solid var(--border-2)', background: 'linear-gradient(180deg, #080808 0%, #0a0a0a 100%)' }}
     >
       <div className="container max-w-3xl">
         <p className="text-label mb-2">Preguntas frecuentes</p>
@@ -145,7 +132,10 @@ export function FaqSection() {
                 style={{ color: open === i ? 'var(--white)' : 'var(--gray-1)' }}
               >
                 <span className="font-display font-bold uppercase tracking-wide" style={{ fontSize: 15 }}>{q}</span>
-                <span className="font-display font-bold text-xl ml-4 shrink-0" style={{ color: 'var(--red)', transition: 'transform 0.2s', transform: open === i ? 'rotate(45deg)' : 'none', display: 'inline-block' }}>+</span>
+                <span
+                  className="font-display font-bold text-xl ml-4 shrink-0"
+                  style={{ color: 'var(--red)', transition: 'transform 0.2s', transform: open === i ? 'rotate(45deg)' : 'none', display: 'inline-block' }}
+                >+</span>
               </button>
               {open === i && (
                 <p className="pb-5" style={{ fontSize: 13, color: 'var(--gray-2)', lineHeight: 1.8 }}>{a}</p>
@@ -165,10 +155,7 @@ export function CtaFinal() {
   return (
     <section
       className="section-padding relative overflow-hidden text-center"
-      style={{
-        background: 'linear-gradient(180deg, #080808 0%, #0e0808 100%)',
-        borderBottom: '1px solid var(--border-2)',
-      }}
+      style={{ background: 'linear-gradient(180deg, #080808 0%, #0e0808 100%)', borderBottom: '1px solid var(--border-2)' }}
     >
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(229,62,62,0.12), transparent 70%)' }} />
       <div className="absolute inset-0 pointer-events-none grid-bg" style={{ opacity: 0.5 }} />
@@ -197,7 +184,7 @@ export function CtaFinal() {
           </a>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-7 py-3.5 transition-all hover:text-white hover:border-red-500"
+            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-7 py-3.5 transition-all hover:text-white"
             style={{ border: '1px solid var(--gray-3)', color: 'var(--gray-1)', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
           >
             Enviar mensaje
@@ -213,14 +200,10 @@ export function FooterSection() {
   return (
     <footer
       className="flex flex-col md:flex-row items-center justify-between gap-4"
-      style={{
-        padding: '28px var(--section-px)',
-        borderTop: '1px solid var(--border-2)',
-        background: '#080808',
-      }}
+      style={{ padding: '28px var(--section-px)', borderTop: '1px solid var(--border-2)', background: '#080808' }}
     >
       <div className="flex items-center gap-3 flex-wrap justify-center md:justify-start">
-        <div className="relative flex-shrink-0" style={{ width: 36, height: 36 }}>
+        <div style={{ width: 36, height: 36, flexShrink: 0 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/blitz-logo.png" alt="Blitz" style={{ width: 36, height: 36, objectFit: 'contain' }} />
         </div>
@@ -231,24 +214,12 @@ export function FooterSection() {
         </span>
       </div>
       <div className="flex items-center gap-6">
-        <a
-          href="https://github.com/dacabrero11"
-          target="_blank"
-          rel="noopener noreferrer"
+        <a href="https://github.com/dacabrero11" target="_blank" rel="noopener noreferrer"
           className="font-display font-semibold text-xs uppercase tracking-widest transition-colors hover:text-white"
-          style={{ color: 'var(--gray-3)' }}
-        >
-          GitHub
-        </a>
-        <a
-          href="https://wa.me/50379102453"
-          target="_blank"
-          rel="noopener noreferrer"
+          style={{ color: 'var(--gray-3)' }}>GitHub</a>
+        <a href="https://wa.me/50379102453" target="_blank" rel="noopener noreferrer"
           className="font-display font-semibold text-xs uppercase tracking-widest transition-colors hover:text-white"
-          style={{ color: 'var(--gray-3)' }}
-        >
-          WhatsApp
-        </a>
+          style={{ color: 'var(--gray-3)' }}>WhatsApp</a>
         <span className="text-xs" style={{ color: 'var(--gray-3)' }}>© 2025 Blitz · El Salvador</span>
       </div>
     </footer>
