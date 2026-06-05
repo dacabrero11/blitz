@@ -11,7 +11,7 @@ export function PortfolioHero() {
       style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)' }}
     >
       <MatrixBackground />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.55) 50%, rgba(8,8,8,0.15) 100%)', zIndex: 2 }} />
       <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Portfolio</p>
         <h1 className="text-d1">
@@ -80,7 +80,7 @@ export function ContactHero() {
       style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)' }}
     >
       <MatrixBackground />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.55) 50%, rgba(8,8,8,0.15) 100%)', zIndex: 2 }} />
       <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Contacto</p>
         <h1 className="text-d1">
@@ -108,7 +108,7 @@ export function RoiCalculator() {
       style={{ borderBottom: '1px solid var(--border-2)' }}
     >
       <MatrixBackground />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.85) 50%, rgba(8,8,8,0.65) 100%)', zIndex: 2 }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.6) 50%, rgba(8,8,8,0.2) 100%)', zIndex: 2 }} />
       <div className="container max-w-2xl relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Calculadora de ROI</p>
         <h2 className="text-d2 mb-8">

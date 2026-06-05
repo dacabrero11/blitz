@@ -32,7 +32,7 @@ export function MatrixBackground() {
     const interval = setInterval(() => {
       const W = cv!.width
       const H = cv!.height
-      const alpha = 0.10
+      const alpha = 0.18
 
       cx.fillStyle = 'rgba(8,8,8,0.08)'
       cx.fillRect(0, 0, W, H)
@@ -59,7 +59,7 @@ export function MatrixBackground() {
         drops[i]++
         if (y > H && Math.random() > 0.97) drops[i] = Math.floor(Math.random() * -20)
       }
-    }, 55)
+    }, 45)
 
     window.addEventListener('resize', () => { resize(); initDrops() })
 
