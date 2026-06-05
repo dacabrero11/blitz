@@ -27,14 +27,15 @@ export function Navbar() {
         WebkitBackdropFilter: 'blur(16px)',
       }}
     >
-      {/* Logo */}
+      {/* Logo — blitz-logo.png larger */}
       <Link href="/" className="flex items-center gap-3 group">
-        <div className="relative w-9 h-9 flex-shrink-0">
+        <div className="relative flex-shrink-0" style={{ width: 44, height: 44 }}>
           <Image
-            src="/blitz-logo-transparent.png"
+            src="/blitz-logo.png"
             alt="Blitz"
             fill
             className="object-contain"
+            priority
           />
         </div>
         <span className="font-display font-black text-xl tracking-wide" style={{ color: 'var(--white)' }}>
@@ -59,12 +60,12 @@ export function Navbar() {
         ))}
       </nav>
 
-      {/* CTA WhatsApp */}
+      {/* CTA WhatsApp — green */}
       <a
         href={WA_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 font-display font-bold text-xs tracking-widest uppercase text-white px-4 py-2 transition-opacity hover:opacity-90"
+        className="inline-flex items-center gap-2 font-display font-bold text-xs tracking-widest uppercase text-white px-5 py-2.5 transition-opacity hover:opacity-90"
         style={{
           background: '#25D366',
           clipPath: 'polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%)',

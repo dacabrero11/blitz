@@ -217,18 +217,10 @@ export function FooterSection() {
       }}
     >
       <div className="flex items-center gap-3 flex-wrap justify-center md:justify-start">
-        {/* Logo inline SVG — no dependency on image file */}
-        <svg width="28" height="28" viewBox="0 0 120 120" style={{ flexShrink: 0 }}>
-          <polygon points="80,24 116,34 136,66 136,104 116,136 44,136 24,104 24,66 44,34" fill="#E53E3E" transform="scale(0.75) translate(10,10)"/>
-          <polygon points="80,32 110,40 128,68 128,102 110,130 50,130 32,102 32,68 50,40" fill="#080808" transform="scale(0.75) translate(10,10)"/>
-          <polygon points="40,72 62,64 62,76 40,82" fill="white" transform="scale(0.75) translate(10,10)"/>
-          <polygon points="120,72 98,64 98,76 120,82" fill="white" transform="scale(0.75) translate(10,10)"/>
-          <path d="M48 104 L58 96 L68 102 L80 94 L92 102 L102 96 L112 104" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" transform="scale(0.75) translate(10,10)"/>
-          <rect x="58" y="100" width="10" height="8" rx="1" fill="white" transform="scale(0.75) translate(10,10)"/>
-          <rect x="70" y="96" width="10" height="10" rx="1" fill="white" transform="scale(0.75) translate(10,10)"/>
-          <rect x="82" y="96" width="10" height="10" rx="1" fill="white" transform="scale(0.75) translate(10,10)"/>
-          <rect x="94" y="100" width="10" height="8" rx="1" fill="white" transform="scale(0.75) translate(10,10)"/>
-        </svg>
+        <div className="relative flex-shrink-0" style={{ width: 36, height: 36 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/blitz-logo.png" alt="Blitz" style={{ width: 36, height: 36, objectFit: 'contain' }} />
+        </div>
         <span className="font-display font-black text-sm tracking-wide" style={{ color: 'var(--white)' }}>BLITZ</span>
         <span style={{ width: 1, height: 16, background: 'var(--border)', display: 'inline-block' }} />
         <span className="font-display font-semibold text-xs uppercase tracking-widest" style={{ color: 'var(--gray-3)', letterSpacing: '0.14em' }}>
