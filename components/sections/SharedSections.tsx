@@ -185,8 +185,8 @@ export function CtaFinal() {
           </a>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-7 py-3.5 transition-all hover:text-white"
-            style={{ border: '1px solid var(--gray-3)', color: 'var(--gray-1)', clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
+            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-8 py-3.5 transition-all hover:text-white whitespace-nowrap"
+            style={{ border: '1px solid var(--red)', color: 'var(--white)', clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
           >
             Enviar mensaje
           </Link>
