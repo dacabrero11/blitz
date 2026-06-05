@@ -68,7 +68,7 @@ export function Navbar() {
         className="inline-flex items-center gap-2 font-display font-bold text-xs tracking-widest uppercase text-white px-5 py-2.5 transition-opacity hover:opacity-90"
         style={{
           background: '#25D366',
-          clipPath: 'polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%)',
+          clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
         }}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="white">

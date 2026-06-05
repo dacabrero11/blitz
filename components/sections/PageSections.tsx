@@ -221,7 +221,7 @@ export function ContactForm() {
               <button
                 onClick={handleSubmit}
                 className="flex-1 font-display font-bold text-sm uppercase tracking-wide text-white py-3 transition-opacity hover:opacity-90"
-                style={{ background: '#25D366', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
+                style={{ background: '#25D366', clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
               >
                 Enviar por WhatsApp
               </button>
@@ -230,7 +230,7 @@ export function ContactForm() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-display font-bold text-sm uppercase tracking-wide text-white px-5 py-3 transition-opacity hover:opacity-90"
-                style={{ background: 'var(--red)', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
+                style={{ background: 'var(--red)', clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))' }}
               >
                 Directo
               </a>
