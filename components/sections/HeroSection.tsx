@@ -201,14 +201,14 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* APEX — full height, no crop */}
+      {/* APEX — full height, head fully visible */}
       <div
         className="hero-agent absolute pointer-events-none"
         style={{
           bottom: 0,
-          right: 0,
-          width: 'clamp(320px, 42vw, 580px)',
-          height: '95%',
+          right: 'clamp(0px, 2vw, 40px)',
+          width: 'clamp(280px, 38vw, 520px)',
+          top: 'calc(var(--nav-h) + 20px)',
           zIndex: 5,
         }}
       >
@@ -219,7 +219,7 @@ export function HeroSection() {
           className="animate-float"
           style={{
             objectFit: 'contain',
-            objectPosition: 'bottom center',
+            objectPosition: 'center bottom',
             filter: 'drop-shadow(0 0 60px rgba(229,62,62,0.5)) drop-shadow(0 -20px 80px rgba(229,62,62,0.25))',
           }}
           priority

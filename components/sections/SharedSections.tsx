@@ -1,3 +1,4 @@
+import { CircuitBackground } from '@/components/ui/CircuitBackground'
 'use client'
 
 import { useState } from 'react'
@@ -40,13 +41,14 @@ export function ProcessSection() {
 
   return (
     <section
-      className="section-padding"
+      className="section-padding relative overflow-hidden"
       style={{
         borderBottom: '1px solid var(--border-2)',
-        background: 'linear-gradient(180deg, #0a0a0a 0%, #080808 100%)',
       }}
     >
-      <div className="container">
+      <CircuitBackground />
+      <div className="absolute inset-0" style={{ background: 'rgba(8,8,8,0.88)', zIndex: 1 }} />
+      <div className="container relative" style={{ zIndex: 2 }}>
         <p className="text-label mb-2">Cómo funciona</p>
         <h2 className="text-d2 mb-12">
           Del brief al
@@ -101,6 +103,7 @@ export function ProcessSection() {
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   )
