@@ -10,31 +10,32 @@ export function HangarSection() {
       className="relative overflow-hidden"
       style={{ marginTop: 'var(--nav-h)', minHeight: '80vh' }}
     >
-      {/* Hangar — brighter, object-center to show all agents */}
       <Image
         src="/hangar.png"
         alt="Cuartel de operaciones Blitz"
         fill
-        className="object-cover object-center"
+        className="object-cover"
         priority
-        style={{ filter: 'brightness(0.85) contrast(1.05) saturate(1.1)' }}
-      />
-
-      {/* Minimal gradient — only darken bottom for text legibility */}
-      <div
-        className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(8,8,8,0.05) 0%, rgba(8,8,8,0.15) 50%, rgba(8,8,8,0.8) 85%, #080808 100%)',
+          filter: 'brightness(0.82) contrast(1.05) saturate(1.1)',
+          objectPosition: '30% center',
         }}
       />
 
-      {/* Subtle red tint at bottom */}
+      {/* Gradient — only bottom dark for text */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 30% at 50% 90%, rgba(229,62,62,0.07), transparent 70%)' }}
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(8,8,8,0.0) 0%, rgba(8,8,8,0.1) 40%, rgba(8,8,8,0.75) 80%, #080808 100%)',
+        }}
       />
 
-      {/* Content at bottom */}
+      {/* Red tint bottom */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 25% at 50% 95%, rgba(229,62,62,0.07), transparent 70%)' }}
+      />
+
       <div
         className="relative z-10 flex flex-col justify-end"
         style={{ minHeight: '80vh', padding: 'var(--section-px)', paddingBottom: 48 }}
@@ -44,7 +45,6 @@ export function HangarSection() {
           El equipo que<br />
           <span style={{ color: 'var(--red)' }}>nunca duerme.</span>
         </h1>
-
         <div className="flex flex-wrap gap-2">
           {AGENTS.map((agent) => (
             <Link

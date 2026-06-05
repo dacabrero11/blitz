@@ -1,14 +1,14 @@
 import Image from 'next/image'
-import { CircuitBackground } from '@/components/ui/CircuitBackground'
+import { MatrixBackground } from '@/components/ui/MatrixBackground'
 import Link from 'next/link'
 import { AGENTS } from '@/lib/agents'
 
 export function OperativeCards() {
   return (
     <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)' }}>
-      <CircuitBackground />
-      <div className="absolute inset-0" style={{ background: 'rgba(8,8,8,0.9)', zIndex: 1 }} />
-      <div className="container relative" style={{ zIndex: 2 }}>
+      <MatrixBackground />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="container relative" style={{ zIndex: 3 }}>
         <div className="flex flex-col gap-2">
           {AGENTS.map((agent, idx) => (
             <Link

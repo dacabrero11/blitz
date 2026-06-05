@@ -1,4 +1,4 @@
-import { CircuitBackground } from '@/components/ui/CircuitBackground'
+import { MatrixBackground } from '@/components/ui/MatrixBackground'
 
 const PROBLEMS = [
   { n: '01', title: 'Tu negocio cierra. La competencia no.', desc: 'Mientras duermes, un cliente pregunta por WhatsApp y nadie responde. Lo atendió otra empresa.' },
@@ -10,16 +10,16 @@ const PROBLEMS = [
 export function ProblemSection() {
   return (
     <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)' }}>
-      <CircuitBackground />
-      <div className="absolute inset-0" style={{ background: 'rgba(8,8,8,0.9)', zIndex: 1 }} />
-      <div className="container relative" style={{ zIndex: 2 }}>
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-8">El problema</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {PROBLEMS.map(({ n, title, desc }) => (
             <div
               key={n}
               className="relative p-5"
-              style={{ background: 'rgba(12,12,12,0.9)', border: '1px solid var(--border)' }}
+              style={{ background: 'rgba(10,10,10,0.85)', border: '1px solid var(--border)', backdropFilter: 'blur(4px)' }}
             >
               <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: 'var(--red)' }} />
               <div className="font-display font-black leading-none mb-2" style={{ fontSize: 44, color: 'rgba(229,62,62,0.1)' }}>{n}</div>

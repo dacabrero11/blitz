@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { CircuitBackground } from '@/components/ui/CircuitBackground'
+import { MatrixBackground } from '@/components/ui/MatrixBackground'
 
 /* ─── PROCESS ── */
 const STEPS = [
@@ -40,9 +40,9 @@ export function ProcessSection() {
       className="section-padding relative overflow-hidden"
       style={{ borderBottom: '1px solid var(--border-2)' }}
     >
-      <CircuitBackground />
-      <div className="absolute inset-0" style={{ background: 'rgba(8,8,8,0.88)', zIndex: 1 }} />
-      <div className="container relative" style={{ zIndex: 2 }}>
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Cómo funciona</p>
         <h2 className="text-d2 mb-12">
           Del brief al
@@ -155,11 +155,12 @@ export function CtaFinal() {
   return (
     <section
       className="section-padding relative overflow-hidden text-center"
-      style={{ background: 'linear-gradient(180deg, #080808 0%, #0e0808 100%)', borderBottom: '1px solid var(--border-2)' }}
+      style={{ borderBottom: '1px solid var(--border-2)' }}
     >
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(229,62,62,0.12), transparent 70%)' }} />
-      <div className="absolute inset-0 pointer-events-none grid-bg" style={{ opacity: 0.5 }} />
-      <div className="relative container max-w-2xl">
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.8) 50%, rgba(8,8,8,0.55) 100%)', zIndex: 2 }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(229,62,62,0.12), transparent 70%)', zIndex: 2 }} />
+      <div className="relative container max-w-2xl" style={{ zIndex: 3 }}>
         <p className="text-label mb-4">¿Listo?</p>
         <h2 className="text-d1 mb-4">
           Activa tus
