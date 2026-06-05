@@ -139,7 +139,20 @@ export function StrikerWidget() {
                     border: msg.role === 'assistant' ? '1px solid var(--border)' : 'none',
                   }}
                 >
-                  {msg.content}
+                  {msg.content.includes('wa.me') || msg.content.includes('7910') ? (
+                    <span>
+                      {msg.content.replace(/https?:\/\/\S+/g, '').trim()}
+                      <a
+                        href="https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20agendar%20una%20llamada"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block mt-2 text-center font-display font-bold text-xs uppercase tracking-wide py-2 px-3"
+                        style={{ background: '#25D366', color: 'white' }}
+                      >
+                        Agendar por WhatsApp →
+                      </a>
+                    </span>
+                  ) : msg.content}
                 </div>
               </div>
             ))}
