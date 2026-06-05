@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+/* ─── WEBSY DESIGN TOKENS ─────────────────────────────── */
+:root {
+  /* Colors */
+  --red:        #E53E3E;
+  --red-dark:   #cc3333;
+  --red-dim:    rgba(229, 62, 62, 0.12);
+  --red-glow:   rgba(229, 62, 62, 0.25);
+  --black:      #080808;
+  --black-2:    #0c0c0c;
+  --black-3:    #111111;
+  --white:      #F0F0F0;
+  --gray-1:     #888888;
+  --gray-2:     #444444;
+  --gray-3:     #2a2a2a;
+  --gray-4:     #1a1a1a;
+  --border:     #1e1e1e;
+  --border-2:   #141414;
+
+  /* Typography */
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+
+  /* Spacing */
+  --nav-h:      64px;
+  --section-px: clamp(24px, 5vw, 80px);
+  --section-py: clamp(64px, 8vw, 120px);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* ─── RESET ───────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles this */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── TYPOGRAPHY ──────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+
+/* Display sizes */
+.text-d1 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.text-d2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.text-d3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 52px);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.text-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+/* ─── LAYOUT ──────────────────────────────────────────── */
+.section-padding {
+  padding: var(--section-py) var(--section-px);
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--section-px);
+}
+
+/* ─── COMPONENTS ──────────────────────────────────────── */
+
+/* Diagonal button clip */
+.btn-clip {
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.btn-clip-sm {
+  clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+}
+
+/* Border */
+.border-ws { border: 1px solid var(--border); }
+.border-ws-2 { border: 1px solid var(--border-2); }
+.border-red { border: 1px solid var(--red); }
+.border-red-dim { border: 1px solid rgba(229, 62, 62, 0.3); }
+
+/* Grid overlay */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(229, 62, 62, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(229, 62, 62, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Red glow text */
+.text-red { color: var(--red); }
+.text-dim { color: var(--gray-2); }
+.text-muted { color: var(--gray-1); }
+
+/* ─── ANIMATIONS ──────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.3; transform: scale(0.7); }
+}
+
+@keyframes scanline {
+  0%   { top: -2px; opacity: 0; }
+  5%   { opacity: 0.5; }
+  95%  { opacity: 0.3; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+.animate-pulse-dot   { animation: pulse-dot 1.4s ease-in-out infinite; }
+.animate-scanline    { animation: scanline 4s ease-in-out infinite; }
+.animate-marquee     { animation: marquee 22s linear infinite; }
+.animate-float       { animation: float 4s ease-in-out infinite; }
+
+/* ─── SCROLLBAR ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gray-4); }
+::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+/* ─── SELECTION ───────────────────────────────────────── */
+::selection {
+  background: var(--red);
+  color: white;
+}
