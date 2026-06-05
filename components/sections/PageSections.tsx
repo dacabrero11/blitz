@@ -1,15 +1,18 @@
 'use client'
 
 import { useState } from 'react'
+import { MatrixBackground } from '@/components/ui/MatrixBackground'
 
-/* ─── PORTFOLIO HERO ──────────────────────────────────── */
+/* ─── PORTFOLIO HERO ── */
 export function PortfolioHero() {
   return (
     <section
-      className="section-padding grid-bg"
+      className="section-padding relative overflow-hidden grid-bg"
       style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)' }}
     >
-      <div className="container">
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Portfolio</p>
         <h1 className="text-d1">
           Resultados
@@ -20,22 +23,19 @@ export function PortfolioHero() {
   )
 }
 
-/* ─── CASE STUDY ──────────────────────────────────────── */
+/* ─── CASE STUDY ── */
 export function CaseStudy() {
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
         <p className="text-label mb-2">Caso de éxito #01</p>
-        <div
-          className="p-8"
-          style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}
-        >
+        <div className="p-8" style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}>
           <h2 className="text-d2 mb-4">Ferreterías<br /><span style={{ color: 'var(--red)' }}>Lemus</span></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <p className="text-label mb-2">El desafío</p>
               <p style={{ fontSize: 13, color: 'var(--gray-2)', lineHeight: 1.8 }}>
-                20 sucursales distribidas en El Salvador sin presencia digital unificada. Los clientes no
+                20 sucursales distribuidas en El Salvador sin presencia digital unificada. Los clientes no
                 podían consultar precios ni disponibilidad sin llamar o visitar físicamente cada tienda.
               </p>
             </div>
@@ -72,14 +72,16 @@ export function CaseStudy() {
   )
 }
 
-/* ─── CONTACT HERO ────────────────────────────────────── */
+/* ─── CONTACT HERO ── */
 export function ContactHero() {
   return (
     <section
-      className="section-padding grid-bg"
+      className="section-padding relative overflow-hidden grid-bg"
       style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)' }}
     >
-      <div className="container">
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }} />
+      <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Contacto</p>
         <h1 className="text-d1">
           Hablemos
@@ -93,7 +95,7 @@ export function ContactHero() {
   )
 }
 
-/* ─── ROI CALCULATOR ──────────────────────────────────── */
+/* ─── ROI CALCULATOR ── */
 export function RoiCalculator() {
   const [employees, setEmployees] = useState(3)
   const [hours, setHours] = useState(4)
@@ -101,8 +103,13 @@ export function RoiCalculator() {
   const monthlySavings = Math.round(employees * hours * hourlyRate * 22)
 
   return (
-    <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)', background: 'var(--black-2)' }}>
-      <div className="container max-w-2xl">
+    <section
+      className="section-padding relative overflow-hidden"
+      style={{ borderBottom: '1px solid var(--border-2)' }}
+    >
+      <MatrixBackground />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.85) 50%, rgba(8,8,8,0.65) 100%)', zIndex: 2 }} />
+      <div className="container max-w-2xl relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Calculadora de ROI</p>
         <h2 className="text-d2 mb-8">
           ¿Cuánto puedes
@@ -117,7 +124,7 @@ export function RoiCalculator() {
             <input
               type="range" min={1} max={20} value={employees}
               onChange={(e) => setEmployees(Number(e.target.value))}
-              className="w-full accent-red-500"
+              className="w-full"
               style={{ accentColor: 'var(--red)' }}
             />
           </div>
@@ -144,7 +151,7 @@ export function RoiCalculator() {
             ${monthlySavings.toLocaleString('es-SV')}
           </div>
           <div style={{ fontSize: 12, color: 'var(--gray-2)', marginTop: 4 }}>
-            Al automatizar con agentes Websy
+            Al automatizar con agentes Blitz
           </div>
         </div>
       </div>
@@ -152,7 +159,7 @@ export function RoiCalculator() {
   )
 }
 
-/* ─── CONTACT FORM ────────────────────────────────────── */
+/* ─── CONTACT FORM ── */
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
 export function ContactForm() {
@@ -200,11 +207,7 @@ export function ContactForm() {
                 value={form[name as keyof typeof form]}
                 onChange={handleChange}
                 className="w-full bg-transparent px-4 py-3 text-sm outline-none placeholder:text-gray-700 transition-colors"
-                style={{
-                  border: '1px solid var(--border)',
-                  color: 'var(--white)',
-                  background: 'var(--black-2)',
-                }}
+                style={{ border: '1px solid var(--border)', color: 'var(--white)', background: 'var(--black-2)' }}
               />
             ))}
             <textarea
@@ -214,11 +217,7 @@ export function ContactForm() {
               onChange={handleChange}
               rows={4}
               className="w-full bg-transparent px-4 py-3 text-sm outline-none placeholder:text-gray-700 resize-none"
-              style={{
-                border: '1px solid var(--border)',
-                color: 'var(--white)',
-                background: 'var(--black-2)',
-              }}
+              style={{ border: '1px solid var(--border)', color: 'var(--white)', background: 'var(--black-2)' }}
             />
             <div className="flex gap-3">
               <button
@@ -232,8 +231,8 @@ export function ContactForm() {
                 href={WA_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-clip font-display font-bold text-sm uppercase tracking-wide text-white px-5 py-3 transition-opacity hover:opacity-90"
-                style={{ background: 'var(--red)' }}
+                className="font-display font-bold text-sm uppercase tracking-wide text-white px-5 py-3 transition-opacity hover:opacity-90"
+                style={{ background: 'var(--red)', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}
               >
                 Directo
               </a>
