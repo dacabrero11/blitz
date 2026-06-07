@@ -1,128 +1,131 @@
 import Link from 'next/link'
 
-interface Servicio {
-  categoria: string
-  acento: string
-  items: {
-    nombre: string
-    descripcion: string
-    setup: string
-    mensual?: string
-    tag?: string
-  }[]
+interface ServicioItem {
+  nombre: string
+  descripcion: string
+  tag?: string
+  tagColor?: string
+  icon: string
 }
 
-const SERVICIOS: Servicio[] = [
+interface Categoria {
+  nombre: string
+  acento: string
+  count: string
+  items: ServicioItem[]
+}
+
+const CATEGORIAS: Categoria[] = [
   {
-    categoria: 'Páginas Web',
+    nombre: 'Páginas Web',
     acento: '#22C55E',
+    count: '3 servicios',
     items: [
       {
         nombre: 'Landing Page',
-        descripcion: 'Una página profesional, rápida y optimizada para móvil. Perfecta para negocios que necesitan presencia digital inmediata con un presupuesto ajustado.',
-        setup: '$300 - $500',
+        descripcion: 'Una página profesional, rápida y optimizada para móvil. Perfecta para negocios que necesitan presencia digital inmediata.',
         tag: 'Ideal para empezar',
+        tagColor: 'rgba(34,197,94,0.15)',
+        icon: 'M3 9h18M3 3h18v18H3zM9 21V9',
       },
       {
         nombre: 'Sitio Web Completo',
         descripcion: '5 a 8 páginas con diseño profesional, blog, SEO básico e integración con WhatsApp. Para negocios que quieren una presencia digital seria.',
-        setup: '$600 - $1,200',
+        icon: 'M2 3h20v14H2zM8 21h8M12 17v4',
       },
       {
         nombre: 'Web + Agente IA',
         descripcion: 'Sitio web completo con STRIKER integrado desde el día uno. Tu negocio en línea y atendiendo clientes 24/7 desde el lanzamiento.',
-        setup: '$800 - $1,500',
-        mensual: '$45/mes',
         tag: 'Más completo',
+        tagColor: 'rgba(34,197,94,0.15)',
+        icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
       },
     ],
   },
   {
-    categoria: 'Agentes IA',
+    nombre: 'Agentes IA',
     acento: '#E53E3E',
+    count: '5 agentes',
     items: [
       {
         nombre: 'STRIKER',
-        descripcion: 'Agente de ventas que atiende clientes, califica leads y cierra ventas en tu web y WhatsApp las 24 horas.',
-        setup: '$200',
-        mensual: '$45/mes',
+        descripcion: 'Agente de ventas que atiende clientes, califica leads y cierra ventas las 24 horas en tu web y WhatsApp.',
         tag: 'Más popular',
+        tagColor: 'rgba(229,62,62,0.15)',
+        icon: 'M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 3v4M8 3v4',
       },
       {
         nombre: 'HERALD',
         descripcion: 'Secretario virtual que agenda citas, responde preguntas frecuentes y coordina la operación diaria de tu negocio.',
-        setup: '$300',
-        mensual: '$60/mes',
+        icon: 'M3 4h18v18H3zM16 2v4M8 2v4M3 10h18',
       },
       {
         nombre: 'SIGNAL',
         descripcion: 'Genera posts, campañas e imágenes para tus redes sociales con inteligencia artificial. Hasta 20 piezas al mes.',
-        setup: '$250',
-        mensual: '$80/mes',
+        icon: 'M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z',
       },
       {
         nombre: 'ORACLE',
         descripcion: 'Dashboard en tiempo real con métricas clave de tu negocio. Reportes automáticos y alertas cuando algo requiere atención.',
-        setup: '$350',
-        mensual: '$70/mes',
+        icon: 'M3 3v18h18M18 9l-5 5-4-4-3 3',
       },
       {
         nombre: 'APEX',
         descripcion: 'Todos los agentes coordinados bajo un solo sistema. Memoria compartida, multi-canal y automatizaciones avanzadas.',
-        setup: '$800',
-        mensual: '$250/mes',
         tag: 'Élite',
+        tagColor: '#E53E3E',
+        icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
       },
     ],
   },
   {
-    categoria: 'Servicios Digitales',
+    nombre: 'Servicios Digitales',
     acento: '#3B82F6',
+    count: '4 servicios',
     items: [
       {
         nombre: 'E-commerce',
         descripcion: 'Tienda en línea completa con catálogo, carrito de compras y pagos integrados con Wompi. Como Ferreterías Lemus.',
-        setup: '$400 - $800',
+        icon: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
       },
       {
         nombre: 'SEO Local',
         descripcion: 'Posicionamiento en Google Maps y búsquedas locales. Tu negocio aparece primero cuando alguien busca tu servicio en El Salvador.',
-        setup: '$150',
-        mensual: '$80/mes',
+        icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0zM12 10a1 1 0 110-2 1 1 0 010 2z',
       },
       {
         nombre: 'WhatsApp Marketing',
-        descripcion: 'Envío masivo de mensajes a tu lista de clientes con ofertas, promociones y recordatorios. Completamente legal con WhatsApp Business API.',
-        setup: '$100',
-        mensual: '$60/mes',
+        descripcion: 'Envío masivo de mensajes a tu lista de clientes con ofertas y promociones. Completamente legal con WhatsApp Business API.',
+        icon: 'M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z',
       },
       {
         nombre: 'ERP Simple',
         descripcion: 'Sistema de inventario, ventas y facturación para negocios medianos. Control total de tu operación desde cualquier dispositivo.',
-        setup: '$1,500 - $3,000',
         tag: 'Alto impacto',
+        tagColor: 'rgba(59,130,246,0.15)',
+        icon: 'M9 17H7A5 5 0 013 12v0a5 5 0 015-5h2M15 7h2a5 5 0 015 5v0a5 5 0 01-5 5h-2M8 12h8',
       },
     ],
   },
   {
-    categoria: 'Diseño',
+    nombre: 'Diseño',
     acento: '#8B5CF6',
+    count: '3 servicios',
     items: [
       {
         nombre: 'Identidad de Marca',
         descripcion: 'Logo, paleta de colores, tipografía y manual de marca completo. Tu negocio con imagen profesional desde el día uno.',
-        setup: '$300 - $500',
+        icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
       },
       {
         nombre: 'Diseño para Redes',
         descripcion: 'Templates para posts, stories y covers coherentes con tu marca. Tu presencia digital siempre consistente y profesional.',
-        setup: '$150',
-        mensual: '$50/mes',
+        icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
       },
       {
         nombre: 'Material Impreso',
         descripcion: 'Tarjetas de presentación, brochures, banners y flyers. Diseño digital que funciona también en el mundo físico.',
-        setup: '$100 - $300',
+        icon: 'M17 17H17.01M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7l-4-4z',
       },
     ],
   },
@@ -134,41 +137,35 @@ export function ServiciosGrid() {
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
-        {SERVICIOS.map((categoria) => (
-          <div key={categoria.categoria} className="mb-16 last:mb-0">
+        {CATEGORIAS.map((cat) => (
+          <div key={cat.nombre} className="mb-16 last:mb-0">
             {/* Category header */}
             <div
-              className="flex items-center gap-4 mb-6 pb-4"
-              style={{ borderBottom: `1px solid ${categoria.acento}30` }}
+              className="flex items-center gap-3 mb-6 pb-4"
+              style={{ borderBottom: `1px solid ${cat.acento}20` }}
             >
-              <div
-                className="w-1 h-8 rounded-full"
-                style={{ background: categoria.acento }}
-              />
-              <h2
-                className="font-display font-black text-2xl uppercase tracking-wide"
-                style={{ color: 'var(--white)' }}
-              >
-                {categoria.categoria}
+              <div style={{ width: 4, height: 40, background: cat.acento, borderRadius: 2, flexShrink: 0 }} />
+              <h2 className="font-display font-black uppercase tracking-wide" style={{ fontSize: 22, color: 'var(--white)' }}>
+                {cat.nombre}
               </h2>
+              <span
+                className="ml-auto font-display font-bold uppercase"
+                style={{ fontSize: 10, letterSpacing: '0.16em', color: 'var(--gray-3)' }}
+              >
+                {cat.count}
+              </span>
             </div>
 
-            {/* Services grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-              {categoria.items.map((item) => (
+            {/* Cards grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {cat.items.map((item) => (
                 <div
                   key={item.nombre}
-                  className="relative p-5 flex flex-col justify-between transition-all duration-200 hover:translate-y-[-2px]"
-                  style={{
-                    background: 'var(--black-2)',
-                    border: '1px solid var(--border)',
-                  }}
+                  className="relative flex flex-col gap-3 p-5 transition-all duration-200 hover:-translate-y-0.5"
+                  style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}
                 >
-                  {/* Top accent line */}
-                  <div
-                    className="absolute top-0 left-0 right-0"
-                    style={{ height: 2, background: categoria.acento }}
-                  />
+                  {/* Top accent */}
+                  <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: cat.acento }} />
 
                   {/* Tag */}
                   {item.tag && (
@@ -177,8 +174,8 @@ export function ServiciosGrid() {
                       style={{
                         fontSize: 8,
                         letterSpacing: '0.14em',
-                        background: categoria.acento,
-                        color: 'white',
+                        background: item.tagColor || cat.acento,
+                        color: item.tagColor && item.tagColor !== cat.acento ? cat.acento : 'white',
                         padding: '2px 7px',
                       }}
                     >
@@ -186,53 +183,51 @@ export function ServiciosGrid() {
                     </div>
                   )}
 
-                  <div>
-                    {/* Service name */}
-                    <h3
-                      className="font-display font-black uppercase mb-2"
-                      style={{ fontSize: 20, color: 'var(--white)', lineHeight: 1 }}
-                    >
+                  {/* Icon */}
+                  <div
+                    className="flex items-center justify-center"
+                    style={{
+                      width: 44, height: 44,
+                      background: `${cat.acento}15`,
+                      borderRadius: 8,
+                      flexShrink: 0,
+                    }}
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={cat.acento} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={item.icon} />
+                    </svg>
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1">
+                    <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 18, color: 'var(--white)', lineHeight: 1 }}>
                       {item.nombre}
                     </h3>
-
-                    {/* Description */}
-                    <p
-                      className="mb-4"
-                      style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.75 }}
-                    >
+                    <p style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.75 }}>
                       {item.descripcion}
                     </p>
                   </div>
 
-                  {/* Pricing */}
+                  {/* Footer */}
                   <div
-                    className="flex items-end justify-between pt-4"
+                    className="flex items-center justify-between pt-3"
                     style={{ borderTop: '1px solid var(--border-2)' }}
                   >
-                    <div>
-                      <div
-                        className="font-display font-black"
-                        style={{ fontSize: 22, color: 'var(--white)', lineHeight: 1 }}
-                      >
-                        {item.setup}
-                      </div>
-                      <div style={{ fontSize: 9, color: 'var(--gray-2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                        Setup
-                      </div>
-                    </div>
-                    {item.mensual && (
-                      <div className="text-right">
-                        <div
-                          className="font-display font-bold"
-                          style={{ fontSize: 14, color: categoria.acento, lineHeight: 1 }}
-                        >
-                          {item.mensual}
-                        </div>
-                        <div style={{ fontSize: 9, color: 'var(--gray-2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-                          Mensual
-                        </div>
-                      </div>
-                    )}
+                    <span
+                      className="font-display font-bold uppercase"
+                      style={{ fontSize: 10, letterSpacing: '0.14em', color: 'var(--gray-3)' }}
+                    >
+                      Precio a consultar
+                    </span>
+                    <a
+                      href={WA_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-display font-bold uppercase transition-colors hover:text-white"
+                      style={{ fontSize: 10, letterSpacing: '0.12em', color: cat.acento }}
+                    >
+                      Consultar →
+                    </a>
                   </div>
                 </div>
               ))}
@@ -245,19 +240,13 @@ export function ServiciosGrid() {
           className="mt-12 p-8 text-center relative"
           style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}
         >
-          <div
-            className="absolute top-0 left-0 right-0"
-            style={{ height: 2, background: 'var(--red)' }}
-          />
+          <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: 'var(--red)' }} />
           <p className="text-label mb-2">¿No sabés por dónde empezar?</p>
-          <h3
-            className="font-display font-black uppercase mb-4"
-            style={{ fontSize: 28, color: 'var(--white)' }}
-          >
+          <h3 className="font-display font-black uppercase mb-4" style={{ fontSize: 28, color: 'var(--white)' }}>
             Primera consulta gratis.
           </h3>
           <p className="mb-6" style={{ fontSize: 13, color: 'var(--gray-1)' }}>
-            En 30 minutos por WhatsApp definimos qué servicios necesita tu negocio y cuánto te va a costar.
+            En 30 minutos por WhatsApp definimos qué servicios necesita tu negocio.
           </p>
           <a
             href={WA_URL}
