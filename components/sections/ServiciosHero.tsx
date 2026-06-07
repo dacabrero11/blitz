@@ -9,7 +9,7 @@ export function ServiciosHero() {
       <MatrixBackground />
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0.82) 50%, rgba(8,8,8,0.6) 100%)', zIndex: 2 }}
+        style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.55) 50%, rgba(8,8,8,0.1) 100%)', zIndex: 2 }}
       />
       <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Lo que hacemos</p>
