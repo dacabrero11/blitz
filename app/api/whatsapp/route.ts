@@ -91,9 +91,14 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    if (body.object !== 'whatsapp_business_account') {
-      return NextResponse.json({ status: 'ignored' }, { status: 200 })
-    }
+  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+    return new NextResponse(challenge, { 
+      status: 200,
+      headers: {
+        'Content-Type': 'text/plain',
+      }
+    })
+  }
 
     const message = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]
     if (!message || message.type !== 'text') {
