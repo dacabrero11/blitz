@@ -83,7 +83,10 @@ export async function GET(req: NextRequest) {
   const challenge = searchParams.get('hub.challenge')
 
   if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-    return new NextResponse(challenge, { status: 200 })
+    return new NextResponse(challenge, {
+      status: 200,
+      headers: { 'Content-Type': 'text/plain' },
+    })
   }
   return new NextResponse('Forbidden', { status: 403 })
 }
@@ -91,14 +94,9 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-    return new NextResponse(challenge, { 
-      status: 200,
-      headers: {
-        'Content-Type': 'text/plain',
-      }
-    })
-  }
+    if (body.object !== 'whatsapp_business_account') {
+      return NextResponse.json({ status: 'ignored' }, { status: 200 })
+    }
 
     const message = body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]
     if (!message || message.type !== 'text') {
