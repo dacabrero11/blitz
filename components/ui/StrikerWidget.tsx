@@ -17,6 +17,7 @@ export function StrikerWidget() {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [sessionId] = useState(() => `web_${Math.random().toString(36).slice(2)}_${Date.now()}`)
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export function StrikerWidget() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
+        body: JSON.stringify({ messages: [...messages, userMsg], sessionId }),
       })
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'assistant', content: data.content }])
@@ -46,7 +47,6 @@ export function StrikerWidget() {
 
   return (
     <>
-      {/* Floating button — STRIKER logo coin */}
       <button
         onClick={() => setOpen((o) => !o)}
         className="fixed bottom-6 right-6 z-50 transition-transform hover:scale-105 active:scale-95"
@@ -82,7 +82,6 @@ export function StrikerWidget() {
         )}
       </button>
 
-      {/* Chat panel */}
       {open && (
         <div
           className="fixed bottom-[88px] right-6 z-50 flex flex-col rounded-none overflow-hidden"
@@ -94,18 +93,12 @@ export function StrikerWidget() {
             boxShadow: '0 0 40px rgba(229,62,62,0.15)',
           }}
         >
-          {/* Header */}
           <div
             className="flex items-center gap-3 px-4 py-3 shrink-0"
             style={{ borderBottom: '1px solid var(--border)', background: 'var(--black)' }}
           >
             <div className="relative w-10 h-10 shrink-0">
-              <Image
-                src="/logos/striker.png"
-                alt="STRIKER"
-                fill
-                className="object-cover rounded-full"
-              />
+              <Image src="/logos/striker.png" alt="STRIKER" fill className="object-cover rounded-full" />
             </div>
             <div>
               <div className="font-display font-bold text-sm tracking-wide" style={{ color: 'var(--white)' }}>
@@ -116,7 +109,7 @@ export function StrikerWidget() {
                 <span className="text-xs" style={{ color: 'var(--gray-1)' }}>Agente de ventas · En línea</span>
               </div>
             </div>
-            <a
+            
               href={WA_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -127,7 +120,6 @@ export function StrikerWidget() {
             </a>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {messages.map((msg, i) => (
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -142,7 +134,7 @@ export function StrikerWidget() {
                   {msg.content.includes('wa.me') || msg.content.includes('7910') ? (
                     <span>
                       {msg.content.replace(/https?:\/\/\S+/g, '').trim()}
-                      <a
+                      
                         href="https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20agendar%20una%20llamada"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -168,7 +160,6 @@ export function StrikerWidget() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
           <div className="flex items-center gap-2 px-3 py-3 shrink-0" style={{ borderTop: '1px solid var(--border)' }}>
             <input
               type="text"
