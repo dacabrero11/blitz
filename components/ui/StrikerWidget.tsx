@@ -109,7 +109,7 @@ export function StrikerWidget() {
                 <span className="text-xs" style={{ color: 'var(--gray-1)' }}>Agente de ventas · En línea</span>
               </div>
             </div>
-            
+            <a
               href={WA_URL}
               target="_blank"
               rel="noopener noreferrer"
@@ -134,7 +134,7 @@ export function StrikerWidget() {
                   {msg.content.includes('wa.me') || msg.content.includes('7910') ? (
                     <span>
                       {msg.content.replace(/https?:\/\/\S+/g, '').trim()}
-                      
+                      <a
                         href="https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20agendar%20una%20llamada"
                         target="_blank"
                         rel="noopener noreferrer"
