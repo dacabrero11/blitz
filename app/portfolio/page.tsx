@@ -5,7 +5,7 @@ import { CtaFinal, FooterSection } from '@/components/sections/SharedSections'
 
 export const metadata: Metadata = {
   title: 'Portfolio',
-  description: 'Casos de éxito reales. Ferreterías Lemus y más proyectos construidos con Next.js 15 e IA en El Salvador.',
+  description: 'Casos de éxito reales. Proyectos construidos con Next.js 15 e inteligencia artificial para negocios en El Salvador.',
 }
 
 export default function PortfolioPage() {
