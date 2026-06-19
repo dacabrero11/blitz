@@ -98,7 +98,6 @@ export function ContactHero() {
 /* ─── ROI CALCULATOR ── */
 export function RoiCalculator() {
   const [employees, setEmployees] = useState(3)
-  const [employees, setEmployees] = useState(3)
   const [hours, setHours] = useState(4)
   const hourlyRate = 3.5
   const monthlySavings = Math.round(employees * hours * hourlyRate * 22)
