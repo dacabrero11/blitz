@@ -1,5 +1,4 @@
 'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
 import { AGENTS } from '@/lib/agents'
@@ -14,26 +13,22 @@ export function HangarSection() {
         src="/hangar.png"
         alt="Cuartel de operaciones Blitz"
         fill
-        className="object-cover"
+        className="object-cover object-center md:object-[25%_center]"
         priority
         style={{
           filter: 'brightness(0.82) contrast(1.05) saturate(1.1)',
-          objectPosition: '25% center',
         }}
       />
-
       <div
         className="absolute inset-0"
         style={{
           background: 'linear-gradient(to bottom, rgba(8,8,8,0.0) 0%, rgba(8,8,8,0.1) 35%, rgba(8,8,8,0.72) 78%, #080808 100%)',
         }}
       />
-
       <div
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 60% 25% at 50% 98%, rgba(229,62,62,0.07), transparent 70%)' }}
       />
-
       <div
         className="relative z-10 flex flex-col justify-end"
         style={{ minHeight: '100vh', padding: 'var(--section-px)', paddingBottom: 56 }}
