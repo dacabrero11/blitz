@@ -14,7 +14,7 @@ export function OperativeCards() {
             <Link
               key={agent.id}
               href={`/agentes/${agent.id}`}
-              className="group grid items-stretch transition-all duration-200"
+              className="group flex flex-col md:grid items-stretch transition-all duration-200"
               style={{
                 gridTemplateColumns: agent.classification === 'elite' ? '220px 1fr 140px' : '180px 1fr 120px',
                 border: agent.classification === 'elite' ? '1px solid rgba(229,62,62,0.4)' : '1px solid var(--border)',
@@ -26,8 +26,8 @@ export function OperativeCards() {
                 className="relative flex items-end justify-center overflow-hidden"
                 style={{
                   background: 'var(--black)',
-                  borderRight: '1px solid var(--border)',
-                  minHeight: agent.classification === 'elite' ? 220 : 180,
+                  borderBottom: '1px solid var(--border)',
+                  minHeight: agent.classification === 'elite' ? 200 : 160,
                 }}
               >
                 <div
@@ -51,18 +51,15 @@ export function OperativeCards() {
                 <Image
                   src={agent.image}
                   alt={agent.name}
-                  width={agent.classification === 'elite' ? 180 : 150}
-                  height={agent.classification === 'elite' ? 210 : 175}
+                  width={agent.classification === 'elite' ? 160 : 130}
+                  height={agent.classification === 'elite' ? 190 : 155}
                   className="relative z-10 object-contain transition-transform duration-500 group-hover:scale-105"
                   style={{ filter: 'drop-shadow(0 0 16px rgba(229,62,62,0.2))' }}
                 />
               </div>
 
               {/* Body column */}
-              <div
-                className="p-7 flex flex-col justify-between"
-                style={{ borderRight: '1px solid var(--border)' }}
-              >
+              <div className="p-5 md:p-7 flex flex-col justify-between">
                 <div>
                   {agent.classification === 'elite' && (
                     <div
@@ -82,14 +79,14 @@ export function OperativeCards() {
                   <div className="text-label mb-2" style={{ fontSize: 10 }}>{agent.role}</div>
                   <h2
                     className="font-display font-black uppercase mb-1"
-                    style={{ fontSize: agent.classification === 'elite' ? 44 : 36, color: 'var(--white)', lineHeight: 1 }}
+                    style={{ fontSize: agent.classification === 'elite' ? 36 : 28, color: 'var(--white)', lineHeight: 1 }}
                   >
                     {agent.name}
                   </h2>
-                  <p className="mb-5" style={{ fontSize: 11, color: 'var(--gray-1)', fontStyle: 'italic' }}>
+                  <p className="mb-4" style={{ fontSize: 11, color: 'var(--gray-1)', fontStyle: 'italic' }}>
                     "{agent.tagline}"
                   </p>
-                  <p className="mb-5" style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.8, maxWidth: 480 }}>
+                  <p className="mb-4" style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.8 }}>
                     {agent.description}
                   </p>
                   <div className="flex flex-wrap gap-1.5">
@@ -112,8 +109,8 @@ export function OperativeCards() {
                 </div>
               </div>
 
-              {/* Status column */}
-              <div className="p-6 flex flex-col justify-between items-end">
+              {/* Status column — hidden on mobile */}
+              <div className="hidden md:flex p-6 flex-col justify-between items-end">
                 <div className="text-right">
                   <div className="font-display font-bold uppercase mb-1" style={{ fontSize: 9, letterSpacing: '0.16em', color: 'var(--gray-3)' }}>
                     Estado

@@ -9,8 +9,8 @@ export function AgentHero({ agent }: { agent: Agent }) {
     <section
       className="relative overflow-hidden grid-bg"
       style={{
-        paddingTop: 'calc(var(--nav-h) + 64px)',
-        paddingBottom: 80,
+        paddingTop: 'calc(var(--nav-h) + 48px)',
+        paddingBottom: 64,
         paddingLeft: 'var(--section-px)',
         paddingRight: 'var(--section-px)',
         minHeight: '80vh',
@@ -21,10 +21,26 @@ export function AgentHero({ agent }: { agent: Agent }) {
         className="absolute inset-0 pointer-events-none"
         style={{ background: `radial-gradient(ellipse 50% 70% at 80% 50%, ${agent.accentColor}18, transparent 70%)` }}
       />
+      <div className="container relative z-10 flex flex-col md:flex-row items-center gap-8 md:gap-12">
 
-      <div className="container relative z-10 flex flex-col md:flex-row items-center gap-12">
+        {/* Agent image — top on mobile, right on desktop */}
+        <div
+          className="relative flex-shrink-0 order-first md:order-last"
+          style={{ width: '100%', maxWidth: 260, margin: '0 auto' }}
+        >
+          <Image
+            src={agent.image}
+            alt={agent.name}
+            width={260}
+            height={360}
+            className="relative z-10 object-contain animate-float w-full h-auto"
+            style={{ filter: `drop-shadow(0 0 48px ${agent.accentColor}60)` }}
+            priority
+          />
+        </div>
+
         {/* Text */}
-        <div className="flex-1">
+        <div className="flex-1 text-center md:text-left">
           <Link
             href="/agentes"
             className="inline-flex items-center gap-2 mb-6 font-display font-semibold uppercase tracking-widest text-xs transition-colors hover:text-white"
@@ -32,7 +48,6 @@ export function AgentHero({ agent }: { agent: Agent }) {
           >
             ← Todos los agentes
           </Link>
-
           <div
             className="inline-block font-display font-bold uppercase mb-3"
             style={{
@@ -44,19 +59,17 @@ export function AgentHero({ agent }: { agent: Agent }) {
           >
             {agent.unitCode}
           </div>
-
           <div className="text-label mb-1">{agent.role}</div>
           <h1 className="text-d1 mb-4" style={{ color: 'var(--white)' }}>{agent.name}</h1>
           <p
             className="mb-2 font-display font-semibold uppercase italic"
-            style={{ fontSize: 16, color: 'var(--red)' }}
+            style={{ fontSize: 15, color: 'var(--red)' }}
           >
             "{agent.tagline}"
           </p>
           <p className="mb-8" style={{ fontSize: 14, color: 'var(--gray-1)', lineHeight: 1.8, maxWidth: 480 }}>
             {agent.description}
           </p>
-
           <a
             href={WA_URL}
             target="_blank"
@@ -66,19 +79,6 @@ export function AgentHero({ agent }: { agent: Agent }) {
           >
             Activar {agent.name} →
           </a>
-        </div>
-
-        {/* Agent image */}
-        <div className="relative flex-shrink-0">
-          <Image
-            src={agent.image}
-            alt={agent.name}
-            width={320}
-            height={440}
-            className="relative z-10 object-contain animate-float"
-            style={{ filter: `drop-shadow(0 0 48px ${agent.accentColor}60)` }}
-            priority
-          />
         </div>
       </div>
     </section>
