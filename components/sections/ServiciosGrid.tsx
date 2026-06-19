@@ -85,7 +85,7 @@ const CATEGORIAS: Categoria[] = [
     items: [
       {
         nombre: 'E-commerce',
-        descripcion: 'Tienda en línea completa con catálogo, carrito de compras y pagos integrados con Wompi. Como Ferreterías Lemus.',
+        descripcion: 'Tienda en línea completa con catálogo, carrito de compras y pagos integrados con Wompi. Lista para vender desde el día uno.',
         icon: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
       },
       {
