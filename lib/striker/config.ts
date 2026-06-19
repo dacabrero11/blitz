@@ -10,7 +10,7 @@ const configs: StrikerConfig[] = [
     hours: 'Lun-Vie 8am-6pm',
     contactUrl: 'wa.me/50379102453',
     agentName: 'STRIKER',
-    tone: 'salvadoreño',
+    tone: 'casual',
     language: 'es',
     products: [
       { id: 'striker-agent', name: 'Agente STRIKER', description: 'Atiende y califica clientes en WhatsApp/web 24/7', price: 200, currency: 'USD', available: true },
