@@ -9,15 +9,23 @@ export function HangarSection() {
       className="relative overflow-hidden"
       style={{ marginTop: 'var(--nav-h)', minHeight: '100vh' }}
     >
+      {/* Mobile image */}
+      <Image
+        src="/hangar-mobile.png"
+        alt="Cuartel de operaciones Blitz"
+        fill
+        className="object-cover object-center md:hidden"
+        priority
+        style={{ filter: 'brightness(0.82) contrast(1.05) saturate(1.1)' }}
+      />
+      {/* Desktop image */}
       <Image
         src="/hangar.png"
         alt="Cuartel de operaciones Blitz"
         fill
-        className="object-cover object-center md:object-[25%_center]"
+        className="object-cover object-[25%_center] hidden md:block"
         priority
-        style={{
-          filter: 'brightness(0.82) contrast(1.05) saturate(1.1)',
-        }}
+        style={{ filter: 'brightness(0.82) contrast(1.05) saturate(1.1)' }}
       />
       <div
         className="absolute inset-0"
