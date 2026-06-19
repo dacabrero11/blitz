@@ -28,27 +28,27 @@ export function CaseStudy() {
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
-        <p className="text-label mb-2">Caso de éxito #01</p>
+        <p className="text-label mb-2">Casos de éxito</p>
         <div className="p-8" style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}>
-          <h2 className="text-d2 mb-4">Ferreterías<br /><span style={{ color: 'var(--red)' }}>Lemus</span></h2>
+          <h2 className="text-d2 mb-4">Próximamente<br /><span style={{ color: 'var(--red)' }}>en vivo.</span></h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <p className="text-label mb-2">El desafío</p>
+              <p className="text-label mb-2">¿Qué documentamos?</p>
               <p style={{ fontSize: 13, color: 'var(--gray-2)', lineHeight: 1.8 }}>
-                20 sucursales distribuidas en El Salvador sin presencia digital unificada. Los clientes no
-                podían consultar precios ni disponibilidad sin llamar o visitar físicamente cada tienda.
+                Negocios salvadoreños que implementaron agentes IA de BLITZ y transformaron
+                su operación. Resultados reales, medibles, con números concretos.
               </p>
             </div>
             <div>
-              <p className="text-label mb-2">La solución</p>
+              <p className="text-label mb-2">¿Querés ser el primero?</p>
               <p style={{ fontSize: 13, color: 'var(--gray-2)', lineHeight: 1.8 }}>
-                Catálogo digital unificado con Next.js 15, agente IA con Claude Haiku para atención al
-                cliente, sistema de pagos en línea con Wompi y gestión de inventario en tiempo real.
+                Si tu negocio adopta BLITZ ahora, documentamos tu caso de éxito
+                y te damos visibilidad gratuita en nuestro portfolio cuando lancemos.
               </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-6 mt-8 pt-8" style={{ borderTop: '1px solid var(--border)' }}>
-            {[['20', 'Sucursales'], ['24/7', 'Atención IA'], ['Wompi', 'Pagos en línea'], ['Next.js 15', 'Stack']].map(([n, l]) => (
+            {[['5', 'Agentes activos'], ['24/7', 'Atención IA'], ['$0', 'Costo consulta'], ['30 min', 'Primera llamada']].map(([n, l]) => (
               <div key={l}>
                 <div className="font-display font-black text-2xl" style={{ color: 'var(--red)' }}>{n}</div>
                 <div style={{ fontSize: 10, color: 'var(--gray-2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{l}</div>
@@ -57,13 +57,13 @@ export function CaseStudy() {
           </div>
           <div className="mt-6">
             <a
-              href="https://ferreterias-lemus.vercel.app"
+              href="https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20agendar%20una%20llamada"
               target="_blank"
               rel="noopener noreferrer"
               className="font-display font-bold text-xs uppercase tracking-widest transition-colors hover:text-white"
               style={{ color: 'var(--red)' }}
             >
-              Ver sitio en vivo ↗
+              Agendar llamada gratis ↗
             </a>
           </div>
         </div>
@@ -97,6 +97,7 @@ export function ContactHero() {
 
 /* ─── ROI CALCULATOR ── */
 export function RoiCalculator() {
+  const [employees, setEmployees] = useState(3)
   const [employees, setEmployees] = useState(3)
   const [hours, setHours] = useState(4)
   const hourlyRate = 3.5
