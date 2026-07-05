@@ -20,13 +20,24 @@ export function CaseStudyDatto() {
               background: 'var(--black-2)',
               height: 320,
               overflow: 'hidden',
+              padding: 20,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             {/* Reemplazar /public/portfolio/datto-hero.jpg por la captura real del Hero de dattogroup.com */}
             <img
               src="/portfolio/datto-hero.jpg"
               alt="Sitio web de Datto Business Network"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+              style={{
+                maxWidth: '100%', maxHeight: '100%',
+                width: 'auto', height: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+                border: '1px solid var(--border)',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+              }}
               onError={(e) => {
                 const img = e.currentTarget
                 img.style.display = 'none'
