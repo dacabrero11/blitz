@@ -15,13 +15,18 @@ export function CaseStudyDatto() {
           {/* Imagen */}
           <div
             className="relative"
-            style={{ borderRight: '1px solid var(--border)', background: 'var(--black-2)', minHeight: 320 }}
+            style={{
+              borderRight: '1px solid var(--border)',
+              background: 'var(--black-2)',
+              height: 320,
+              overflow: 'hidden',
+            }}
           >
             {/* Reemplazar /public/portfolio/datto-hero.jpg por la captura real del Hero de dattogroup.com */}
             <img
               src="/portfolio/datto-hero.jpg"
               alt="Sitio web de Datto Business Network"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'absolute', inset: 0 }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
               onError={(e) => {
                 const img = e.currentTarget
                 img.style.display = 'none'
