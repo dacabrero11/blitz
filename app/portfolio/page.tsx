@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { PortfolioHero } from '@/components/sections/PageSections'
+import { CaseStudyDatto } from '@/components/sections/CaseStudyDatto'
 import { CaseStudy } from '@/components/sections/PageSections'
 import { CtaFinal, FooterSection } from '@/components/sections/SharedSections'
 
@@ -12,6 +13,7 @@ export default function PortfolioPage() {
   return (
     <>
       <PortfolioHero />
+      <CaseStudyDatto />
       <CaseStudy />
       <CtaFinal />
       <FooterSection />
