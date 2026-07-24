@@ -24,8 +24,6 @@ export function Navbar() {
         style={{
           height: 'var(--nav-h)',
           background: 'transparent',
-          backdropFilter: 'blur(6px)',
-          WebkitBackdropFilter: 'blur(6px)',
         }}
       >
         {/* Logo — hero wordmark */}
