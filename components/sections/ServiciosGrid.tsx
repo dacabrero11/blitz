@@ -1,108 +1,7 @@
-'use client'
-
-import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Monitor, Smartphone, LayoutGrid, ArrowRight } from 'lucide-react'
-
-interface ServicioItem {
-  nombre: string
-  descripcion: string
-  tag?: string
-  icon: string
-  mockupImage?: string
-  mockupPosition?: string
-}
-
-interface Categoria {
-  nombre: string
-  subtitle: string
-  acento: string
-  count: string
-  items: ServicioItem[]
-}
-
-const CATEGORIAS: Categoria[] = [
-  {
-    nombre: 'Páginas Web',
-    subtitle: 'Sitios que venden. Diseñados para convertir.',
-    acento: '#E53E3E',
-    count: '3 servicios',
-    items: [
-      {
-        nombre: 'Landing Page',
-        descripcion: 'Una página profesional, rápida y optimizada para móvil. Perfecta para negocios que necesitan presencia digital inmediata.',
-        tag: 'Ideal para empezar',
-        icon: 'M3 9h18M3 3h18v18H3zM9 21V9',
-        mockupImage: '/servicios/landing-page.jpg',
-      },
-      {
-        nombre: 'Sitio Web Completo',
-        descripcion: '5 a 8 páginas con diseño profesional, blog, SEO básico e integración con WhatsApp. Para negocios que quieren una presencia digital seria.',
-        icon: 'M2 3h20v14H2zM8 21h8M12 17v4',
-        mockupImage: '/servicios/sitio-web-completo.jpg',
-      },
-      {
-        nombre: 'Web + Agente IA',
-        descripcion: 'Sitio web completo con STRIKER integrado desde el día uno. Tu negocio en línea y atendiendo clientes 24/7 desde el lanzamiento.',
-        tag: 'Más completo',
-        icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
-        mockupImage: '/servicios/web-agente-ia.jpg',
-      },
-    ],
-  },
-  {
-    nombre: 'Servicios Digitales',
-    subtitle: 'Todo lo que tu negocio necesita para crecer en línea.',
-    acento: '#3B82F6',
-    count: '4 servicios',
-    items: [
-      {
-        nombre: 'E-commerce',
-        descripcion: 'Tienda en línea completa con catálogo, carrito de compras y pagos integrados con Wompi. Lista para vender desde el día uno.',
-        icon: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
-      },
-      {
-        nombre: 'SEO Local',
-        descripcion: 'Posicionamiento en Google Maps y búsquedas locales. Tu negocio aparece primero cuando alguien busca tu servicio en El Salvador.',
-        icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0zM12 10a1 1 0 110-2 1 1 0 010 2z',
-      },
-      {
-        nombre: 'WhatsApp Marketing',
-        descripcion: 'Envío masivo de mensajes a tu lista de clientes con ofertas y promociones. Completamente legal con WhatsApp Business API.',
-        icon: 'M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z',
-      },
-      {
-        nombre: 'ERP Simple',
-        descripcion: 'Sistema de inventario, ventas y facturación para negocios medianos. Control total de tu operación desde cualquier dispositivo.',
-        tag: 'Alto impacto',
-        icon: 'M9 17H7A5 5 0 013 12v0a5 5 0 015-5h2M15 7h2a5 5 0 015 5v0a5 5 0 01-5 5h-2M8 12h8',
-      },
-    ],
-  },
-  {
-    nombre: 'Diseño',
-    subtitle: 'Tu marca, con una imagen que vende sola.',
-    acento: '#8B5CF6',
-    count: '3 servicios',
-    items: [
-      {
-        nombre: 'Identidad de Marca',
-        descripcion: 'Logo, paleta de colores, tipografía y manual de marca completo. Tu negocio con imagen profesional desde el día uno.',
-        icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
-      },
-      {
-        nombre: 'Diseño para Redes',
-        descripcion: 'Templates para posts, stories y covers coherentes con tu marca. Tu presencia digital siempre consistente y profesional.',
-        icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
-      },
-      {
-        nombre: 'Material Impreso',
-        descripcion: 'Tarjetas de presentación, brochures, banners y flyers. Diseño digital que funciona también en el mundo físico.',
-        icon: 'M17 17H17.01M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7l-4-4z',
-      },
-    ],
-  },
-]
+import { CATEGORIAS } from '@/lib/servicios'
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
@@ -119,7 +18,7 @@ function BackgroundPlaceholder({ acento }: { acento: string }) {
           backgroundSize: '32px 32px',
         }}
       />
-      <div className="relative flex items-end gap-4" style={{ right: '12%', position: 'relative' }}>
+      <div className="relative flex items-end gap-4" style={{ right: '12%' }}>
         <Monitor size={130} color={acento} strokeWidth={1} style={{ opacity: 0.4 }} />
         <Smartphone size={58} color={acento} strokeWidth={1} style={{ opacity: 0.4, marginBottom: 4 }} />
       </div>
@@ -133,23 +32,20 @@ function BackgroundPlaceholder({ acento }: { acento: string }) {
   )
 }
 
-function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
-  const [selected, setSelected] = useState(0)
-  const active = cat.items[selected]
+function CategoriaBlock({ cat, index }: { cat: (typeof CATEGORIAS)[number]; index: number }) {
+  const featured = cat.items[0]
 
   return (
     <div
       className="relative overflow-hidden mb-6 last:mb-0"
       style={{ minHeight: 620, border: '1px solid var(--border-2)' }}
     >
-      {/* Full-bleed background — swaps with the selected item */}
-      {active.mockupImage ? (
+      {featured.mockupImage ? (
         <Image
-          key={active.mockupImage}
-          src={active.mockupImage}
-          alt={active.nombre}
+          src={featured.mockupImage}
+          alt={featured.nombre}
           fill
-          style={{ objectFit: 'cover', objectPosition: active.mockupPosition ?? 'center' }}
+          style={{ objectFit: 'cover', objectPosition: featured.mockupPosition ?? 'center' }}
         />
       ) : (
         <BackgroundPlaceholder acento={cat.acento} />
@@ -163,7 +59,6 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
         style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.6) 0%, transparent 25%)' }}
       />
 
-      {/* Text + item list, over the background */}
       <div className="relative py-10 md:py-16" style={{ maxWidth: 620, paddingLeft: 'var(--section-px)', paddingRight: 'clamp(24px, 4vw, 48px)' }}>
         <div className="flex items-baseline gap-4 mb-2">
           <span className="font-display font-black" style={{ fontSize: 22, color: cat.acento }}>
@@ -181,59 +76,55 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
         </p>
 
         <div className="flex flex-col gap-3 mb-7">
-          {cat.items.map((item, idx) => {
-            const highlighted = selected === idx
-            return (
-              <button
-                key={item.nombre}
-                onClick={() => setSelected(idx)}
-                className="group flex items-center gap-4 p-5 text-left transition-all duration-200"
+          {cat.items.map((item, idx) => (
+            <Link
+              key={item.nombre}
+              href={`/servicios/${item.slug}`}
+              className="group flex items-center gap-4 p-5 text-left transition-all duration-200"
+              style={{
+                background: idx === 0 ? 'rgba(10,10,10,0.7)' : 'rgba(10,10,10,0.45)',
+                backdropFilter: 'blur(6px)',
+                border: `1px solid ${idx === 0 ? cat.acento : 'rgba(255,255,255,0.12)'}`,
+                borderLeft: `3px solid ${idx === 0 ? cat.acento : 'rgba(255,255,255,0.12)'}`,
+              }}
+            >
+              <div
+                className="flex items-center justify-center flex-shrink-0"
                 style={{
-                  background: highlighted ? 'rgba(10,10,10,0.7)' : 'rgba(10,10,10,0.45)',
-                  backdropFilter: 'blur(6px)',
-                  border: `1px solid ${highlighted ? cat.acento : 'rgba(255,255,255,0.12)'}`,
-                  borderLeft: `3px solid ${highlighted ? cat.acento : 'rgba(255,255,255,0.12)'}`,
+                  width: 46, height: 46,
+                  background: idx === 0 ? cat.acento : `${cat.acento}25`,
+                  borderRadius: 6,
                 }}
               >
-                <div
-                  className="flex items-center justify-center flex-shrink-0"
-                  style={{
-                    width: 46, height: 46,
-                    background: highlighted ? cat.acento : `${cat.acento}25`,
-                    borderRadius: 6,
-                  }}
-                >
-                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={highlighted ? '#fff' : cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={item.icon} />
-                  </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-display font-bold uppercase" style={{ fontSize: 15, color: 'var(--white)' }}>
-                      {item.nombre}
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={idx === 0 ? '#fff' : cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d={item.icon} />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="font-display font-bold uppercase" style={{ fontSize: 15, color: 'var(--white)' }}>
+                    {item.nombre}
+                  </span>
+                  {item.tag && (
+                    <span
+                      className="font-display font-bold uppercase flex-shrink-0"
+                      style={{ fontSize: 8.5, letterSpacing: '0.1em', color: cat.acento, border: `1px solid ${cat.acento}55`, padding: '1px 5px' }}
+                    >
+                      {item.tag}
                     </span>
-                    {item.tag && (
-                      <span
-                        className="font-display font-bold uppercase flex-shrink-0"
-                        style={{ fontSize: 8.5, letterSpacing: '0.1em', color: cat.acento, border: `1px solid ${cat.acento}55`, padding: '1px 5px' }}
-                      >
-                        {item.tag}
-                      </span>
-                    )}
-                  </div>
-                  <p style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.55 }}>
-                    {item.descripcion}
-                  </p>
+                  )}
                 </div>
-                <ArrowRight
-                  size={17}
-                  color={cat.acento}
-                  className="flex-shrink-0 transition-transform"
-                  style={{ transform: highlighted ? 'translateX(2px)' : undefined }}
-                />
-              </button>
-            )
-          })}
+                <p style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.55 }}>
+                  {item.descripcion}
+                </p>
+              </div>
+              <ArrowRight
+                size={17}
+                color={cat.acento}
+                className="flex-shrink-0 transition-transform group-hover:translate-x-1"
+              />
+            </Link>
+          ))}
         </div>
 
         <a
