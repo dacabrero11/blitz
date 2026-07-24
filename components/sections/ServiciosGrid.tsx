@@ -139,26 +139,26 @@ const CATEGORIAS: Categoria[] = [
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
-function MockupPlaceholder({ acento }: { acento: string }) {
+function BackgroundPlaceholder({ acento }: { acento: string }) {
   return (
     <div
-      className="relative flex items-center justify-center overflow-hidden w-full h-full"
-      style={{ background: `radial-gradient(ellipse at 50% 40%, ${acento}14, #0a0a0a 70%)` }}
+      className="absolute inset-0 flex items-center justify-center overflow-hidden"
+      style={{ background: `radial-gradient(ellipse at 75% 50%, ${acento}14, #0a0a0a 70%)` }}
     >
       <div
-        className="absolute inset-0 opacity-40"
+        className="absolute inset-0 opacity-30"
         style={{
           backgroundImage: `linear-gradient(${acento}14 1px, transparent 1px), linear-gradient(90deg, ${acento}14 1px, transparent 1px)`,
           backgroundSize: '32px 32px',
         }}
       />
-      <div className="relative flex items-end gap-4" style={{ zIndex: 1 }}>
-        <Monitor size={110} color={acento} strokeWidth={1} style={{ opacity: 0.5 }} />
-        <Smartphone size={50} color={acento} strokeWidth={1} style={{ opacity: 0.5, marginBottom: 4 }} />
+      <div className="relative flex items-end gap-4" style={{ right: '12%', position: 'relative' }}>
+        <Monitor size={130} color={acento} strokeWidth={1} style={{ opacity: 0.4 }} />
+        <Smartphone size={58} color={acento} strokeWidth={1} style={{ opacity: 0.4, marginBottom: 4 }} />
       </div>
       <div
-        className="absolute bottom-5 right-5 font-display font-bold uppercase"
-        style={{ fontSize: 10, letterSpacing: '0.12em', color: acento, opacity: 0.7 }}
+        className="absolute bottom-6 right-6 font-display font-bold uppercase"
+        style={{ fontSize: 10, letterSpacing: '0.12em', color: acento, opacity: 0.6 }}
       >
         Vista previa próximamente
       </div>
@@ -171,9 +171,33 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
   const active = cat.items[selected]
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-28 last:mb-0">
-      {/* Text column */}
-      <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+    <div
+      className="relative overflow-hidden mb-6 last:mb-0"
+      style={{ minHeight: 620, border: '1px solid var(--border-2)' }}
+    >
+      {/* Full-bleed background — swaps with the selected item */}
+      {active.mockupImage ? (
+        <Image
+          key={active.mockupImage}
+          src={active.mockupImage}
+          alt={active.nombre}
+          fill
+          style={{ objectFit: 'cover', objectPosition: active.mockupPosition ?? 'center' }}
+        />
+      ) : (
+        <BackgroundPlaceholder acento={cat.acento} />
+      )}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: `linear-gradient(90deg, rgba(8,8,8,0.96) 0%, rgba(8,8,8,0.88) 40%, rgba(8,8,8,0.4) 65%, rgba(8,8,8,0.15) 100%)` }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.6) 0%, transparent 25%)' }}
+      />
+
+      {/* Text + item list, over the background */}
+      <div className="relative py-10 md:py-16" style={{ maxWidth: 620, paddingLeft: 'var(--section-px)', paddingRight: 'clamp(24px, 4vw, 48px)' }}>
         <div className="flex items-baseline gap-4 mb-2">
           <span className="font-display font-black" style={{ fontSize: 22, color: cat.acento }}>
             {String(index + 1).padStart(2, '0')}
@@ -198,16 +222,17 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
                 onClick={() => setSelected(idx)}
                 className="group flex items-center gap-4 p-5 text-left transition-all duration-200"
                 style={{
-                  background: highlighted ? `${cat.acento}0d` : 'var(--black-2)',
-                  border: `1px solid ${highlighted ? cat.acento : 'var(--border)'}`,
-                  borderLeft: `3px solid ${highlighted ? cat.acento : 'var(--border)'}`,
+                  background: highlighted ? 'rgba(10,10,10,0.7)' : 'rgba(10,10,10,0.45)',
+                  backdropFilter: 'blur(6px)',
+                  border: `1px solid ${highlighted ? cat.acento : 'rgba(255,255,255,0.12)'}`,
+                  borderLeft: `3px solid ${highlighted ? cat.acento : 'rgba(255,255,255,0.12)'}`,
                 }}
               >
                 <div
                   className="flex items-center justify-center flex-shrink-0"
                   style={{
                     width: 46, height: 46,
-                    background: highlighted ? cat.acento : `${cat.acento}15`,
+                    background: highlighted ? cat.acento : `${cat.acento}25`,
                     borderRadius: 6,
                   }}
                 >
@@ -229,7 +254,7 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
                       </span>
                     )}
                   </div>
-                  <p style={{ fontSize: 12.5, color: 'var(--gray-2)', lineHeight: 1.55 }}>
+                  <p style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.55 }}>
                     {item.descripcion}
                   </p>
                 </div>
@@ -255,32 +280,23 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
           Ver todos los planes
         </a>
       </div>
-
-      {/* Mockup column — the selected item's own image, edge to edge, no frame */}
-      <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
-        <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4 / 3' }}>
-          {active.mockupImage ? (
-            <Image src={active.mockupImage} alt={active.nombre} fill style={{ objectFit: 'cover', objectPosition: active.mockupPosition ?? 'center' }} />
-          ) : (
-            <MockupPlaceholder acento={cat.acento} />
-          )}
-        </div>
-      </div>
     </div>
   )
 }
 
 export function ServiciosGrid() {
   return (
-    <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
-      <div className="container">
+    <section style={{ borderBottom: '1px solid var(--border-2)' }}>
+      <div style={{ padding: 'var(--section-py) 0' }}>
         {CATEGORIAS.map((cat, i) => (
           <CategoriaBlock key={cat.nombre} cat={cat} index={i} />
         ))}
+      </div>
 
-        {/* Bottom CTA */}
+      {/* Bottom CTA */}
+      <div className="container" style={{ paddingBottom: 'var(--section-py)' }}>
         <div
-          className="mt-4 p-8 text-center relative"
+          className="p-8 text-center relative"
           style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}
         >
           <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: 'var(--red)' }} />
