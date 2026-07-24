@@ -1,31 +1,34 @@
-import Link from 'next/link'
+'use client'
+
+import { Monitor, Smartphone, LayoutGrid, ArrowRight } from 'lucide-react'
 
 interface ServicioItem {
   nombre: string
   descripcion: string
   tag?: string
-  tagColor?: string
   icon: string
 }
 
 interface Categoria {
   nombre: string
+  subtitle: string
   acento: string
   count: string
+  mockupImage?: string
   items: ServicioItem[]
 }
 
 const CATEGORIAS: Categoria[] = [
   {
     nombre: 'Páginas Web',
-    acento: '#22C55E',
+    subtitle: 'Sitios que venden. Diseñados para convertir.',
+    acento: '#E53E3E',
     count: '3 servicios',
     items: [
       {
         nombre: 'Landing Page',
         descripcion: 'Una página profesional, rápida y optimizada para móvil. Perfecta para negocios que necesitan presencia digital inmediata.',
         tag: 'Ideal para empezar',
-        tagColor: 'rgba(34,197,94,0.15)',
         icon: 'M3 9h18M3 3h18v18H3zM9 21V9',
       },
       {
@@ -37,13 +40,13 @@ const CATEGORIAS: Categoria[] = [
         nombre: 'Web + Agente IA',
         descripcion: 'Sitio web completo con STRIKER integrado desde el día uno. Tu negocio en línea y atendiendo clientes 24/7 desde el lanzamiento.',
         tag: 'Más completo',
-        tagColor: 'rgba(34,197,94,0.15)',
         icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
       },
     ],
   },
   {
     nombre: 'Agentes IA',
+    subtitle: 'Empleados digitales que nunca duermen.',
     acento: '#E53E3E',
     count: '5 agentes',
     items: [
@@ -51,7 +54,6 @@ const CATEGORIAS: Categoria[] = [
         nombre: 'STRIKER',
         descripcion: 'Agente de ventas que atiende clientes, califica leads y cierra ventas las 24 horas en tu web y WhatsApp.',
         tag: 'Más popular',
-        tagColor: 'rgba(229,62,62,0.15)',
         icon: 'M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 3v4M8 3v4',
       },
       {
@@ -73,13 +75,13 @@ const CATEGORIAS: Categoria[] = [
         nombre: 'APEX',
         descripcion: 'Todos los agentes coordinados bajo un solo sistema. Memoria compartida, multi-canal y automatizaciones avanzadas.',
         tag: 'Élite',
-        tagColor: '#E53E3E',
         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
       },
     ],
   },
   {
     nombre: 'Servicios Digitales',
+    subtitle: 'Todo lo que tu negocio necesita para crecer en línea.',
     acento: '#3B82F6',
     count: '4 servicios',
     items: [
@@ -102,13 +104,13 @@ const CATEGORIAS: Categoria[] = [
         nombre: 'ERP Simple',
         descripcion: 'Sistema de inventario, ventas y facturación para negocios medianos. Control total de tu operación desde cualquier dispositivo.',
         tag: 'Alto impacto',
-        tagColor: 'rgba(59,130,246,0.15)',
         icon: 'M9 17H7A5 5 0 013 12v0a5 5 0 015-5h2M15 7h2a5 5 0 015 5v0a5 5 0 01-5 5h-2M8 12h8',
       },
     ],
   },
   {
     nombre: 'Diseño',
+    subtitle: 'Tu marca, con una imagen que vende sola.',
     acento: '#8B5CF6',
     count: '3 servicios',
     items: [
@@ -133,111 +135,148 @@ const CATEGORIAS: Categoria[] = [
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
+function MockupPlaceholder({ acento }: { acento: string }) {
+  return (
+    <div
+      className="relative flex items-center justify-center overflow-hidden"
+      style={{
+        aspectRatio: '4 / 3',
+        background: `radial-gradient(ellipse at 50% 40%, ${acento}14, #0a0a0a 70%)`,
+        border: `1px solid ${acento}33`,
+      }}
+    >
+      {/* Grid texture */}
+      <div
+        className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: `linear-gradient(${acento}14 1px, transparent 1px), linear-gradient(90deg, ${acento}14 1px, transparent 1px)`,
+          backgroundSize: '32px 32px',
+        }}
+      />
+      {/* Device silhouette */}
+      <div className="relative flex items-end gap-4" style={{ zIndex: 1 }}>
+        <Monitor size={96} color={acento} strokeWidth={1} style={{ opacity: 0.5 }} />
+        <Smartphone size={44} color={acento} strokeWidth={1} style={{ opacity: 0.5, marginBottom: 4 }} />
+      </div>
+      <div
+        className="absolute bottom-4 right-4 font-display font-bold uppercase"
+        style={{ fontSize: 9, letterSpacing: '0.12em', color: acento, opacity: 0.7 }}
+      >
+        Vista previa próximamente
+      </div>
+    </div>
+  )
+}
+
 export function ServiciosGrid() {
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
-        {CATEGORIAS.map((cat) => (
-          <div key={cat.nombre} className="mb-16 last:mb-0">
-            {/* Category header */}
-            <div
-              className="flex items-center gap-3 mb-6 pb-4"
-              style={{ borderBottom: `1px solid ${cat.acento}20` }}
-            >
-              <div style={{ width: 4, height: 40, background: cat.acento, borderRadius: 2, flexShrink: 0 }} />
-              <h2 className="font-display font-black uppercase tracking-wide" style={{ fontSize: 22, color: 'var(--white)' }}>
+        {CATEGORIAS.map((cat, i) => (
+          <div
+            key={cat.nombre}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-24 last:mb-0"
+          >
+            {/* Text column */}
+            <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
+              <div className="flex items-baseline gap-4 mb-2">
+                <span className="font-display font-black" style={{ fontSize: 20, color: cat.acento }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="font-display font-bold uppercase" style={{ fontSize: 10, letterSpacing: '0.16em', color: 'var(--gray-3)' }}>
+                  {cat.count}
+                </span>
+              </div>
+              <h2 className="font-display font-black uppercase mb-2" style={{ fontSize: 'clamp(28px, 3.4vw, 44px)', color: 'var(--white)', lineHeight: 1 }}>
                 {cat.nombre}
               </h2>
-              <span
-                className="ml-auto font-display font-bold uppercase"
-                style={{ fontSize: 10, letterSpacing: '0.16em', color: 'var(--gray-3)' }}
-              >
-                {cat.count}
-              </span>
-            </div>
+              <p className="mb-8" style={{ fontSize: 14, color: 'var(--gray-1)', lineHeight: 1.7, maxWidth: 440 }}>
+                {cat.subtitle}
+              </p>
 
-            {/* Cards grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {cat.items.map((item) => (
-                <div
-                  key={item.nombre}
-                  className="relative flex flex-col gap-3 p-5 transition-all duration-200 hover:-translate-y-0.5"
-                  style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}
-                >
-                  {/* Top accent */}
-                  <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: cat.acento }} />
-
-                  {/* Tag */}
-                  {item.tag && (
-                    <div
-                      className="absolute top-3 right-3 font-display font-bold uppercase"
-                      style={{
-                        fontSize: 8,
-                        letterSpacing: '0.14em',
-                        background: item.tagColor || cat.acento,
-                        color: item.tagColor && item.tagColor !== cat.acento ? cat.acento : 'white',
-                        padding: '2px 7px',
-                      }}
-                    >
-                      {item.tag}
-                    </div>
-                  )}
-
-                  {/* Icon */}
-                  <div
-                    className="flex items-center justify-center"
-                    style={{
-                      width: 44, height: 44,
-                      background: `${cat.acento}15`,
-                      borderRadius: 8,
-                      flexShrink: 0,
-                    }}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={cat.acento} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d={item.icon} />
-                    </svg>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 18, color: 'var(--white)', lineHeight: 1 }}>
-                      {item.nombre}
-                    </h3>
-                    <p style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.75 }}>
-                      {item.descripcion}
-                    </p>
-                  </div>
-
-                  {/* Footer */}
-                  <div
-                    className="flex items-center justify-between pt-3"
-                    style={{ borderTop: '1px solid var(--border-2)' }}
-                  >
-                    <span
-                      className="font-display font-bold uppercase"
-                      style={{ fontSize: 10, letterSpacing: '0.14em', color: 'var(--gray-3)' }}
-                    >
-                      Precio a consultar
-                    </span>
+              <div className="flex flex-col gap-3 mb-6">
+                {cat.items.map((item, idx) => {
+                  const highlighted = idx === 0
+                  return (
                     <a
+                      key={item.nombre}
                       href={WA_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-display font-bold uppercase transition-colors hover:text-white"
-                      style={{ fontSize: 10, letterSpacing: '0.12em', color: cat.acento }}
+                      className="group flex items-center gap-4 p-4 transition-all duration-200"
+                      style={{
+                        background: highlighted ? `${cat.acento}0d` : 'var(--black-2)',
+                        border: `1px solid ${highlighted ? cat.acento : 'var(--border)'}`,
+                        borderLeft: `3px solid ${highlighted ? cat.acento : 'var(--border)'}`,
+                      }}
                     >
-                      Consultar →
+                      <div
+                        className="flex items-center justify-center flex-shrink-0"
+                        style={{
+                          width: 40, height: 40,
+                          background: highlighted ? cat.acento : `${cat.acento}15`,
+                          borderRadius: 6,
+                        }}
+                      >
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={highlighted ? '#fff' : cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d={item.icon} />
+                        </svg>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="font-display font-bold uppercase" style={{ fontSize: 13.5, color: 'var(--white)' }}>
+                            {item.nombre}
+                          </span>
+                          {item.tag && (
+                            <span
+                              className="font-display font-bold uppercase flex-shrink-0"
+                              style={{ fontSize: 8, letterSpacing: '0.1em', color: cat.acento, border: `1px solid ${cat.acento}55`, padding: '1px 5px' }}
+                            >
+                              {item.tag}
+                            </span>
+                          )}
+                        </div>
+                        <p style={{ fontSize: 11.5, color: 'var(--gray-2)', lineHeight: 1.5 }}>
+                          {item.descripcion}
+                        </p>
+                      </div>
+                      <ArrowRight
+                        size={16}
+                        color={cat.acento}
+                        className="flex-shrink-0 transition-transform group-hover:translate-x-1"
+                      />
                     </a>
-                  </div>
-                </div>
-              ))}
+                  )
+                })}
+              </div>
+
+              <a
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
+                style={{ fontSize: 11, letterSpacing: '0.1em', color: cat.acento }}
+              >
+                <LayoutGrid size={13} />
+                Ver todos los planes
+              </a>
+            </div>
+
+            {/* Mockup column */}
+            <div className={i % 2 === 1 ? 'lg:order-1' : ''}>
+              {cat.mockupImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={cat.mockupImage} alt={cat.nombre} className="w-full h-auto" />
+              ) : (
+                <MockupPlaceholder acento={cat.acento} />
+              )}
             </div>
           </div>
         ))}
 
         {/* Bottom CTA */}
         <div
-          className="mt-12 p-8 text-center relative"
+          className="mt-4 p-8 text-center relative"
           style={{ border: '1px solid var(--border)', background: 'var(--black-2)' }}
         >
           <div className="absolute top-0 left-0 right-0" style={{ height: 2, background: 'var(--red)' }} />
