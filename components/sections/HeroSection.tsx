@@ -13,6 +13,7 @@ const FEATURES = [
 
 export function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -22,6 +23,15 @@ export function HeroSection() {
       gsap.from('.hero-cta', { opacity: 0, y: 20, duration: 0.8, delay: 1.4, ease: 'power3.out' })
     }, heroRef)
     return () => ctx.revert()
+  }, [])
+
+  // React's `muted` JSX prop isn't always reflected in time for the browser's
+  // autoplay heuristics, so force it explicitly and kick off playback.
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.muted = true
+    v.play().catch(() => {})
   }, [])
 
   function scrollToNext() {
@@ -41,14 +51,19 @@ export function HeroSection() {
         background: '#080808',
       }}
     >
-      <Image
-        src="/hero-bg.jpg"
-        alt="BLITZ — Agentes IA"
-        fill
-        className="pointer-events-none"
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster="/hero-bg.jpg"
+        className="absolute inset-0 w-full h-full pointer-events-none"
         style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
-        priority
-      />
+      >
+        <source src="/hero-video.mp4" type="video/mp4" />
+      </video>
+
 
       {/* Legibility overlay: darkens left side for text, keeps right side of the image visible */}
       <div
