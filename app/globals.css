@@ -142,12 +142,17 @@ body {
   0%, 100% { box-shadow: 0 0 20px rgba(229,62,62,0.3); }
   50%       { box-shadow: 0 0 40px rgba(229,62,62,0.6); }
 }
+@keyframes wordmark-glow {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(229,62,62,0.35)) drop-shadow(0 0 50px rgba(229,62,62,0.16)); }
+  50%       { filter: drop-shadow(0 0 34px rgba(229,62,62,0.75)) drop-shadow(0 0 90px rgba(229,62,62,0.35)); }
+}
 
-.animate-pulse-dot   { animation: pulse-dot 1.4s ease-in-out infinite; }
-.animate-scanline    { animation: scanline 4s ease-in-out infinite; }
-.animate-marquee     { animation: marquee 22s linear infinite; }
-.animate-float       { animation: float 4s ease-in-out infinite; }
-.animate-glow        { animation: glow-pulse 2s ease-in-out infinite; }
+.animate-pulse-dot     { animation: pulse-dot 1.4s ease-in-out infinite; }
+.animate-scanline      { animation: scanline 4s ease-in-out infinite; }
+.animate-marquee       { animation: marquee 22s linear infinite; }
+.animate-float         { animation: float 4s ease-in-out infinite; }
+.animate-glow          { animation: glow-pulse 2s ease-in-out infinite; }
+.animate-wordmark-glow { animation: wordmark-glow 3s ease-in-out infinite; }
 
 /* ─── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }

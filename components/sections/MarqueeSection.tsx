@@ -16,6 +16,7 @@ export function MarqueeSection() {
 
   return (
     <div
+      id="siguiente-seccion"
       className="overflow-hidden"
       style={{
         borderTop: '1px solid var(--border-2)',

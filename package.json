@@ -9,26 +9,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0",
+    "@gsap/react": "^2.1.1",
+    "clsx": "^2.1.1",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.14",
+    "lucide-react": "^1.26.0",
     "next": "15.3.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "gsap": "^3.12.5",
-    "@gsap/react": "^2.1.1",
-    "lenis": "^1.1.14",
-    "three": "^0.169.0",
-    "@anthropic-ai/sdk": "^0.32.0",
-    "clsx": "^2.1.1",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "three": "^0.169.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.169.0",
-    "tailwindcss": "^4",
-    "@tailwindcss/postcss": "^4",
     "eslint": "^9",
-    "eslint-config-next": "15.3.9"
+    "eslint-config-next": "15.3.9",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

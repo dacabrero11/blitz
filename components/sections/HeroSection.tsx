@@ -3,31 +3,40 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
+import { MessageCircle, BarChart3, Rocket, ArrowRight } from 'lucide-react'
 
-const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
+const FEATURES = [
+  { icon: MessageCircle, label: 'Agentes IA', sub: 'Atención 24/7' },
+  { icon: BarChart3, label: 'Sistemas', sub: 'Que escalan' },
+  { icon: Rocket, label: 'Resultados', sub: 'Que impulsan' },
+]
 
 export function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.hero-tag', { opacity: 0, y: 20, duration: 0.8, delay: 0.3, ease: 'power3.out' })
-      gsap.from('.hero-h1 span', { opacity: 0, y: 40, duration: 1, delay: 0.5, stagger: 0.15, ease: 'power3.out' })
-      gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 1.1, ease: 'power3.out' })
-      gsap.from('.hero-actions', { opacity: 0, y: 20, duration: 0.8, delay: 1.3, ease: 'power3.out' })
-      gsap.from('.hero-stats > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.5, stagger: 0.1, ease: 'power3.out' })
+      gsap.from('.hero-tag', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' })
+      gsap.from('.hero-wordmark', { opacity: 0, scale: 0.86, duration: 1.1, delay: 0.4, ease: 'back.out(1.6)' })
+      gsap.from('.hero-tagline', { opacity: 0, y: 16, duration: 0.8, delay: 1, ease: 'power3.out' })
+      gsap.from('.hero-features > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.25, stagger: 0.1, ease: 'power3.out' })
+      gsap.from('.hero-cta', { opacity: 0, y: 20, duration: 0.8, delay: 1.6, ease: 'power3.out' })
     }, heroRef)
     return () => ctx.revert()
   }, [])
 
+  function scrollToNext() {
+    document.getElementById('siguiente-seccion')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden"
+      className="relative overflow-hidden flex flex-col justify-center"
       style={{
         minHeight: '100svh',
-        paddingTop: 'calc(var(--nav-h) + 56px)',
-        paddingBottom: 100,
+        paddingTop: 'calc(var(--nav-h) + 40px)',
+        paddingBottom: 56,
         paddingLeft: 'var(--section-px)',
         paddingRight: 'var(--section-px)',
         background: '#080808',
@@ -46,7 +55,7 @@ export function HeroSection() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.75) 30%, rgba(8,8,8,0.15) 60%, rgba(8,8,8,0.35) 100%)',
+          background: 'linear-gradient(90deg, rgba(8,8,8,0.94) 0%, rgba(8,8,8,0.8) 32%, rgba(8,8,8,0.2) 62%, rgba(8,8,8,0.35) 100%)',
           zIndex: 1,
         }}
       />
@@ -58,70 +67,82 @@ export function HeroSection() {
       <div className="absolute left-0 right-0 pointer-events-none animate-scanline" style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.6), transparent)', zIndex: 2 }} />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[600px]">
+      <div className="relative z-10 max-w-[760px]">
         <div
-          className="hero-tag inline-flex items-center gap-2 mb-6"
+          className="hero-tag inline-flex items-center gap-2 mb-5"
           style={{ background: 'rgba(229,62,62,0.1)', border: '1px solid rgba(229,62,62,0.25)', padding: '5px 12px' }}
         >
           <span className="animate-pulse-dot rounded-full" style={{ width: 5, height: 5, background: 'var(--red)', display: 'inline-block' }} />
           <span className="text-label" style={{ fontSize: 10 }}>Agentes IA · El Salvador</span>
         </div>
 
-        <h1 className="hero-h1 text-d1 mb-4">
-          <span style={{ display: 'block' }}>Automatiza.</span>
-          <span style={{ display: 'block' }}>Conecta.</span>
-          <span style={{ display: 'block', color: 'var(--red)' }}>Crece.</span>
-        </h1>
+        {/* Wordmark — as large as the layout allows, with a pulsing electric glow */}
+        <div className="hero-wordmark animate-wordmark-glow" style={{ width: 'clamp(260px, 46vw, 720px)', marginLeft: -6 }}>
+          <Image
+            src="/blitz-wordmark.png"
+            alt="BLITZ"
+            width={1492}
+            height={1022}
+            priority
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </div>
 
-        <p className="hero-sub mb-8" style={{ color: 'var(--gray-1)', maxWidth: 380, lineHeight: 1.7, fontSize: 14 }}>
-          Páginas web con inteligencia artificial que trabajan por tu negocio las 24 horas, los 7 días de la semana.
+        <p
+          className="hero-tagline font-display font-bold uppercase"
+          style={{
+            color: 'var(--red)',
+            fontSize: 'clamp(15px, 2vw, 24px)',
+            letterSpacing: '0.02em',
+            marginTop: 'clamp(4px, 1vw, 12px)',
+            marginBottom: 'clamp(24px, 3vw, 40px)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Automatiza. Conecta. Crece.
         </p>
 
-        <div className="hero-actions flex flex-wrap gap-3">
-          <a
-            href={WA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase text-white px-8 py-3 transition-opacity hover:opacity-90 whitespace-nowrap"
-            style={{
-              background: '#25D366',
-              clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.532 5.857L.057 23.215a.75.75 0 00.921.921l5.357-1.476A11.941 11.941 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
-            </svg>
-            Hablar por WhatsApp
-          </a>
-          <a
-            href="/agentes"
-            className="inline-flex items-center gap-2 font-display font-bold text-sm tracking-wide uppercase px-8 py-3 transition-all hover:text-white whitespace-nowrap"
+        <div className="hero-features flex flex-wrap gap-x-8 gap-y-4 mb-9">
+          {FEATURES.map(({ icon: Icon, label, sub }) => (
+            <div key={label} className="flex items-center gap-3">
+              <div
+                className="flex-shrink-0 flex items-center justify-center"
+                style={{
+                  width: 40,
+                  height: 40,
+                  background: 'var(--black)',
+                  border: '1px solid var(--red)',
+                  clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
+                }}
+              >
+                <Icon size={18} color="var(--red)" strokeWidth={2} />
+              </div>
+              <div>
+                <div className="font-display font-bold uppercase leading-tight" style={{ fontSize: 14, color: 'var(--white)' }}>
+                  {label}
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--gray-2)' }}>{sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="hero-cta">
+          <button
+            onClick={scrollToNext}
+            className="inline-flex items-center gap-3 font-display font-bold text-sm tracking-wide uppercase transition-all hover:bg-[rgba(229,62,62,0.1)]"
             style={{
               border: '1px solid var(--red)',
-              color: 'var(--white)',
-              clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+              color: 'var(--red)',
+              padding: '14px 28px',
+              borderRadius: 999,
+              background: 'transparent',
             }}
           >
-            Ver agentes ↓
-          </a>
+            El futuro es ahora
+            <ArrowRight size={16} />
+          </button>
         </div>
-      </div>
-
-      {/* Stats */}
-      <div className="hero-stats absolute flex gap-8" style={{ bottom: 36, left: 'var(--section-px)', zIndex: 10 }}>
-        {[
-          { n: '+1', label: 'Cliente activo' },
-          { n: '5', label: 'Agentes IA' },
-          { n: '24/7', label: 'Sin parar' },
-        ].map(({ n, label }) => (
-          <div key={label}>
-            <div className="font-display font-black leading-none" style={{ fontSize: 28, color: 'var(--white)' }}>
-              {n.includes('/') ? <>{n.split('/')[0]}<span style={{ color: 'var(--red)' }}>/{n.split('/')[1]}</span></> : <>{n.replace('+', '')}{n.includes('+') && <span style={{ color: 'var(--red)' }}>+</span>}</>}
-            </div>
-            <div style={{ fontSize: 10, color: 'var(--gray-2)', letterSpacing: '0.12em', textTransform: 'uppercase', marginTop: 2 }}>{label}</div>
-          </div>
-        ))}
       </div>
     </section>
   )
