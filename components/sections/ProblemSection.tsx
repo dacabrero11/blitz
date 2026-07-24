@@ -1,11 +1,10 @@
 import Image from 'next/image'
-import { X, Globe, User, BarChart3 } from 'lucide-react'
 
 const PROBLEMS = [
-  { n: '01', icon: X, title: 'Tu negocio cierra. La competencia no.', desc: 'Mientras duermes, un cliente pregunta por WhatsApp y nadie responde. Lo atendió otra empresa.' },
-  { n: '02', icon: Globe, title: 'Una página web estática no vende.', desc: 'Tener presencia digital no es suficiente. Necesitas una web que convierta visitantes en clientes reales.' },
-  { n: '03', icon: User, title: 'Contratar personal es caro y lento.', desc: 'Un agente de IA hace el trabajo de 3 empleados a una fracción del costo, sin renunciar los lunes.' },
-  { n: '04', icon: BarChart3, title: 'No sabes qué pasa con tus datos.', desc: 'Sin análisis en tiempo real, tomas decisiones a ciegas. Tus competidores ya saben lo que tú ignoras.' },
+  { n: '01', icon: '/icons/icon-x.png', title: 'Tu negocio cierra. La competencia no.', desc: 'Mientras duermes, un cliente pregunta por WhatsApp y nadie responde. Lo atendió otra empresa.' },
+  { n: '02', icon: '/icons/icon-globe.png', title: 'Una página web estática no vende.', desc: 'Tener presencia digital no es suficiente. Necesitas una web que convierta visitantes en clientes reales.' },
+  { n: '03', icon: '/icons/icon-user.png', title: 'Contratar personal es caro y lento.', desc: 'Un agente de IA hace el trabajo de 3 empleados a una fracción del costo, sin renunciar los lunes.' },
+  { n: '04', icon: '/icons/icon-barchart.png', title: 'No sabes qué pasa con tus datos.', desc: 'Sin análisis en tiempo real, tomas decisiones a ciegas. Tus competidores ya saben lo que tú ignoras.' },
 ]
 
 export function ProblemSection() {
@@ -34,7 +33,7 @@ export function ProblemSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {PROBLEMS.map(({ n, icon: Icon, title, desc }, i) => (
+          {PROBLEMS.map(({ n, icon, title, desc }, i) => (
             <div
               key={n}
               className="relative p-7 sm:p-8"
@@ -55,20 +54,9 @@ export function ProblemSection() {
                 style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 140, height: 24, background: 'radial-gradient(ellipse at center, rgba(229,62,62,0.55), transparent 72%)', filter: 'blur(4px)', animationDelay: `${i * 0.4}s` }}
               />
 
-              {/* Icon badge */}
-              <div
-                className="absolute flex items-center justify-center"
-                style={{
-                  top: 20,
-                  right: 20,
-                  width: 52,
-                  height: 52,
-                  background: 'var(--black)',
-                  border: '1px solid var(--red)',
-                  clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
-                }}
-              >
-                <Icon size={22} color="var(--red)" strokeWidth={2} />
+              {/* Icon badge — exact PNG provided (octagon + border + glow baked in) */}
+              <div className="absolute" style={{ top: 16, right: 16, width: 60, height: 60 }}>
+                <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
               </div>
 
               <div className="font-display font-black leading-none mb-3" style={{ fontSize: 64, color: 'var(--red)' }}>{n}</div>
