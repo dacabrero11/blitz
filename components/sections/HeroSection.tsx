@@ -7,126 +7,7 @@ import { gsap } from 'gsap'
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
 export function HeroSection() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
   const heroRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')!
-
-    function resize() {
-      if (!canvas) return
-      canvas.width = canvas.offsetWidth
-      canvas.height = canvas.offsetHeight
-    }
-    resize()
-    window.addEventListener('resize', resize)
-
-    let t = 0
-    let raf: number
-
-    function draw() {
-      const w = canvas!.width
-      const h = canvas!.height
-      ctx.clearRect(0, 0, w, h)
-
-      // Vortex centered on right side behind APEX
-      const cx = w * 0.68
-      const cy = h * 0.65
-
-      // Large deep atmosphere
-      for (let i = 10; i >= 1; i--) {
-        const r = i * 100 + Math.sin(t * 0.3 + i) * 15
-        const alpha = (11 - i) * 0.011
-        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
-        g.addColorStop(0, `rgba(229,62,62,${alpha * 3.5})`)
-        g.addColorStop(0.4, `rgba(229,62,62,${alpha})`)
-        g.addColorStop(1, 'rgba(229,62,62,0)')
-        ctx.beginPath()
-        ctx.arc(cx, cy, r, 0, Math.PI * 2)
-        ctx.fillStyle = g
-        ctx.fill()
-      }
-
-      // Perspective rings — wide and visible
-      const rings = 20
-      for (let i = rings; i >= 1; i--) {
-        const p = i / rings
-        const rx = p * (w * 0.52)
-        const ry = p * (h * 0.13) + 4
-        const alpha = (1 - p) * 0.8 + 0.04
-        const lw = (1 - p) * 2.5 + 0.4
-
-        ctx.beginPath()
-        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2)
-        ctx.strokeStyle = `rgba(229,62,62,${alpha})`
-        ctx.lineWidth = lw
-        ctx.stroke()
-      }
-
-      // Rotating spokes
-      const spokes = 48
-      for (let i = 0; i < spokes; i++) {
-        const angle = (i / spokes) * Math.PI * 2 + t * 0.05
-        const len = w * 0.52
-        const ex = cx + Math.cos(angle) * len
-        const ey = cy + Math.sin(angle) * (h * 0.13)
-        const alpha = 0.07 + Math.abs(Math.sin(angle + t * 0.4)) * 0.1
-        ctx.beginPath()
-        ctx.moveTo(cx, cy)
-        ctx.lineTo(ex, ey)
-        ctx.strokeStyle = `rgba(229,62,62,${alpha})`
-        ctx.lineWidth = 0.7
-        ctx.stroke()
-      }
-
-      // Particles on rings
-      for (let i = 0; i < 10; i++) {
-        const ringP = (i + 1) / 11
-        const angle = t * (0.4 + i * 0.08) + (i * Math.PI * 2) / 10
-        const rx = ringP * (w * 0.52)
-        const ry = ringP * (h * 0.13) + 4
-        const px = cx + Math.cos(angle) * rx
-        const py = cy + Math.sin(angle) * ry
-        const alpha = (1 - ringP) * 0.95
-        ctx.beginPath()
-        ctx.arc(px, py, 3, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,120,120,${alpha})`
-        ctx.fill()
-      }
-
-      // Horizon glow
-      const hg = ctx.createLinearGradient(cx - w * 0.52, 0, cx + w * 0.52, 0)
-      hg.addColorStop(0, 'rgba(229,62,62,0)')
-      hg.addColorStop(0.5, 'rgba(229,62,62,0.18)')
-      hg.addColorStop(1, 'rgba(229,62,62,0)')
-      ctx.beginPath()
-      ctx.moveTo(cx - w * 0.52, cy)
-      ctx.lineTo(cx + w * 0.52, cy)
-      ctx.strokeStyle = hg
-      ctx.lineWidth = 2
-      ctx.stroke()
-
-      // Bright core
-      const pulse = Math.sin(t * 2.5) * 8
-      const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 48 + pulse)
-      cg.addColorStop(0, 'rgba(255,160,160,1)')
-      cg.addColorStop(0.3, 'rgba(229,62,62,0.85)')
-      cg.addColorStop(0.7, 'rgba(229,62,62,0.2)')
-      cg.addColorStop(1, 'rgba(229,62,62,0)')
-      ctx.beginPath()
-      ctx.arc(cx, cy, 48 + pulse, 0, Math.PI * 2)
-      ctx.fillStyle = cg
-      ctx.fill()
-
-      t += 0.007
-      raf = requestAnimationFrame(draw)
-    }
-
-    draw()
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
-  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -134,7 +15,6 @@ export function HeroSection() {
       gsap.from('.hero-h1 span', { opacity: 0, y: 40, duration: 1, delay: 0.5, stagger: 0.15, ease: 'power3.out' })
       gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 0.8, delay: 1.1, ease: 'power3.out' })
       gsap.from('.hero-actions', { opacity: 0, y: 20, duration: 0.8, delay: 1.3, ease: 'power3.out' })
-      gsap.from('.hero-agent', { opacity: 0, y: 80, duration: 1.4, delay: 0.6, ease: 'power3.out' })
       gsap.from('.hero-stats > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.5, stagger: 0.1, ease: 'power3.out' })
     }, heroRef)
     return () => ctx.revert()
@@ -143,7 +23,7 @@ export function HeroSection() {
   return (
     <section
       ref={heroRef}
-      className="relative overflow-hidden grid-bg"
+      className="relative overflow-hidden"
       style={{
         minHeight: '100svh',
         paddingTop: 'calc(var(--nav-h) + 56px)',
@@ -153,9 +33,29 @@ export function HeroSection() {
         background: '#080808',
       }}
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
+      <Image
+        src="/hero-bg.jpg"
+        alt="BLITZ — Agentes IA"
+        fill
+        className="pointer-events-none"
+        style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+        priority
+      />
 
-      <div className="absolute left-0 right-0 pointer-events-none animate-scanline" style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.6), transparent)', zIndex: 1 }} />
+      {/* Legibility overlay: darkens left side for text, keeps right side of the image visible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.75) 30%, rgba(8,8,8,0.15) 60%, rgba(8,8,8,0.35) 100%)',
+          zIndex: 1,
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.85) 0%, transparent 35%)', zIndex: 1 }}
+      />
+
+      <div className="absolute left-0 right-0 pointer-events-none animate-scanline" style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.6), transparent)', zIndex: 2 }} />
 
       {/* Content */}
       <div className="relative z-10 max-w-[600px]">
@@ -206,31 +106,6 @@ export function HeroSection() {
             Ver agentes ↓
           </a>
         </div>
-      </div>
-
-      {/* APEX — full height, head fully visible */}
-      <div
-        className="hero-agent absolute pointer-events-none"
-        style={{
-          bottom: 0,
-          right: 'clamp(0px, 2vw, 40px)',
-          width: 'clamp(280px, 38vw, 520px)',
-          top: 'calc(var(--nav-h) + 20px)',
-          zIndex: 5,
-        }}
-      >
-        <Image
-          src="/agents/super-agente.png"
-          alt="APEX — Super Agente Blitz"
-          fill
-          className="animate-float"
-          style={{
-            objectFit: 'contain',
-            objectPosition: 'center bottom',
-            filter: 'drop-shadow(0 0 60px rgba(229,62,62,0.5)) drop-shadow(0 -20px 80px rgba(229,62,62,0.25))',
-          }}
-          priority
-        />
       </div>
 
       {/* Stats */}
