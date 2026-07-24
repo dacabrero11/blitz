@@ -47,6 +47,9 @@ export interface Agent {
   taglineShort?: string
   heroBg?: string
   heroBgPosition?: string
+  cardImage?: string
+  cardIcon?: 'target' | 'clipboard' | 'tv' | 'activity' | 'crown'
+  cardDesc?: string
   highlights?: { icon: 'target' | 'chat' | 'handshake'; label: string }[]
   skills?: AgentSkill[]
   techStack?: AgentTech[]
@@ -68,6 +71,9 @@ export const AGENTS: Agent[] = [
     logo: '/logos/striker.png',
     accentColor: '#E53E3E',
     classification: 'standard',
+    cardImage: '/agents/card-striker.jpg',
+    cardIcon: 'target',
+    cardDesc: 'Convierte prospectos en clientes.',
 
     classLabel: 'SALES',
     katakana: 'ストライカー',
@@ -120,8 +126,11 @@ export const AGENTS: Agent[] = [
     capabilities: ['Citas', 'FAQ', 'Agenda', 'Coordinación', 'Recordatorios'],
     image: '/agents/agente-secretario.png',
     logo: '/logos/herald.png',
-    accentColor: '#888888',
+    accentColor: '#D4AF37',
     classification: 'standard',
+    cardImage: '/agents/card-herald.jpg',
+    cardIcon: 'clipboard',
+    cardDesc: 'Agenda, confirma y organiza por ti.',
 
     classLabel: 'SUPPORT',
     katakana: 'ヘラルド',
@@ -174,8 +183,11 @@ export const AGENTS: Agent[] = [
     capabilities: ['Redes sociales', 'Copywriting', 'Campañas', 'SEO', 'Imágenes'],
     image: '/agents/agente-contenido.png',
     logo: '/logos/signal.png',
-    accentColor: '#E53E3E',
+    accentColor: '#9333EA',
     classification: 'standard',
+    cardImage: '/agents/card-signal.jpg',
+    cardIcon: 'tv',
+    cardDesc: 'Crea contenido que conecta y vende.',
 
     classLabel: 'CONTENT',
     katakana: 'シグナル',
@@ -227,8 +239,11 @@ export const AGENTS: Agent[] = [
     capabilities: ['Dashboard', 'Reportes', 'KPIs', 'Alertas', 'Predicciones'],
     image: '/agents/agente-analisis.png',
     logo: '/logos/oracle.png',
-    accentColor: '#cc3333',
+    accentColor: '#F97316',
     classification: 'standard',
+    cardImage: '/agents/card-oracle.jpg',
+    cardIcon: 'activity',
+    cardDesc: 'Analiza datos y te entrega decisiones inteligentes.',
 
     classLabel: 'ANALYTICS',
     katakana: 'オラクル',
@@ -282,6 +297,9 @@ export const AGENTS: Agent[] = [
     logo: '/logos/apex.png',
     accentColor: '#E53E3E',
     classification: 'elite',
+    cardImage: '/agents/card-apex.jpg',
+    cardIcon: 'crown',
+    cardDesc: 'El líder que coordina todo el sistema.',
 
     classLabel: 'COMMAND',
     katakana: 'エイペックス',
