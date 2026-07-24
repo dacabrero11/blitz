@@ -10,6 +10,7 @@ interface ServicioItem {
   tag?: string
   icon: string
   mockupImage?: string
+  mockupPosition?: string
 }
 
 interface Categoria {
@@ -259,7 +260,7 @@ function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
       <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
         <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4 / 3' }}>
           {active.mockupImage ? (
-            <Image src={active.mockupImage} alt={active.nombre} fill style={{ objectFit: 'cover' }} />
+            <Image src={active.mockupImage} alt={active.nombre} fill style={{ objectFit: 'cover', objectPosition: active.mockupPosition ?? 'center' }} />
           ) : (
             <MockupPlaceholder acento={cat.acento} />
           )}
