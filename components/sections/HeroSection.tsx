@@ -16,11 +16,10 @@ export function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from('.hero-tag', { opacity: 0, y: 20, duration: 0.8, delay: 0.2, ease: 'power3.out' })
-      gsap.from('.hero-wordmark', { opacity: 0, scale: 0.86, duration: 1.1, delay: 0.4, ease: 'back.out(1.6)' })
-      gsap.from('.hero-tagline', { opacity: 0, y: 16, duration: 0.8, delay: 1, ease: 'power3.out' })
-      gsap.from('.hero-features > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.25, stagger: 0.1, ease: 'power3.out' })
-      gsap.from('.hero-cta', { opacity: 0, y: 20, duration: 0.8, delay: 1.6, ease: 'power3.out' })
+      gsap.from('.hero-wordmark', { opacity: 0, scale: 0.86, duration: 1.1, delay: 0.2, ease: 'back.out(1.6)' })
+      gsap.from('.hero-tagline', { opacity: 0, y: 16, duration: 0.8, delay: 0.8, ease: 'power3.out' })
+      gsap.from('.hero-features > div', { opacity: 0, y: 20, duration: 0.6, delay: 1.05, stagger: 0.1, ease: 'power3.out' })
+      gsap.from('.hero-cta', { opacity: 0, y: 20, duration: 0.8, delay: 1.4, ease: 'power3.out' })
     }, heroRef)
     return () => ctx.revert()
   }, [])
@@ -68,14 +67,6 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 max-w-[760px]">
-        <div
-          className="hero-tag inline-flex items-center gap-2 mb-5"
-          style={{ background: 'rgba(229,62,62,0.1)', border: '1px solid rgba(229,62,62,0.25)', padding: '5px 12px' }}
-        >
-          <span className="animate-pulse-dot rounded-full" style={{ width: 5, height: 5, background: 'var(--red)', display: 'inline-block' }} />
-          <span className="text-label" style={{ fontSize: 10 }}>Agentes IA · El Salvador</span>
-        </div>
-
         {/* Wordmark — as large as the layout allows, with a pulsing electric glow */}
         <div className="hero-wordmark animate-wordmark-glow" style={{ width: 'clamp(260px, 46vw, 720px)', marginLeft: -6 }}>
           <Image
@@ -92,11 +83,12 @@ export function HeroSection() {
           className="hero-tagline font-display font-bold uppercase"
           style={{
             color: 'var(--red)',
-            fontSize: 'clamp(15px, 2vw, 24px)',
-            letterSpacing: '0.02em',
-            marginTop: 'clamp(0px, 0.5vw, 6px)',
+            fontSize: 'clamp(22px, 4.4vw, 46px)',
+            lineHeight: 1.05,
+            letterSpacing: '0.01em',
+            maxWidth: 'clamp(260px, 46vw, 720px)',
+            marginTop: 'clamp(4px, 1vw, 14px)',
             marginBottom: 'clamp(28px, 3.5vw, 44px)',
-            whiteSpace: 'nowrap',
           }}
         >
           Automatiza. Conecta. Crece.
