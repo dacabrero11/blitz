@@ -81,8 +81,8 @@ export function HeroSection() {
           <Image
             src="/blitz-wordmark.png"
             alt="BLITZ"
-            width={1492}
-            height={1022}
+            width={1054}
+            height={497}
             priority
             style={{ width: '100%', height: 'auto', display: 'block' }}
           />
@@ -94,34 +94,37 @@ export function HeroSection() {
             color: 'var(--red)',
             fontSize: 'clamp(15px, 2vw, 24px)',
             letterSpacing: '0.02em',
-            marginTop: 'clamp(4px, 1vw, 12px)',
-            marginBottom: 'clamp(24px, 3vw, 40px)',
+            marginTop: 'clamp(0px, 0.5vw, 6px)',
+            marginBottom: 'clamp(28px, 3.5vw, 44px)',
             whiteSpace: 'nowrap',
           }}
         >
           Automatiza. Conecta. Crece.
         </p>
 
-        <div className="hero-features flex flex-wrap gap-x-8 gap-y-4 mb-9">
+        <div
+          className="hero-features flex flex-wrap items-start"
+          style={{ gap: 'clamp(24px, 3.5vw, 52px)', marginBottom: 'clamp(32px, 4vw, 48px)' }}
+        >
           {FEATURES.map(({ icon: Icon, label, sub }) => (
-            <div key={label} className="flex items-center gap-3">
+            <div key={label} className="flex items-center" style={{ gap: 14 }}>
               <div
                 className="flex-shrink-0 flex items-center justify-center"
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 56,
+                  height: 56,
                   background: 'var(--black)',
                   border: '1px solid var(--red)',
                   clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
                 }}
               >
-                <Icon size={18} color="var(--red)" strokeWidth={2} />
+                <Icon size={24} color="var(--red)" strokeWidth={2} />
               </div>
               <div>
-                <div className="font-display font-bold uppercase leading-tight" style={{ fontSize: 14, color: 'var(--white)' }}>
+                <div className="font-display font-bold uppercase leading-tight" style={{ fontSize: 17, color: 'var(--white)' }}>
                   {label}
                 </div>
-                <div style={{ fontSize: 11, color: 'var(--gray-2)' }}>{sub}</div>
+                <div style={{ fontSize: 13, color: 'var(--gray-2)' }}>{sub}</div>
               </div>
             </div>
           ))}
@@ -130,17 +133,19 @@ export function HeroSection() {
         <div className="hero-cta">
           <button
             onClick={scrollToNext}
-            className="inline-flex items-center gap-3 font-display font-bold text-sm tracking-wide uppercase transition-all hover:bg-[rgba(229,62,62,0.1)]"
+            className="inline-flex items-center gap-3 font-display font-bold uppercase transition-all hover:bg-[rgba(229,62,62,0.1)]"
             style={{
               border: '1px solid var(--red)',
               color: 'var(--red)',
-              padding: '14px 28px',
+              fontSize: 15,
+              padding: '16px 32px',
               borderRadius: 999,
               background: 'transparent',
+              letterSpacing: '0.03em',
             }}
           >
             El futuro es ahora
-            <ArrowRight size={16} />
+            <ArrowRight size={18} />
           </button>
         </div>
       </div>
