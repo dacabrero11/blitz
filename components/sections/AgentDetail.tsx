@@ -31,21 +31,50 @@ const HIGHLIGHT_ICONS: Record<string, typeof MessageCircle> = {
 /* ─────────────────────────  HERO  ───────────────────────── */
 
 export function AgentHeroV2({ agent }: { agent: Agent }) {
+  const hasBg = !!agent.heroBg
+
   return (
     <section
       className="relative overflow-hidden"
       style={{
         paddingTop: 'calc(var(--nav-h) + 40px)',
-        paddingBottom: 56,
+        paddingBottom: hasBg ? 64 : 56,
         paddingLeft: 'var(--section-px)',
         paddingRight: 'var(--section-px)',
         borderBottom: '1px solid var(--border-2)',
         background: '#080808',
+        minHeight: hasBg ? '92vh' : undefined,
+        display: hasBg ? 'flex' : undefined,
+        alignItems: hasBg ? 'center' : undefined,
       }}
     >
-      <div className="container relative grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      {hasBg && (
+        <>
+          <Image
+            src={agent.heroBg!}
+            alt={agent.name}
+            fill
+            className="pointer-events-none"
+            style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+            priority
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(90deg, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.82) 30%, rgba(8,8,8,0.25) 60%, rgba(8,8,8,0.15) 100%)',
+              zIndex: 1,
+            }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.7) 0%, transparent 30%)', zIndex: 1 }}
+          />
+        </>
+      )}
+
+      <div className={hasBg ? 'container relative z-10' : 'container relative grid grid-cols-1 md:grid-cols-2 gap-10 items-center'}>
         {/* Text column */}
-        <div className="order-2 md:order-1">
+        <div className={hasBg ? '' : 'order-2 md:order-1'} style={hasBg ? { maxWidth: 520 } : undefined}>
           <Link
             href="/agentes"
             className="inline-flex items-center gap-2 mb-6 font-display font-semibold uppercase tracking-widest text-xs transition-colors hover:text-white"
@@ -87,7 +116,8 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
           </a>
         </div>
 
-        {/* Image column — radar glow + katakana + stat panel */}
+        {/* Fallback image column — radar glow + katakana + stat panel (agents without a custom hero photo yet) */}
+        {!hasBg && (
         <div className="order-1 md:order-2 relative flex items-center justify-center" style={{ minHeight: 420 }}>
           {/* Radar rings */}
           <div className="absolute pointer-events-none" style={{ inset: 0 }}>
@@ -159,6 +189,7 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
             </div>
           </div>
         </div>
+        )}
       </div>
     </section>
   )

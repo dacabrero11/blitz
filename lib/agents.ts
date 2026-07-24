@@ -45,6 +45,7 @@ export interface Agent {
   classLabel?: string
   katakana?: string
   taglineShort?: string
+  heroBg?: string
   highlights?: { icon: 'target' | 'chat' | 'handshake'; label: string }[]
   skills?: AgentSkill[]
   techStack?: AgentTech[]
@@ -70,6 +71,7 @@ export const AGENTS: Agent[] = [
     classLabel: 'SALES',
     katakana: 'ストライカー',
     taglineShort: 'Conecta. Persuade. Cierra.',
+    heroBg: '/agents/hero-striker.jpg',
     highlights: [
       { icon: 'target', label: 'Califica prospectos' },
       { icon: 'chat', label: 'Conversa y persuade' },
