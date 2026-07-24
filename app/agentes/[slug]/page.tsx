@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { AGENTS, getAgent, type AgentId } from '@/lib/agents'
-import { AgentHero } from '@/components/sections/AgentHero'
-import { AgentCapabilities } from '@/components/sections/AgentHero'
+import { AgentHero, AgentCapabilities } from '@/components/sections/AgentHero'
+import { AgentHeroV2, AgentDetailSections } from '@/components/sections/AgentDetail'
 import { CtaFinal, FooterSection } from '@/components/sections/SharedSections'
 
 interface Props {
@@ -24,10 +24,12 @@ export default async function AgentPage({ params }: Props) {
   const { slug } = await params
   if (!AGENTS.some((a) => a.id === slug)) notFound()
   const agent = getAgent(slug as AgentId)
+  const hasDetailTemplate = !!agent.skills
+
   return (
     <>
-      <AgentHero agent={agent} />
-      <AgentCapabilities agent={agent} />
+      {hasDetailTemplate ? <AgentHeroV2 agent={agent} /> : <AgentHero agent={agent} />}
+      {hasDetailTemplate ? <AgentDetailSections agent={agent} /> : <AgentCapabilities agent={agent} />}
       <CtaFinal />
       <FooterSection />
     </>
