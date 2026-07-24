@@ -55,7 +55,7 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
             alt={agent.name}
             fill
             className="pointer-events-none"
-            style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+            style={{ objectFit: 'cover', objectPosition: agent.heroBgPosition ?? 'center', zIndex: 0 }}
             priority
           />
           <div

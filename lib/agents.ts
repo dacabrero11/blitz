@@ -46,6 +46,7 @@ export interface Agent {
   katakana?: string
   taglineShort?: string
   heroBg?: string
+  heroBgPosition?: string
   highlights?: { icon: 'target' | 'chat' | 'handshake'; label: string }[]
   skills?: AgentSkill[]
   techStack?: AgentTech[]
@@ -126,6 +127,7 @@ export const AGENTS: Agent[] = [
     katakana: 'ヘラルド',
     taglineShort: 'Organiza. Responde. Coordina.',
     heroBg: '/agents/hero-herald.jpg',
+    heroBgPosition: 'center 10%',
     highlights: [
       { icon: 'chat', label: 'Responde al instante' },
       { icon: 'target', label: 'Prioriza lo urgente' },
@@ -285,6 +287,7 @@ export const AGENTS: Agent[] = [
     katakana: 'エイペックス',
     taglineShort: 'Coordina. Escala. Domina.',
     heroBg: '/agents/hero-apex.jpg',
+    heroBgPosition: 'center 15%',
     highlights: [
       { icon: 'target', label: 'Orquesta agentes' },
       { icon: 'chat', label: 'Multi-canal' },
