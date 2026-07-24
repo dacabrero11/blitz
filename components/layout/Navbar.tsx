@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { cn } from '@/lib/utils'
 
 const LINKS = [
   { href: '/agentes', label: 'Agentes' },
@@ -30,7 +29,7 @@ export function Navbar() {
         }}
       >
         {/* Logo — hero wordmark */}
-        <Link href="/" className="flex items-center group flex-shrink-0" onClick={() => setOpen(false)}>
+        <Link href="/" className="flex items-center group flex-shrink-0" onClick={() => setOpen(false)} style={{ marginLeft: 'clamp(6px, 2vw, 28px)' }}>
           <div className="relative flex-shrink-0" style={{ width: 88, height: 38 }}>
             <Image src="/blitz-wordmark.png" alt="Blitz" fill style={{ objectFit: 'contain', objectPosition: 'left center' }} priority />
           </div>
@@ -42,14 +41,11 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className={cn(
-                'font-display font-semibold text-xs tracking-widest uppercase transition-all duration-200 px-4 py-2',
-                pathname === href ? '' : 'hover:border-[rgba(229,62,62,0.5)] hover:text-white'
-              )}
+              className="font-display font-bold text-sm tracking-widest uppercase transition-all duration-200 px-6 py-3 hover:bg-[rgba(229,62,62,0.16)]"
               style={{
-                color: pathname === href ? 'var(--red)' : 'var(--gray-2)',
-                border: pathname === href ? '1px solid rgba(229,62,62,0.55)' : '1px solid rgba(255,255,255,0.12)',
-                background: 'rgba(8,8,8,0.35)',
+                color: 'var(--white)',
+                border: pathname === href ? '1px solid var(--red)' : '1px solid rgba(229,62,62,0.4)',
+                background: pathname === href ? 'rgba(229,62,62,0.18)' : 'rgba(8,8,8,0.5)',
               }}
             >
               {label}
@@ -60,11 +56,11 @@ export function Navbar() {
         {/* Desktop CTA */}
         <a
           href="/contacto"
-          className="hidden md:inline-flex font-display font-bold text-xs tracking-widest uppercase px-5 py-2.5 transition-all hover:text-white"
+          className="hidden md:inline-flex font-display font-bold text-sm tracking-widest uppercase px-6 py-3 transition-all hover:bg-[rgba(229,62,62,0.16)]"
           style={{
             border: '1px solid var(--red)',
             color: 'var(--white)',
-            background: 'rgba(8,8,8,0.35)',
+            background: 'rgba(8,8,8,0.5)',
             clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
           }}
         >
