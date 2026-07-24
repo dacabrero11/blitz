@@ -3,12 +3,12 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { gsap } from 'gsap'
-import { MessageCircle, BarChart3, Rocket, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 const FEATURES = [
-  { icon: MessageCircle, label: 'Agentes IA', sub: 'Atención 24/7' },
-  { icon: BarChart3, label: 'Sistemas', sub: 'Que escalan' },
-  { icon: Rocket, label: 'Resultados', sub: 'Que impulsan' },
+  { icon: '/icons/icon-robot.png', label: 'Agentes IA', sub: 'Atención 24/7' },
+  { icon: '/icons/icon-barchart2.png', label: 'Sistemas', sub: 'Que escalan' },
+  { icon: '/icons/icon-rocket.png', label: 'Resultados', sub: 'Que impulsan' },
 ]
 
 export function HeroSection() {
@@ -98,19 +98,10 @@ export function HeroSection() {
           className="hero-features flex flex-wrap items-start"
           style={{ gap: 'clamp(24px, 3.5vw, 52px)', marginBottom: 'clamp(32px, 4vw, 48px)' }}
         >
-          {FEATURES.map(({ icon: Icon, label, sub }) => (
+          {FEATURES.map(({ icon, label, sub }) => (
             <div key={label} className="flex items-center" style={{ gap: 14 }}>
-              <div
-                className="flex-shrink-0 flex items-center justify-center"
-                style={{
-                  width: 56,
-                  height: 56,
-                  background: 'var(--black)',
-                  border: '1px solid var(--red)',
-                  clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
-                }}
-              >
-                <Icon size={24} color="var(--red)" strokeWidth={2} />
+              <div className="flex-shrink-0 relative" style={{ width: 56, height: 56 }}>
+                <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
               </div>
               <div>
                 <div className="font-display font-bold uppercase leading-tight" style={{ fontSize: 17, color: 'var(--white)' }}>
