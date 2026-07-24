@@ -1,15 +1,26 @@
-import { MatrixBackground } from '@/components/ui/MatrixBackground'
+import Image from 'next/image'
 
 export function ServiciosHero() {
   return (
     <section
-      className="section-padding relative overflow-hidden grid-bg"
-      style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)' }}
+      className="section-padding relative overflow-hidden"
+      style={{ paddingTop: 'calc(var(--nav-h) + 64px)', borderBottom: '1px solid var(--border-2)', background: '#080808', minHeight: '70vh', display: 'flex', alignItems: 'center' }}
     >
-      <MatrixBackground />
+      <Image
+        src="/hero-servicios.jpg"
+        alt="Servicios digitales BLITZ"
+        fill
+        className="pointer-events-none"
+        style={{ objectFit: 'cover', objectPosition: 'center', zIndex: 0 }}
+        priority
+      />
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.55) 50%, rgba(8,8,8,0.1) 100%)', zIndex: 2 }}
+        style={{ background: 'linear-gradient(90deg, rgba(8,8,8,0.96) 0%, rgba(8,8,8,0.85) 35%, rgba(8,8,8,0.3) 65%, rgba(8,8,8,0.15) 100%)', zIndex: 1 }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.8) 0%, transparent 30%)', zIndex: 1 }}
       />
       <div className="container relative" style={{ zIndex: 3 }}>
         <p className="text-label mb-2">Lo que hacemos</p>
