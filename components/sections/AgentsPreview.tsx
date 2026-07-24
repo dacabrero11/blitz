@@ -43,37 +43,18 @@ export function AgentsPreview() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {AGENTS.map((agent, i) => {
             const Icon = CARD_ICONS[agent.cardIcon ?? 'target']
-            const accent = agent.accentColor
+            const accent = 'var(--red)'
             return (
               <Link
                 key={agent.id}
                 href={`/agentes/${agent.id}`}
-                className="group relative overflow-hidden transition-all duration-300 flex flex-col"
-                style={{ background: '#0a0a0a', border: `1px solid ${accent}55`, borderTop: `3px solid ${accent}` }}
+                className="group relative transition-all duration-300 flex flex-col"
+                style={{ background: '#0a0a0a' }}
               >
+                {/* Portrait — border hugs the image directly, top accent bar right at its edge */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                  style={{ border: `1px solid ${accent}`, zIndex: 2 }}
-                />
-
-                {/* Number */}
-                <div
-                  className="absolute top-4 left-4 font-display font-black"
-                  style={{ fontSize: 14, color: accent, zIndex: 3, letterSpacing: '0.05em' }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </div>
-
-                {agent.classification === 'elite' && (
-                  <div className="absolute top-4 right-4 font-display font-bold text-white" style={{ fontSize: 8, letterSpacing: '0.14em', background: 'var(--red)', padding: '2px 6px', zIndex: 3 }}>
-                    ÉLITE
-                  </div>
-                )}
-
-                {/* Portrait */}
-                <div
-                  className="relative overflow-hidden"
-                  style={{ height: 340, background: '#050505' }}
+                  className="relative overflow-hidden transition-colors duration-300"
+                  style={{ height: 340, background: '#050505', border: '1px solid rgba(229,62,62,0.3)', borderTop: `3px solid ${accent}` }}
                 >
                   <Image
                     src={agent.cardImage ?? agent.image}
@@ -82,14 +63,29 @@ export function AgentsPreview() {
                     className="transition-transform duration-500 group-hover:scale-105"
                     style={{ objectFit: 'cover', objectPosition: 'top' }}
                   />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 40%)' }} />
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(10,10,10,1) 0%, transparent 35%)' }} />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ border: `1px solid ${accent}`, zIndex: 2 }} />
+
+                  {/* Number */}
+                  <div
+                    className="absolute top-3 left-3 font-display font-black"
+                    style={{ fontSize: 14, color: accent, zIndex: 3, letterSpacing: '0.05em' }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </div>
+
+                  {agent.classification === 'elite' && (
+                    <div className="absolute top-3 right-3 font-display font-bold text-white" style={{ fontSize: 8, letterSpacing: '0.14em', background: 'var(--red)', padding: '2px 6px', zIndex: 3 }}>
+                      ÉLITE
+                    </div>
+                  )}
                 </div>
 
                 {/* Info */}
-                <div className="p-5 flex-1 flex flex-col" style={{ background: '#0a0a0a' }}>
+                <div className="p-5 flex-1 flex flex-col" style={{ background: '#0a0a0a', border: '1px solid rgba(229,62,62,0.3)', borderTop: 'none' }}>
                   <div
                     className="flex items-center justify-center flex-shrink-0 mb-3"
-                    style={{ width: 36, height: 36, background: `${accent}1a`, border: `1px solid ${accent}` }}
+                    style={{ width: 36, height: 36, background: 'rgba(229,62,62,0.1)', border: `1px solid ${accent}` }}
                   >
                     <Icon size={16} color={accent} strokeWidth={2} />
                   </div>
