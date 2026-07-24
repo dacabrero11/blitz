@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import Image from 'next/image'
 import { Monitor, Smartphone, LayoutGrid, ArrowRight } from 'lucide-react'
 
 interface ServicioItem {
@@ -7,6 +9,7 @@ interface ServicioItem {
   descripcion: string
   tag?: string
   icon: string
+  mockupImage?: string
 }
 
 interface Categoria {
@@ -14,7 +17,6 @@ interface Categoria {
   subtitle: string
   acento: string
   count: string
-  mockupImage?: string
   items: ServicioItem[]
 }
 
@@ -30,6 +32,7 @@ const CATEGORIAS: Categoria[] = [
         descripcion: 'Una página profesional, rápida y optimizada para móvil. Perfecta para negocios que necesitan presencia digital inmediata.',
         tag: 'Ideal para empezar',
         icon: 'M3 9h18M3 3h18v18H3zM9 21V9',
+        mockupImage: '/servicios/landing-page.jpg',
       },
       {
         nombre: 'Sitio Web Completo',
@@ -138,14 +141,9 @@ const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20inform
 function MockupPlaceholder({ acento }: { acento: string }) {
   return (
     <div
-      className="relative flex items-center justify-center overflow-hidden"
-      style={{
-        aspectRatio: '4 / 3',
-        background: `radial-gradient(ellipse at 50% 40%, ${acento}14, #0a0a0a 70%)`,
-        border: `1px solid ${acento}33`,
-      }}
+      className="relative flex items-center justify-center overflow-hidden w-full h-full"
+      style={{ background: `radial-gradient(ellipse at 50% 40%, ${acento}14, #0a0a0a 70%)` }}
     >
-      {/* Grid texture */}
       <div
         className="absolute inset-0 opacity-40"
         style={{
@@ -153,16 +151,119 @@ function MockupPlaceholder({ acento }: { acento: string }) {
           backgroundSize: '32px 32px',
         }}
       />
-      {/* Device silhouette */}
       <div className="relative flex items-end gap-4" style={{ zIndex: 1 }}>
-        <Monitor size={96} color={acento} strokeWidth={1} style={{ opacity: 0.5 }} />
-        <Smartphone size={44} color={acento} strokeWidth={1} style={{ opacity: 0.5, marginBottom: 4 }} />
+        <Monitor size={110} color={acento} strokeWidth={1} style={{ opacity: 0.5 }} />
+        <Smartphone size={50} color={acento} strokeWidth={1} style={{ opacity: 0.5, marginBottom: 4 }} />
       </div>
       <div
-        className="absolute bottom-4 right-4 font-display font-bold uppercase"
-        style={{ fontSize: 9, letterSpacing: '0.12em', color: acento, opacity: 0.7 }}
+        className="absolute bottom-5 right-5 font-display font-bold uppercase"
+        style={{ fontSize: 10, letterSpacing: '0.12em', color: acento, opacity: 0.7 }}
       >
         Vista previa próximamente
+      </div>
+    </div>
+  )
+}
+
+function CategoriaBlock({ cat, index }: { cat: Categoria; index: number }) {
+  const [selected, setSelected] = useState(0)
+  const active = cat.items[selected]
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-28 last:mb-0">
+      {/* Text column */}
+      <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
+        <div className="flex items-baseline gap-4 mb-2">
+          <span className="font-display font-black" style={{ fontSize: 22, color: cat.acento }}>
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span className="font-display font-bold uppercase" style={{ fontSize: 10, letterSpacing: '0.16em', color: 'var(--gray-3)' }}>
+            {cat.count}
+          </span>
+        </div>
+        <h2 className="font-display font-black uppercase mb-3" style={{ fontSize: 'clamp(32px, 3.8vw, 50px)', color: 'var(--white)', lineHeight: 1 }}>
+          {cat.nombre}
+        </h2>
+        <p className="mb-9" style={{ fontSize: 15, color: 'var(--gray-1)', lineHeight: 1.7, maxWidth: 460 }}>
+          {cat.subtitle}
+        </p>
+
+        <div className="flex flex-col gap-3 mb-7">
+          {cat.items.map((item, idx) => {
+            const highlighted = selected === idx
+            return (
+              <button
+                key={item.nombre}
+                onClick={() => setSelected(idx)}
+                className="group flex items-center gap-4 p-5 text-left transition-all duration-200"
+                style={{
+                  background: highlighted ? `${cat.acento}0d` : 'var(--black-2)',
+                  border: `1px solid ${highlighted ? cat.acento : 'var(--border)'}`,
+                  borderLeft: `3px solid ${highlighted ? cat.acento : 'var(--border)'}`,
+                }}
+              >
+                <div
+                  className="flex items-center justify-center flex-shrink-0"
+                  style={{
+                    width: 46, height: 46,
+                    background: highlighted ? cat.acento : `${cat.acento}15`,
+                    borderRadius: 6,
+                  }}
+                >
+                  <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke={highlighted ? '#fff' : cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={item.icon} />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-0.5">
+                    <span className="font-display font-bold uppercase" style={{ fontSize: 15, color: 'var(--white)' }}>
+                      {item.nombre}
+                    </span>
+                    {item.tag && (
+                      <span
+                        className="font-display font-bold uppercase flex-shrink-0"
+                        style={{ fontSize: 8.5, letterSpacing: '0.1em', color: cat.acento, border: `1px solid ${cat.acento}55`, padding: '1px 5px' }}
+                      >
+                        {item.tag}
+                      </span>
+                    )}
+                  </div>
+                  <p style={{ fontSize: 12.5, color: 'var(--gray-2)', lineHeight: 1.55 }}>
+                    {item.descripcion}
+                  </p>
+                </div>
+                <ArrowRight
+                  size={17}
+                  color={cat.acento}
+                  className="flex-shrink-0 transition-transform"
+                  style={{ transform: highlighted ? 'translateX(2px)' : undefined }}
+                />
+              </button>
+            )
+          })}
+        </div>
+
+        <a
+          href={WA_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
+          style={{ fontSize: 11.5, letterSpacing: '0.1em', color: cat.acento }}
+        >
+          <LayoutGrid size={14} />
+          Ver todos los planes
+        </a>
+      </div>
+
+      {/* Mockup column — the selected item's own image, edge to edge, no frame */}
+      <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: '4 / 3' }}>
+          {active.mockupImage ? (
+            <Image src={active.mockupImage} alt={active.nombre} fill style={{ objectFit: 'cover' }} />
+          ) : (
+            <MockupPlaceholder acento={cat.acento} />
+          )}
+        </div>
       </div>
     </div>
   )
@@ -173,105 +274,7 @@ export function ServiciosGrid() {
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
         {CATEGORIAS.map((cat, i) => (
-          <div
-            key={cat.nombre}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-24 last:mb-0"
-          >
-            {/* Text column */}
-            <div className={i % 2 === 1 ? 'lg:order-2' : ''}>
-              <div className="flex items-baseline gap-4 mb-2">
-                <span className="font-display font-black" style={{ fontSize: 20, color: cat.acento }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="font-display font-bold uppercase" style={{ fontSize: 10, letterSpacing: '0.16em', color: 'var(--gray-3)' }}>
-                  {cat.count}
-                </span>
-              </div>
-              <h2 className="font-display font-black uppercase mb-2" style={{ fontSize: 'clamp(28px, 3.4vw, 44px)', color: 'var(--white)', lineHeight: 1 }}>
-                {cat.nombre}
-              </h2>
-              <p className="mb-8" style={{ fontSize: 14, color: 'var(--gray-1)', lineHeight: 1.7, maxWidth: 440 }}>
-                {cat.subtitle}
-              </p>
-
-              <div className="flex flex-col gap-3 mb-6">
-                {cat.items.map((item, idx) => {
-                  const highlighted = idx === 0
-                  return (
-                    <a
-                      key={item.nombre}
-                      href={WA_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-4 p-4 transition-all duration-200"
-                      style={{
-                        background: highlighted ? `${cat.acento}0d` : 'var(--black-2)',
-                        border: `1px solid ${highlighted ? cat.acento : 'var(--border)'}`,
-                        borderLeft: `3px solid ${highlighted ? cat.acento : 'var(--border)'}`,
-                      }}
-                    >
-                      <div
-                        className="flex items-center justify-center flex-shrink-0"
-                        style={{
-                          width: 40, height: 40,
-                          background: highlighted ? cat.acento : `${cat.acento}15`,
-                          borderRadius: 6,
-                        }}
-                      >
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={highlighted ? '#fff' : cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                          <path d={item.icon} />
-                        </svg>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <span className="font-display font-bold uppercase" style={{ fontSize: 13.5, color: 'var(--white)' }}>
-                            {item.nombre}
-                          </span>
-                          {item.tag && (
-                            <span
-                              className="font-display font-bold uppercase flex-shrink-0"
-                              style={{ fontSize: 8, letterSpacing: '0.1em', color: cat.acento, border: `1px solid ${cat.acento}55`, padding: '1px 5px' }}
-                            >
-                              {item.tag}
-                            </span>
-                          )}
-                        </div>
-                        <p style={{ fontSize: 11.5, color: 'var(--gray-2)', lineHeight: 1.5 }}>
-                          {item.descripcion}
-                        </p>
-                      </div>
-                      <ArrowRight
-                        size={16}
-                        color={cat.acento}
-                        className="flex-shrink-0 transition-transform group-hover:translate-x-1"
-                      />
-                    </a>
-                  )
-                })}
-              </div>
-
-              <a
-                href={WA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
-                style={{ fontSize: 11, letterSpacing: '0.1em', color: cat.acento }}
-              >
-                <LayoutGrid size={13} />
-                Ver todos los planes
-              </a>
-            </div>
-
-            {/* Mockup column */}
-            <div className={i % 2 === 1 ? 'lg:order-1' : ''}>
-              {cat.mockupImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={cat.mockupImage} alt={cat.nombre} className="w-full h-auto" />
-              ) : (
-                <MockupPlaceholder acento={cat.acento} />
-              )}
-            </div>
-          </div>
+          <CategoriaBlock key={cat.nombre} cat={cat} index={i} />
         ))}
 
         {/* Bottom CTA */}
