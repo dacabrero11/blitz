@@ -24,33 +24,33 @@ export function Navbar() {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10"
         style={{
           height: 'var(--nav-h)',
-          background: 'rgba(8,8,8,0.92)',
-          borderBottom: '1px solid var(--border-2)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          background: 'transparent',
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
         }}
       >
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group" onClick={() => setOpen(false)}>
-          <div className="relative flex-shrink-0" style={{ width: 44, height: 44 }}>
-            <Image src="/blitz-logo.png" alt="Blitz" fill className="object-contain" priority />
+        {/* Logo — hero wordmark */}
+        <Link href="/" className="flex items-center group flex-shrink-0" onClick={() => setOpen(false)}>
+          <div className="relative flex-shrink-0" style={{ width: 88, height: 38 }}>
+            <Image src="/blitz-wordmark.png" alt="Blitz" fill style={{ objectFit: 'contain', objectPosition: 'left center' }} priority />
           </div>
-          <span className="font-display font-black text-xl tracking-wide" style={{ color: 'var(--white)' }}>
-            BLITZ
-          </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-3">
           {LINKS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               className={cn(
-                'font-display font-semibold text-xs tracking-widest uppercase transition-colors duration-200',
-                pathname === href ? '' : 'text-gray-600 hover:text-gray-300'
+                'font-display font-semibold text-xs tracking-widest uppercase transition-all duration-200 px-4 py-2',
+                pathname === href ? '' : 'hover:border-[rgba(229,62,62,0.5)] hover:text-white'
               )}
-              style={{ color: pathname === href ? 'var(--red)' : undefined }}
+              style={{
+                color: pathname === href ? 'var(--red)' : 'var(--gray-2)',
+                border: pathname === href ? '1px solid rgba(229,62,62,0.55)' : '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(8,8,8,0.35)',
+              }}
             >
               {label}
             </Link>
@@ -64,6 +64,7 @@ export function Navbar() {
           style={{
             border: '1px solid var(--red)',
             color: 'var(--white)',
+            background: 'rgba(8,8,8,0.35)',
             clipPath: 'polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))',
           }}
         >
@@ -72,10 +73,16 @@ export function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col justify-center items-center gap-1.5 p-2"
+          className="md:hidden flex flex-col justify-center items-center gap-1.5"
           onClick={() => setOpen((o) => !o)}
           aria-label="Menú"
-          style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+          style={{
+            background: 'rgba(8,8,8,0.35)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            cursor: 'pointer',
+            width: 40,
+            height: 40,
+          }}
         >
           <span
             style={{
