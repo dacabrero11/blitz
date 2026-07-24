@@ -146,6 +146,10 @@ body {
   0%, 100% { filter: drop-shadow(0 0 18px rgba(229,62,62,0.35)) drop-shadow(0 0 50px rgba(229,62,62,0.16)); }
   50%       { filter: drop-shadow(0 0 34px rgba(229,62,62,0.75)) drop-shadow(0 0 90px rgba(229,62,62,0.35)); }
 }
+@keyframes card-glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
 
 .animate-pulse-dot     { animation: pulse-dot 1.4s ease-in-out infinite; }
 .animate-scanline      { animation: scanline 4s ease-in-out infinite; }
@@ -153,6 +157,7 @@ body {
 .animate-float         { animation: float 4s ease-in-out infinite; }
 .animate-glow          { animation: glow-pulse 2s ease-in-out infinite; }
 .animate-wordmark-glow { animation: wordmark-glow 3s ease-in-out infinite; }
+.animate-card-glow     { animation: card-glow-pulse 2.6s ease-in-out infinite; }
 
 /* ─── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }

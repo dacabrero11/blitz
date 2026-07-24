@@ -34,7 +34,7 @@ export function ProblemSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {PROBLEMS.map(({ n, icon: Icon, title, desc }) => (
+          {PROBLEMS.map(({ n, icon: Icon, title, desc }, i) => (
             <div
               key={n}
               className="relative p-7 sm:p-8"
@@ -45,14 +45,14 @@ export function ProblemSection() {
                 clipPath: 'polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%)',
               }}
             >
-              {/* Glowing top accent */}
+              {/* Glowing top accent — animated pulse, staggered per card */}
               <div
-                className="absolute pointer-events-none"
-                style={{ top: -1, left: '50%', transform: 'translateX(-50%)', width: '55%', height: 2, background: 'linear-gradient(90deg, transparent, var(--red), transparent)' }}
+                className="absolute pointer-events-none animate-card-glow"
+                style={{ top: -1, left: '50%', transform: 'translateX(-50%)', width: '55%', height: 2, background: 'linear-gradient(90deg, transparent, var(--red), transparent)', animationDelay: `${i * 0.4}s` }}
               />
               <div
-                className="absolute pointer-events-none"
-                style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 140, height: 24, background: 'radial-gradient(ellipse at center, rgba(229,62,62,0.55), transparent 72%)', filter: 'blur(4px)' }}
+                className="absolute pointer-events-none animate-card-glow"
+                style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 140, height: 24, background: 'radial-gradient(ellipse at center, rgba(229,62,62,0.55), transparent 72%)', filter: 'blur(4px)', animationDelay: `${i * 0.4}s` }}
               />
 
               {/* Icon badge */}
