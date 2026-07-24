@@ -57,6 +57,21 @@ export function ProblemSection() {
               {/* Icon badge — exact PNG provided (octagon + border + glow baked in) */}
               <div className="absolute" style={{ top: 16, right: 16, width: 60, height: 60 }}>
                 <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
+                {/* Traveling light chasing the octagon border, looping */}
+                <svg
+                  viewBox="0 0 100 100"
+                  className="absolute inset-0 animate-icon-chase pointer-events-none"
+                  style={{ animationDelay: `${i * 0.35}s`, filter: 'drop-shadow(0 0 4px rgba(255,90,90,0.9)) drop-shadow(0 0 8px rgba(229,62,62,0.6))' }}
+                >
+                  <polygon
+                    points="20,1 80,1 99,20 99,80 80,99 20,99 1,80 1,20"
+                    fill="none"
+                    stroke="#ff8080"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray="55 292"
+                  />
+                </svg>
               </div>
 
               <div className="font-display font-black leading-none mb-3" style={{ fontSize: 64, color: 'var(--red)' }}>{n}</div>
