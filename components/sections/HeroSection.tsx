@@ -59,7 +59,7 @@ export function HeroSection() {
         playsInline
         poster="/hero-bg.jpg"
         className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ objectFit: 'cover', objectPosition: 'center 30%', zIndex: 0 }}
+        style={{ objectFit: 'cover', objectPosition: 'center 30%', transform: 'scale(0.85)', transformOrigin: 'center 30%', zIndex: 0 }}
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
