@@ -29,6 +29,7 @@ export function Navbar() {
   const capsuleRef = useRef<HTMLDivElement>(null)
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const [pill, setPill] = useState({ left: 0, width: 0, visible: false })
+  const [spot, setSpot] = useState({ x: 0, y: 0, on: false })
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const activeIndex = LINKS.findIndex((l) => pathname === l.href || pathname.startsWith(l.href + '/'))
@@ -98,7 +99,28 @@ export function Navbar() {
             onMouseEnter={() => openMega(undefined)}
           >
             <div className="relative flex-shrink-0" style={{ width: 84, height: 34 }}>
-              <Image src="/blitz-wordmark.png" alt="Blitz" fill style={{ objectFit: 'contain', objectPosition: 'left center' }} priority />
+              <Image
+                src="/blitz-wordmark.png"
+                alt="Blitz"
+                fill
+                className="animate-bolt-glow"
+                style={{ objectFit: 'contain', objectPosition: 'left center' }}
+                priority
+              />
+              {/* chispa sobre el rayo del wordmark */}
+              <span
+                aria-hidden
+                className="animate-bolt-flash pointer-events-none"
+                style={{
+                  position: 'absolute',
+                  left: '52%',
+                  top: '50%',
+                  width: 34,
+                  height: 34,
+                  transform: 'translate(-50%, -50%)',
+                  background: 'radial-gradient(circle, rgba(255,190,190,0.95), rgba(229,62,62,0.55) 38%, transparent 68%)',
+                }}
+              />
             </div>
           </Link>
 
@@ -113,9 +135,51 @@ export function Navbar() {
               background: scrolled ? 'rgba(12,12,12,0.82)' : 'rgba(12,12,12,0.55)',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 8px 28px -18px rgba(0,0,0,0.9)',
               transition: 'background 250ms ease',
+              overflow: 'hidden',
             }}
-            onMouseLeave={resetPill}
+            onMouseMove={(e) => {
+              const b = capsuleRef.current?.getBoundingClientRect()
+              if (!b) return
+              setSpot({ x: e.clientX - b.left, y: e.clientY - b.top, on: true })
+            }}
+            onMouseEnter={() => setSpot((s) => ({ ...s, on: true }))}
+            onMouseLeave={() => {
+              resetPill()
+              setSpot((s) => ({ ...s, on: false }))
+            }}
           >
+            {/* spotlight que sigue al cursor */}
+            <span
+              aria-hidden
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: 999,
+                pointerEvents: 'none',
+                background: `radial-gradient(130px circle at ${spot.x}px ${spot.y}px, rgba(255,255,255,0.13), rgba(229,62,62,0.08) 42%, transparent 68%)`,
+                opacity: spot.on ? 1 : 0,
+                transition: 'opacity 260ms ease',
+              }}
+            />
+
+            {/* estela del indicador: va mas lenta y desenfocada */}
+            <span
+              aria-hidden
+              style={{
+                position: 'absolute',
+                top: 4,
+                bottom: 4,
+                left: pill.left,
+                width: pill.width,
+                borderRadius: 999,
+                background: 'rgba(229,62,62,0.6)',
+                filter: 'blur(9px)',
+                opacity: pill.visible ? 0.85 : 0,
+                transition: 'left 560ms cubic-bezier(0.16,1,0.3,1), width 560ms cubic-bezier(0.16,1,0.3,1), opacity 220ms ease',
+                pointerEvents: 'none',
+              }}
+            />
+
             <span
               aria-hidden
               style={{
@@ -165,7 +229,7 @@ export function Navbar() {
           <a
             href="/contacto"
             onMouseEnter={() => openMega(undefined)}
-            className="hidden md:inline-flex items-center gap-2 font-display font-bold uppercase transition-all duration-200 hover:brightness-110"
+            className="hidden md:inline-flex items-center gap-2 font-display font-bold uppercase transition-all duration-200 hover:brightness-110 animate-cta-breathe"
             style={{
               fontSize: 12,
               letterSpacing: '0.09em',
@@ -173,7 +237,6 @@ export function Navbar() {
               borderRadius: 999,
               color: '#fff',
               background: 'linear-gradient(135deg, var(--red), #b32d2d)',
-              boxShadow: '0 8px 24px -10px rgba(229,62,62,0.8)',
             }}
           >
             Contactar

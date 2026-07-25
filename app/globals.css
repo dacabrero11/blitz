@@ -193,3 +193,31 @@ body {
 @media (min-width: 1500px) {
   .svc-grid[data-cols="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* ─── NAVBAR: efectos vivos ─── */
+@keyframes cta-breathe {
+  0%, 100% { box-shadow: 0 8px 22px -12px rgba(229,62,62,0.75); }
+  50%      { box-shadow: 0 12px 34px -8px rgba(229,62,62,1); }
+}
+/* Chispa: casi todo el ciclo apagada, con un doble destello corto */
+@keyframes bolt-flash {
+  0%, 86%, 100% { opacity: 0; }
+  88%           { opacity: 1; }
+  90%           { opacity: 0.15; }
+  92%           { opacity: 0.9; }
+  96%           { opacity: 0; }
+}
+@keyframes bolt-glow {
+  0%, 86%, 100% { filter: none; }
+  88%           { filter: drop-shadow(0 0 5px rgba(229,62,62,0.95)); }
+  90%           { filter: none; }
+  92%           { filter: drop-shadow(0 0 9px rgba(229,62,62,1)); }
+  96%           { filter: none; }
+}
+.animate-cta-breathe { animation: cta-breathe 2.8s ease-in-out infinite; }
+.animate-bolt-flash  { animation: bolt-flash 7s ease-in-out infinite; }
+.animate-bolt-glow   { animation: bolt-glow 7s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cta-breathe, .animate-bolt-flash, .animate-bolt-glow, .animate-beam { animation: none; }
+}
