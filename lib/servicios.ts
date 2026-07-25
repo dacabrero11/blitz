@@ -50,14 +50,23 @@ export interface CategoriaProcessStep {
   desc: string
 }
 
+export interface CategoriaBadge {
+  icon: string
+  label: string
+}
+
 export interface CategoriaLanding {
   titleWhite: string
   titleAccent: string
   heroDescription: string
   features: CategoriaFeature[]
+  heroBadgesLeft?: CategoriaBadge[]
+  heroBadgesRight?: CategoriaBadge[]
+  heroVisual?: string
   miniCta?: { question: string; note: string; buttonLabel: string }
   process: CategoriaProcessStep[]
   ctaTitle: string
+  ctaSubtitle: string
 }
 
 export interface Categoria {
@@ -77,6 +86,25 @@ export const CATEGORIAS: Categoria[] = [
     subtitle: 'Sitios que venden. Diseñados para convertir.',
     acento: '#E53E3E',
     count: '3 servicios',
+    landing: {
+      titleWhite: 'Páginas web',
+      titleAccent: 'que venden.',
+      heroDescription: 'Sitios modernos, rápidos y diseñados para convertir visitantes en clientes reales.',
+      features: [
+        { icon: 'palette', title: 'Diseño a medida', desc: 'Cada sitio pensado para tu marca.' },
+        { icon: 'search', title: 'Optimizado para SEO', desc: 'Estructura lista para posicionar.' },
+        { icon: 'zap', title: 'Rápido y responsive', desc: 'Carga veloz en cualquier dispositivo.' },
+        { icon: 'target', title: 'Listo para convertir', desc: 'Formularios y WhatsApp integrados.' },
+      ],
+      process: [
+        { icon: 'search', title: 'Descubrimiento', desc: 'Entendemos tu negocio y objetivos.' },
+        { icon: 'edit', title: 'Diseño', desc: 'Creamos una propuesta visual estratégica.' },
+        { icon: 'code', title: 'Desarrollo', desc: 'Construimos tu sitio con alto rendimiento.' },
+        { icon: 'rocket', title: 'Lanzamiento', desc: 'Publicamos, medimos y optimizamos.' },
+      ],
+      ctaTitle: 'Tu sitio web. Listo para vender.',
+      ctaSubtitle: 'Agenda una consultoría gratuita y definimos qué necesita tu negocio.',
+    },
     items: [
       {
         slug: 'landing-page',
@@ -85,6 +113,7 @@ export const CATEGORIAS: Categoria[] = [
         tag: 'Ideal para empezar',
         icon: 'M3 9h18M3 3h18v18H3zM9 21V9',
         mockupImage: '/servicios/landing-page.jpg',
+        cardImage: '/servicios/landing-page.jpg',
       },
       {
         slug: 'sitio-web-completo',
@@ -92,6 +121,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: '5 a 8 páginas con diseño profesional, blog, SEO básico e integración con WhatsApp. Para negocios que quieren una presencia digital seria.',
         icon: 'M2 3h20v14H2zM8 21h8M12 17v4',
         mockupImage: '/servicios/sitio-web-completo.jpg',
+        cardImage: '/servicios/sitio-web-completo.jpg',
         detail: {
           titleWhite: 'Sitio Web',
           titleRed: 'Completo.',
@@ -130,6 +160,7 @@ export const CATEGORIAS: Categoria[] = [
         tag: 'Más completo',
         icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
         mockupImage: '/servicios/web-agente-ia.jpg',
+        cardImage: '/servicios/web-agente-ia.jpg',
         detail: {
           titleWhite: 'Web +',
           titleRed: 'Agente IA.',
@@ -176,7 +207,18 @@ export const CATEGORIAS: Categoria[] = [
         { icon: 'settings', title: 'Implementamos', desc: 'Integramos y configuramos todo para ti.' },
         { icon: 'chart', title: 'Optimizamos', desc: 'Medimos, ajustamos y escalamos resultados.' },
       ],
+      heroBadgesLeft: [
+        { icon: 'whatsapp', label: 'WhatsApp' },
+        { icon: 'users', label: 'CRM' },
+        { icon: 'card', label: 'Pagos' },
+      ],
+      heroBadgesRight: [
+        { icon: 'mail', label: 'Email' },
+        { icon: 'chart', label: 'Analytics' },
+        { icon: 'calendar', label: 'Calendario' },
+      ],
       ctaTitle: 'Automatiza hoy. Escala mañana.',
+      ctaSubtitle: 'Agenda una consultoría gratuita y descubre cómo podemos ayudarte.',
     },
     items: [
       {
@@ -256,6 +298,7 @@ export const CATEGORIAS: Categoria[] = [
         { icon: 'check', title: 'Entregamos', desc: 'Revisamos, ajustamos y entregamos a tiempo.' },
       ],
       ctaTitle: 'Diseño que no solo se ve bien, vende.',
+      ctaSubtitle: 'Hablemos de tu próximo proyecto.',
     },
     items: [
       {
