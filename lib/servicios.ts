@@ -90,6 +90,7 @@ export const CATEGORIAS: Categoria[] = [
       titleWhite: 'Páginas web',
       titleAccent: 'que venden.',
       heroDescription: 'Sitios modernos, rápidos y diseñados para convertir visitantes en clientes reales.',
+      heroVisual: '/servicios/hero-paginas-web.jpg',
       features: [
         { icon: 'palette', title: 'Diseño a medida', desc: 'Cada sitio pensado para tu marca.' },
         { icon: 'search', title: 'Optimizado para SEO', desc: 'Estructura lista para posicionar.' },
@@ -207,16 +208,7 @@ export const CATEGORIAS: Categoria[] = [
         { icon: 'settings', title: 'Implementamos', desc: 'Integramos y configuramos todo para ti.' },
         { icon: 'chart', title: 'Optimizamos', desc: 'Medimos, ajustamos y escalamos resultados.' },
       ],
-      heroBadgesLeft: [
-        { icon: 'whatsapp', label: 'WhatsApp' },
-        { icon: 'users', label: 'CRM' },
-        { icon: 'card', label: 'Pagos' },
-      ],
-      heroBadgesRight: [
-        { icon: 'mail', label: 'Email' },
-        { icon: 'chart', label: 'Analytics' },
-        { icon: 'calendar', label: 'Calendario' },
-      ],
+      heroVisual: '/servicios/hero-automatizacion.jpg',
       ctaTitle: 'Automatiza hoy. Escala mañana.',
       ctaSubtitle: 'Agenda una consultoría gratuita y descubre cómo podemos ayudarte.',
     },

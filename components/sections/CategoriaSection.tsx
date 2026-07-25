@@ -112,7 +112,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
       <BeamSync />
       <div className="w-full mx-auto" style={{ maxWidth: 1700 }}>
         {/* ─── HERO ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center" style={{ marginBottom: 104 }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-10 lg:gap-14 items-center" style={{ marginBottom: 104 }}>
           <div>
             <div className="flex items-center gap-2 mb-4">
               <span className="font-display font-black" style={{ fontSize: 14, color: cat.acento }}>
@@ -181,7 +181,17 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
             <div className="flex-1 min-w-0">
               {l.heroVisual ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={l.heroVisual} alt={`${l.titleWhite} ${l.titleAccent}`} className="w-full h-auto" style={{ borderRadius: 10 }} />
+                <img
+                  src={l.heroVisual}
+                  alt={`${l.titleWhite} ${l.titleAccent}`}
+                  className="w-full h-auto"
+                  style={{
+                    /* el lado izquierdo de estas imagenes es casi negro:
+                       sin marco se funde con el fondo de la seccion */
+                    maskImage: 'linear-gradient(90deg, transparent 0%, #000 16%, #000 100%)',
+                    WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, #000 16%, #000 100%)',
+                  }}
+                />
               ) : (
                 <HeroVisualPlaceholder acento={cat.acento} />
               )}
