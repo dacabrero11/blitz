@@ -104,11 +104,13 @@ function Badge({ icon, label, acento }: { icon: string; label: string; acento: s
 export function CategoriaSection({ cat, index }: { cat: Categoria; index: number }) {
   const l = cat.landing
   if (!l) return null
+  const cols = Math.min(cat.items.length, 4)
+  const cardMinHeight = cols === 3 ? 226 : 200
 
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <BeamSync />
-      <div className="w-full mx-auto" style={{ maxWidth: 1560, paddingLeft: 'var(--section-px)', paddingRight: 'var(--section-px)' }}>
+      <div className="w-full mx-auto" style={{ maxWidth: 1700 }}>
         {/* ─── HERO ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center" style={{ marginBottom: 104 }}>
           <div>
@@ -194,7 +196,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
         </div>
 
         {/* ─── CARDS: 4 per row ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" style={{ marginBottom: 96 }}>
+        <div className="svc-grid" data-cols={Math.min(cat.items.length, 4)} style={{ marginBottom: 96 }}>
           {cat.items.map((item) => (
             <TiltCard
               key={item.slug}
@@ -205,7 +207,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                 borderRadius: 18,
                 padding: 1,
                 background: 'rgba(255,255,255,0.11)',
-                minHeight: 196,
+                minHeight: cardMinHeight,
               }}
             >
               {/* Light beam travelling around the border — all cards share one synced loop */}
