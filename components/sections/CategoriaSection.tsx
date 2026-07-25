@@ -108,9 +108,9 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <BeamSync />
-      <div className="container">
+      <div className="w-full mx-auto" style={{ maxWidth: 1560, paddingLeft: 'var(--section-px)', paddingRight: 'var(--section-px)' }}>
         {/* ─── HERO ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center mb-14">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center" style={{ marginBottom: 104 }}>
           <div>
             <div className="flex items-center gap-2 mb-4">
               <span className="font-display font-black" style={{ fontSize: 14, color: cat.acento }}>
@@ -194,7 +194,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
         </div>
 
         {/* ─── CARDS: 4 per row ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ marginBottom: 88 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" style={{ marginBottom: 96 }}>
           {cat.items.map((item) => (
             <TiltCard
               key={item.slug}
@@ -205,7 +205,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                 borderRadius: 18,
                 padding: 1,
                 background: 'rgba(255,255,255,0.11)',
-                minHeight: 172,
+                minHeight: 196,
               }}
             >
               {/* Light beam travelling around the border — all cards share one synced loop */}
@@ -263,8 +263,8 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                   <div
                     className="flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
                     style={{
-                      width: 38,
-                      height: 38,
+                      width: 42,
+                      height: 42,
                       background: `${cat.acento}26`,
                       border: `1px solid ${cat.acento}66`,
                       borderRadius: 11,
@@ -275,14 +275,14 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                       <path d={item.icon} />
                     </svg>
                   </div>
-                  <div className="font-display font-black uppercase mb-1.5" style={{ fontSize: 15, color: 'var(--white)', lineHeight: 1.1 }}>
+                  <div className="font-display font-black uppercase mb-1.5" style={{ fontSize: 16.5, color: 'var(--white)', lineHeight: 1.1 }}>
                     {item.nombre}
                   </div>
                   <p
                     style={{
-                      fontSize: 10.5,
+                      fontSize: 11.5,
                       color: 'var(--gray-1)',
-                      lineHeight: 1.45,
+                      lineHeight: 1.5,
                       maxWidth: '86%',
                       display: '-webkit-box',
                       WebkitLineClamp: 3,

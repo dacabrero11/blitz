@@ -24,7 +24,11 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Debe ir en @layer base: el CSS sin capa gana sobre @layer utilities de Tailwind,
+   y sin esto las utilidades de margen/padding (p-*, m-*, mb-*) quedan anuladas. */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+}
 
 html { scroll-behavior: auto; -webkit-font-smoothing: antialiased; }
 
