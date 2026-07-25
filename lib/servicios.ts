@@ -34,7 +34,30 @@ export interface ServicioItem {
   icon: string
   mockupImage?: string
   mockupPosition?: string
+  cardImage?: string
   detail?: ServicioDetail
+}
+
+export interface CategoriaFeature {
+  icon: string
+  title: string
+  desc: string
+}
+
+export interface CategoriaProcessStep {
+  icon: string
+  title: string
+  desc: string
+}
+
+export interface CategoriaLanding {
+  titleWhite: string
+  titleAccent: string
+  heroDescription: string
+  features: CategoriaFeature[]
+  miniCta?: { question: string; note: string; buttonLabel: string }
+  process: CategoriaProcessStep[]
+  ctaTitle: string
 }
 
 export interface Categoria {
@@ -43,6 +66,7 @@ export interface Categoria {
   subtitle: string
   acento: string
   count: string
+  landing?: CategoriaLanding
   items: ServicioItem[]
 }
 
@@ -133,34 +157,75 @@ export const CATEGORIAS: Categoria[] = [
   {
     nombre: 'Servicios Digitales',
     slug: 'servicios-digitales',
-    subtitle: 'Todo lo que tu negocio necesita para crecer en línea.',
-    acento: '#3B82F6',
-    count: '4 servicios',
+    subtitle: 'Tecnología e integraciones que simplifican procesos, ahorran tiempo y multiplican resultados.',
+    acento: '#E53E3E',
+    count: '8 servicios',
+    landing: {
+      titleWhite: 'Servicios de',
+      titleAccent: 'Automatización.',
+      heroDescription: 'Tecnología e integraciones que simplifican procesos, ahorran tiempo y multiplican resultados.',
+      features: [
+        { icon: 'zap', title: 'Más eficiencia', desc: 'Automatizamos tareas repetitivas.' },
+        { icon: 'trending', title: 'Más ventas', desc: 'Sistemas que convierten y fidelizan.' },
+        { icon: 'dollar', title: 'Menos costos', desc: 'Procesos optimizados y medibles.' },
+        { icon: 'shield', title: 'Más control', desc: 'Información centralizada y segura.' },
+      ],
+      process: [
+        { icon: 'search', title: 'Analizamos', desc: 'Entendemos tu negocio y objetivos.' },
+        { icon: 'edit', title: 'Diseñamos', desc: 'Creamos la estrategia y automatizaciones.' },
+        { icon: 'settings', title: 'Implementamos', desc: 'Integramos y configuramos todo para ti.' },
+        { icon: 'chart', title: 'Optimizamos', desc: 'Medimos, ajustamos y escalamos resultados.' },
+      ],
+      ctaTitle: 'Automatiza hoy. Escala mañana.',
+    },
     items: [
-      {
-        slug: 'ecommerce',
-        nombre: 'E-commerce',
-        descripcion: 'Tienda en línea completa con catálogo, carrito de compras y pagos integrados con Wompi. Lista para vender desde el día uno.',
-        icon: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
-      },
       {
         slug: 'seo-local',
         nombre: 'SEO Local',
-        descripcion: 'Posicionamiento en Google Maps y búsquedas locales. Tu negocio aparece primero cuando alguien busca tu servicio en El Salvador.',
+        descripcion: 'Posicionamos tu negocio en Google Maps y búsquedas locales para que te encuentren primero.',
         icon: 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0zM12 10a1 1 0 110-2 1 1 0 010 2z',
       },
       {
         slug: 'whatsapp-marketing',
         nombre: 'WhatsApp Marketing',
-        descripcion: 'Envío masivo de mensajes a tu lista de clientes con ofertas y promociones. Completamente legal con WhatsApp Business API.',
+        descripcion: 'Envío masivo de mensajes, listas segmentadas y automatizaciones con WhatsApp Business API.',
         icon: 'M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z',
+      },
+      {
+        slug: 'ecommerce',
+        nombre: 'E-commerce',
+        descripcion: 'Tiendas en línea completas con catálogo, carrito de compras y pagos integrados con Wompi.',
+        icon: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
       },
       {
         slug: 'erp-simple',
         nombre: 'ERP Simple',
-        descripcion: 'Sistema de inventario, ventas y facturación para negocios medianos. Control total de tu operación desde cualquier dispositivo.',
-        tag: 'Alto impacto',
+        descripcion: 'Sistema de inventario, ventas y facturación para negocios medianos. Control total desde cualquier dispositivo.',
         icon: 'M9 17H7A5 5 0 013 12v0a5 5 0 015-5h2M15 7h2a5 5 0 015 5v0a5 5 0 01-5 5h-2M8 12h8',
+      },
+      {
+        slug: 'chatbots-inteligentes',
+        nombre: 'Chatbots Inteligentes',
+        descripcion: 'Agentes que responden 24/7, califican leads y agendan citas automáticamente.',
+        icon: 'M12 8V4H8 M4,8 H20 V20 H4 Z M2 14h2 M20 14h2 M15 13v2 M9 13v2',
+      },
+      {
+        slug: 'automatizacion-marketing',
+        nombre: 'Automatización de Marketing',
+        descripcion: 'Flujos automáticos de emails, recordatorios y seguimiento para nutrir y convertir más.',
+        icon: 'M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14 M8 6v8',
+      },
+      {
+        slug: 'agendas-y-citas',
+        nombre: 'Agendas y Citas',
+        descripcion: 'Agendamiento en línea, recordatorios automáticos y sincronización con Google Calendar.',
+        icon: 'M8 2v4 M16 2v4 M3,4 H21 V22 H3 Z M3 10h18',
+      },
+      {
+        slug: 'reportes-y-dashboards',
+        nombre: 'Reportes y Dashboards',
+        descripcion: 'Dashboards en tiempo real con métricas clave. Toma decisiones con datos, no suposiciones.',
+        icon: 'M3 3v16a2 2 0 0 0 2 2h16 M18 17V9 M13 17V5 M8 17v-3',
       },
     ],
   },
@@ -169,29 +234,67 @@ export const CATEGORIAS: Categoria[] = [
     slug: 'diseno',
     subtitle: 'Tu marca, con una imagen que vende sola.',
     acento: '#8B5CF6',
-    count: '3 servicios',
+    count: '5 servicios',
+    landing: {
+      titleWhite: 'Servicios de',
+      titleAccent: 'Diseño.',
+      heroDescription: 'Diseño estratégico que comunica, conecta y convierte. Hacemos que tu marca sea imposible de ignorar.',
+      features: [
+        { icon: 'star', title: 'Diseños que impactan', desc: 'Creatividad con propósito y enfoque en resultados.' },
+        { icon: 'target', title: 'Alineado a tu marca', desc: 'Cada pieza refleja la esencia de tu negocio.' },
+        { icon: 'zap', title: 'Entrega rápida', desc: 'Procesos optimizados para cumplir siempre a tiempo.' },
+      ],
+      miniCta: {
+        question: '¿Necesitas algo personalizado?',
+        note: 'Cuéntanos tu idea y la hacemos realidad.',
+        buttonLabel: 'Hablar con Diseño →',
+      },
+      process: [
+        { icon: 'search', title: 'Entendemos', desc: 'Tu marca, objetivos y audiencia.' },
+        { icon: 'edit', title: 'Diseñamos', desc: 'Ideas creativas alineadas a tu estrategia.' },
+        { icon: 'video', title: 'Creamos', desc: 'Damos vida a cada pieza con precisión.' },
+        { icon: 'check', title: 'Entregamos', desc: 'Revisamos, ajustamos y entregamos a tiempo.' },
+      ],
+      ctaTitle: 'Diseño que no solo se ve bien, vende.',
+    },
     items: [
       {
         slug: 'identidad-de-marca',
         nombre: 'Identidad de Marca',
-        descripcion: 'Logo, paleta de colores, tipografía y manual de marca completo. Tu negocio con imagen profesional desde el día uno.',
+        descripcion: 'Creamos marcas memorables desde el nombre hasta el manual completo.',
         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
       },
       {
         slug: 'diseno-para-redes',
         nombre: 'Diseño para Redes',
-        descripcion: 'Templates para posts, stories y covers coherentes con tu marca. Tu presencia digital siempre consistente y profesional.',
+        descripcion: 'Posts, stories, covers y reels que conectan con tu audiencia y fortalecen tu marca.',
         icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
       },
       {
         slug: 'material-impreso',
         nombre: 'Material Impreso',
-        descripcion: 'Tarjetas de presentación, brochures, banners y flyers. Diseño digital que funciona también en el mundo físico.',
+        descripcion: 'Tarjetas, brochures, flyers, banners y más. Diseño que impresiona en el mundo físico.',
         icon: 'M17 17H17.01M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7l-4-4z',
+      },
+      {
+        slug: 'diseno-audiovisual',
+        nombre: 'Diseño Audiovisual',
+        descripcion: 'Edición de video, animaciones, intros y contenido que cuenta tu historia en movimiento.',
+        icon: 'm16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5 M2,6 H16 V18 H2 Z',
+      },
+      {
+        slug: 'presentaciones',
+        nombre: 'Presentaciones',
+        descripcion: 'Presentaciones que venden. Diseños profesionales que comunican valor y confianza.',
+        icon: 'M2 3h20 M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3 m7 21 5-5 5 5',
       },
     ],
   },
 ]
+
+export function getCategoriaBySlug(slug: string) {
+  return CATEGORIAS.find((c) => c.slug === slug) ?? null
+}
 
 export function getServicioBySlug(slug: string) {
   for (const cat of CATEGORIAS) {

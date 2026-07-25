@@ -127,16 +127,27 @@ function CategoriaBlock({ cat, index }: { cat: (typeof CATEGORIAS)[number]; inde
           ))}
         </div>
 
-        <a
-          href={WA_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
-          style={{ fontSize: 11.5, letterSpacing: '0.1em', color: cat.acento }}
-        >
-          <LayoutGrid size={14} />
-          Ver todos los planes
-        </a>
+        {cat.landing ? (
+          <Link
+            href={`/servicios/categoria/${cat.slug}`}
+            className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
+            style={{ fontSize: 11.5, letterSpacing: '0.1em', color: cat.acento }}
+          >
+            <LayoutGrid size={14} />
+            Ver todos los planes
+          </Link>
+        ) : (
+          <a
+            href={WA_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-75"
+            style={{ fontSize: 11.5, letterSpacing: '0.1em', color: cat.acento }}
+          >
+            <LayoutGrid size={14} />
+            Ver todos los planes
+          </a>
+        )}
       </div>
     </div>
   )
