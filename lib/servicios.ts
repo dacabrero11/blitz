@@ -189,7 +189,7 @@ export const CATEGORIAS: Categoria[] = [
     nombre: 'Servicios Digitales',
     slug: 'servicios-digitales',
     subtitle: 'Tecnología e integraciones que simplifican procesos, ahorran tiempo y multiplican resultados.',
-    acento: '#E53E3E',
+    acento: '#3B82F6',
     count: '8 servicios',
     landing: {
       titleWhite: 'Servicios de',

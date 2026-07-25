@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { TiltCard } from '@/components/ui/TiltCard'
 import {
   Zap, TrendingUp, DollarSign, Shield, Search, Edit3, Settings, BarChart3,
   Star, Target, Video, CheckCircle, ArrowRight, MessageCircle, Monitor,
@@ -40,7 +40,7 @@ function HeroVisualPlaceholder({ acento }: { acento: string }) {
         aspectRatio: '16 / 10',
         background: `radial-gradient(ellipse at 50% 45%, ${acento}18, #070707 72%)`,
         border: `1px solid ${acento}33`,
-        borderRadius: 10,
+        borderRadius: 18,
       }}
     >
       <div
@@ -88,7 +88,7 @@ function Badge({ icon, label, acento }: { icon: string; label: string; acento: s
     <div className="flex flex-col items-center gap-1.5" style={{ width: 74 }}>
       <div
         className="flex items-center justify-center"
-        style={{ width: 44, height: 44, background: 'rgba(10,10,10,0.85)', border: `1px solid ${acento}55`, borderRadius: 8 }}
+        style={{ width: 44, height: 44, background: 'rgba(10,10,10,0.85)', border: `1px solid ${acento}55`, borderRadius: 12, backdropFilter: 'blur(6px)' }}
       >
         <Ico name={icon} size={19} color={acento} />
       </div>
@@ -193,11 +193,17 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
         {/* ─── CARDS: 4 per row ─── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {cat.items.map((item) => (
-            <Link
+            <TiltCard
               key={item.slug}
               href={`/servicios/${item.slug}`}
-              className="group relative overflow-hidden flex flex-col justify-between transition-colors duration-200"
-              style={{ minHeight: 215, border: '1px solid var(--border)', background: '#0a0a0a' }}
+              accent={cat.acento}
+              className="group relative overflow-hidden flex flex-col justify-between"
+              style={{
+                minHeight: 215,
+                borderRadius: 18,
+                border: '1px solid rgba(255,255,255,0.10)',
+                background: 'rgba(10,10,10,0.55)',
+              }}
             >
               {/* Background image, bleeding to the right */}
               <div className="absolute inset-0">
@@ -207,21 +213,40 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                 ) : (
                   <CardImagePlaceholder acento={cat.acento} />
                 )}
+                {/* Frosted glass layer over the image */}
                 <div
                   className="absolute inset-0"
-                  style={{ background: 'linear-gradient(90deg, #0a0a0a 0%, rgba(10,10,10,0.96) 42%, rgba(10,10,10,0.55) 72%, rgba(10,10,10,0.25) 100%)' }}
+                  style={{
+                    backdropFilter: 'blur(2.5px)',
+                    WebkitBackdropFilter: 'blur(2.5px)',
+                    background:
+                      'linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.88) 44%, rgba(10,10,10,0.5) 74%, rgba(10,10,10,0.22) 100%)',
+                  }}
+                />
+                {/* Accent wash that grows on hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  style={{ background: `radial-gradient(ellipse at 15% 0%, ${cat.acento}1f, transparent 62%)` }}
+                />
+                {/* Glass edge highlight */}
+                <div
+                  className="absolute pointer-events-none"
+                  style={{ top: 0, left: '8%', right: '8%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)' }}
                 />
               </div>
 
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                style={{ border: `1px solid ${cat.acento}` }}
-              />
-
               <div className="relative p-5">
                 <div
-                  className="flex items-center justify-center mb-4"
-                  style={{ width: 42, height: 42, background: `${cat.acento}1f`, border: `1px solid ${cat.acento}66`, borderRadius: 8 }}
+                  className="flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-105"
+                  style={{
+                    width: 42,
+                    height: 42,
+                    background: `${cat.acento}26`,
+                    border: `1px solid ${cat.acento}66`,
+                    borderRadius: 12,
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
+                  }}
                 >
                   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d={item.icon} />
@@ -242,13 +267,23 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                 Consultar
                 <ArrowRight size={11} />
               </div>
-            </Link>
+            </TiltCard>
           ))}
         </div>
 
         {/* ─── PROCESS + CTA ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] gap-4">
-          <div className="p-7" style={{ border: '1px solid var(--border)', background: '#0a0a0a' }}>
+          <div
+            className="p-7"
+            style={{
+              borderRadius: 18,
+              border: '1px solid rgba(255,255,255,0.10)',
+              background: 'rgba(10,10,10,0.6)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
+            }}
+          >
             <p className="font-display font-bold uppercase mb-6" style={{ fontSize: 11, letterSpacing: '0.16em', color: cat.acento }}>
               Nuestro proceso
             </p>
@@ -257,7 +292,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                 <div key={step.title} className="relative flex gap-3">
                   <div
                     className="flex items-center justify-center flex-shrink-0"
-                    style={{ width: 38, height: 38, border: `1px solid ${cat.acento}66`, borderRadius: 8, background: `${cat.acento}12` }}
+                    style={{ width: 38, height: 38, border: `1px solid ${cat.acento}66`, borderRadius: 12, background: `${cat.acento}1a` }}
                   >
                     <Ico name={step.icon} size={16} color={cat.acento} />
                   </div>
@@ -280,7 +315,14 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
 
           <div
             className="p-7 flex flex-col justify-center"
-            style={{ border: `1px solid ${cat.acento}`, background: `linear-gradient(135deg, ${cat.acento}14, #0a0a0a 70%)` }}
+            style={{
+              borderRadius: 18,
+              border: `1px solid ${cat.acento}99`,
+              background: `linear-gradient(135deg, ${cat.acento}1f, rgba(10,10,10,0.75) 70%)`,
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 44px -22px ${cat.acento}66`,
+            }}
           >
             <p className="font-display font-black uppercase mb-3" style={{ fontSize: 19, color: 'var(--white)', lineHeight: 1.15 }}>
               {l.ctaTitle}
@@ -293,7 +335,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 font-display font-bold uppercase text-white px-6 py-3 transition-opacity hover:opacity-90"
-              style={{ fontSize: 12, letterSpacing: '0.05em', background: cat.acento }}
+              style={{ fontSize: 12, letterSpacing: '0.05em', background: cat.acento, borderRadius: 10 }}
             >
               Agendar llamada
               <ArrowRight size={14} />
