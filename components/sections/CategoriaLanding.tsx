@@ -126,45 +126,46 @@ export function CategoriaLandingGrid({ categoria }: { categoria: Categoria }) {
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
       <div className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {categoria.items.map((item) => (
             <Link
               key={item.slug}
               href={`/servicios/${item.slug}`}
-              className="group relative overflow-hidden flex flex-col"
-              style={{ border: '1px solid var(--border)', background: 'var(--black-2)', minHeight: 320 }}
+              className="group relative overflow-hidden flex"
+              style={{ border: '1px solid var(--border)', background: 'var(--black-2)', minHeight: 200 }}
             >
-              <div className="relative" style={{ height: 130 }}>
+              <div className="p-6 flex-1 flex flex-col justify-center" style={{ maxWidth: '58%' }}>
+                <div
+                  className="flex items-center justify-center flex-shrink-0 mb-3"
+                  style={{ width: 40, height: 40, background: `${categoria.acento}18`, border: `1px solid ${categoria.acento}55` }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={categoria.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={item.icon} />
+                  </svg>
+                </div>
+                <div className="font-display font-bold uppercase mb-2" style={{ fontSize: 15, color: 'var(--white)' }}>
+                  {item.nombre}
+                </div>
+                <p className="mb-4" style={{ fontSize: 12, color: 'var(--gray-2)', lineHeight: 1.55 }}>
+                  {item.descripcion}
+                </p>
+                <div
+                  className="inline-flex items-center gap-1.5 font-display font-bold uppercase transition-transform group-hover:translate-x-1"
+                  style={{ fontSize: 10.5, letterSpacing: '0.06em', color: categoria.acento }}
+                >
+                  Consultar
+                  <ArrowRight size={12} />
+                </div>
+              </div>
+
+              <div className="relative flex-shrink-0" style={{ width: '42%' }}>
                 {item.cardImage ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={item.cardImage} alt={item.nombre} className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
                   <CardImagePlaceholder acento={categoria.acento} />
                 )}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(0deg, var(--black-2) 0%, transparent 60%)' }} />
-              </div>
-              <div className="p-5 flex-1 flex flex-col">
-                <div
-                  className="flex items-center justify-center flex-shrink-0 mb-3"
-                  style={{ width: 38, height: 38, background: `${categoria.acento}18`, border: `1px solid ${categoria.acento}55` }}
-                >
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={categoria.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={item.icon} />
-                  </svg>
-                </div>
-                <div className="font-display font-bold uppercase mb-1.5" style={{ fontSize: 14, color: 'var(--white)' }}>
-                  {item.nombre}
-                </div>
-                <p className="flex-1" style={{ fontSize: 11.5, color: 'var(--gray-2)', lineHeight: 1.55 }}>
-                  {item.descripcion}
-                </p>
-                <div
-                  className="inline-flex items-center gap-1.5 font-display font-bold uppercase mt-4 transition-transform group-hover:translate-x-1"
-                  style={{ fontSize: 10.5, letterSpacing: '0.06em', color: categoria.acento }}
-                >
-                  Consultar
-                  <ArrowRight size={12} />
-                </div>
+                <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, var(--black-2) 0%, transparent 35%)` }} />
               </div>
             </Link>
           ))}
