@@ -150,6 +150,10 @@ body {
   0%, 100% { opacity: 0.4; }
   50%       { opacity: 1; }
 }
+@keyframes beam-rot {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
 @keyframes icon-chase {
   0%   { stroke-dashoffset: 0; }
   100% { stroke-dashoffset: -348; }
@@ -163,6 +167,7 @@ body {
 .animate-wordmark-glow { animation: wordmark-glow 3s ease-in-out infinite; }
 .animate-card-glow     { animation: card-glow-pulse 2.6s ease-in-out infinite; }
 .animate-icon-chase    { animation: icon-chase 2.8s linear infinite; }
+.animate-beam          { animation: beam-rot 6s linear infinite; }
 
 /* ─── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }

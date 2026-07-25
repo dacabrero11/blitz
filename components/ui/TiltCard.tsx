@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRef, useState, type ReactNode, type CSSProperties, type MouseEvent } from 'react'
 
-const MAX_TILT = 7 // degrees
+const MAX_TILT = 15 // degrees
 
 interface TiltCardProps {
   href: string
@@ -33,7 +33,7 @@ export function TiltCard({ href, accent, children, className, style }: TiltCardP
     const px = (e.clientX - r.left) / r.width - 0.5
     const py = (e.clientY - r.top) / r.height - 0.5
     setTransform(
-      `perspective(900px) rotateX(${(-py * MAX_TILT).toFixed(2)}deg) rotateY(${(px * MAX_TILT).toFixed(2)}deg) translateY(-5px) scale(1.02)`
+      `perspective(650px) rotateX(${(-py * MAX_TILT).toFixed(2)}deg) rotateY(${(px * MAX_TILT).toFixed(2)}deg) translateY(-10px) scale(1.04)`
     )
   }
 
@@ -59,11 +59,10 @@ export function TiltCard({ href, accent, children, className, style }: TiltCardP
         transform,
         transformStyle: 'preserve-3d',
         willChange: 'transform',
-        transition: 'transform 180ms ease-out, box-shadow 250ms ease-out, border-color 250ms ease-out',
-        borderColor: hovered ? `${accent}aa` : 'rgba(255,255,255,0.10)',
+        transition: 'transform 140ms ease-out, box-shadow 250ms ease-out',
         boxShadow: hovered
-          ? `0 22px 48px -16px ${accent}66, inset 0 1px 0 rgba(255,255,255,0.10)`
-          : '0 10px 30px -18px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06)',
+          ? `0 30px 60px -18px ${accent}80, 0 0 0 1px ${accent}55`
+          : '0 12px 32px -20px rgba(0,0,0,0.95)',
       }}
     >
       {children}

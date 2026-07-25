@@ -1,9 +1,11 @@
 import { TiltCard } from '@/components/ui/TiltCard'
+import { BeamSync } from '@/components/ui/BeamSync'
 import {
   Zap, TrendingUp, DollarSign, Shield, Search, Edit3, Settings, BarChart3,
   Star, Target, Video, CheckCircle, ArrowRight, MessageCircle, Monitor,
   Palette, Code2, Rocket, Users, CreditCard, Mail, Calendar,
 } from 'lucide-react'
+import type React from 'react'
 import type { Categoria } from '@/lib/servicios'
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
@@ -88,7 +90,7 @@ function Badge({ icon, label, acento }: { icon: string; label: string; acento: s
     <div className="flex flex-col items-center gap-1.5" style={{ width: 74 }}>
       <div
         className="flex items-center justify-center"
-        style={{ width: 44, height: 44, background: 'rgba(10,10,10,0.85)', border: `1px solid ${acento}55`, borderRadius: 12, backdropFilter: 'blur(6px)' }}
+        style={{ width: 44, height: 44, background: 'rgba(16,16,16,0.9)', border: `1px solid ${acento}55`, borderRadius: 12, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10)' }}
       >
         <Ico name={icon} size={19} color={acento} />
       </div>
@@ -105,6 +107,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
 
   return (
     <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
+      <BeamSync />
       <div className="container">
         {/* ─── HERO ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-center mb-14">
@@ -191,81 +194,113 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
         </div>
 
         {/* ─── CARDS: 4 per row ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ marginBottom: 88 }}>
           {cat.items.map((item) => (
             <TiltCard
               key={item.slug}
               href={`/servicios/${item.slug}`}
               accent={cat.acento}
-              className="group relative overflow-hidden flex flex-col justify-between"
+              className="group relative flex overflow-hidden"
               style={{
-                minHeight: 215,
                 borderRadius: 18,
-                border: '1px solid rgba(255,255,255,0.10)',
-                background: 'rgba(10,10,10,0.55)',
+                padding: 1,
+                background: 'rgba(255,255,255,0.11)',
+                minHeight: 172,
               }}
             >
-              {/* Background image, bleeding to the right */}
-              <div className="absolute inset-0">
-                {item.cardImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.cardImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                ) : (
-                  <CardImagePlaceholder acento={cat.acento} />
-                )}
-                {/* Frosted glass layer over the image */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    backdropFilter: 'blur(2.5px)',
-                    WebkitBackdropFilter: 'blur(2.5px)',
-                    background:
-                      'linear-gradient(90deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.88) 44%, rgba(10,10,10,0.5) 74%, rgba(10,10,10,0.22) 100%)',
-                  }}
-                />
-                {/* Accent wash that grows on hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                  style={{ background: `radial-gradient(ellipse at 15% 0%, ${cat.acento}1f, transparent 62%)` }}
-                />
-                {/* Glass edge highlight */}
-                <div
-                  className="absolute pointer-events-none"
-                  style={{ top: 0, left: '8%', right: '8%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent)' }}
-                />
-              </div>
+              {/* Light beam travelling around the border — all cards share one synced loop */}
+              <span
+                aria-hidden
+                className="absolute pointer-events-none animate-beam"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  width: '200%',
+                  aspectRatio: '1',
+                  background: `conic-gradient(from 0deg, transparent 0deg, transparent 268deg, ${cat.acento}55 300deg, ${cat.acento} 336deg, #ffffff 346deg, ${cat.acento} 352deg, transparent 360deg)`,
+                }}
+              />
 
-              <div className="relative p-5">
-                <div
-                  className="flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-105"
-                  style={{
-                    width: 42,
-                    height: 42,
-                    background: `${cat.acento}26`,
-                    border: `1px solid ${cat.acento}66`,
-                    borderRadius: 12,
-                    backdropFilter: 'blur(6px)',
-                    WebkitBackdropFilter: 'blur(6px)',
-                  }}
-                >
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={item.icon} />
-                  </svg>
-                </div>
-                <div className="font-display font-black uppercase mb-2" style={{ fontSize: 16, color: 'var(--white)', lineHeight: 1.1 }}>
-                  {item.nombre}
-                </div>
-                <p style={{ fontSize: 11, color: 'var(--gray-1)', lineHeight: 1.5, maxWidth: '88%' }}>
-                  {item.descripcion}
-                </p>
-              </div>
-
+              {/* Inner card — masks the beam down to a 1px ring */}
               <div
-                className="relative px-5 pb-5 inline-flex items-center gap-1.5 font-display font-bold uppercase transition-transform group-hover:translate-x-1"
-                style={{ fontSize: 10, letterSpacing: '0.08em', color: cat.acento }}
+                className="relative flex-1 flex flex-col justify-between overflow-hidden"
+                style={{ borderRadius: 17, background: '#0a0a0a' }}
               >
-                Consultar
-                <ArrowRight size={11} />
+                <div className="absolute inset-0">
+                  {item.cardImage ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={item.cardImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                  ) : (
+                    <CardImagePlaceholder acento={cat.acento} />
+                  )}
+                  {/* Readability gradient — no blur, so the image stays sharp */}
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        'linear-gradient(90deg, rgba(8,8,8,0.94) 0%, rgba(8,8,8,0.8) 46%, rgba(8,8,8,0.4) 76%, rgba(8,8,8,0.12) 100%)',
+                    }}
+                  />
+                  {/* Glass sheen */}
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background:
+                        'linear-gradient(158deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 26%, transparent 55%)',
+                    }}
+                  />
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                    style={{ background: `radial-gradient(ellipse at 12% 0%, ${cat.acento}24, transparent 60%)` }}
+                  />
+                  <div
+                    className="absolute pointer-events-none"
+                    style={{ top: 0, left: '6%', right: '6%', height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent)' }}
+                  />
+                </div>
+
+                <div className="relative px-5 pt-5">
+                  <div
+                    className="flex items-center justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
+                    style={{
+                      width: 38,
+                      height: 38,
+                      background: `${cat.acento}26`,
+                      border: `1px solid ${cat.acento}66`,
+                      borderRadius: 11,
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.14)',
+                    }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={cat.acento} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <path d={item.icon} />
+                    </svg>
+                  </div>
+                  <div className="font-display font-black uppercase mb-1.5" style={{ fontSize: 15, color: 'var(--white)', lineHeight: 1.1 }}>
+                    {item.nombre}
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 10.5,
+                      color: 'var(--gray-1)',
+                      lineHeight: 1.45,
+                      maxWidth: '86%',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                    } as React.CSSProperties}
+                  >
+                    {item.descripcion}
+                  </p>
+                </div>
+
+                <div
+                  className="relative px-5 pb-4 pt-3 inline-flex items-center gap-1.5 font-display font-bold uppercase transition-transform group-hover:translate-x-1"
+                  style={{ fontSize: 10, letterSpacing: '0.08em', color: cat.acento }}
+                >
+                  Consultar
+                  <ArrowRight size={11} />
+                </div>
               </div>
             </TiltCard>
           ))}
@@ -279,8 +314,6 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
               borderRadius: 18,
               border: '1px solid rgba(255,255,255,0.10)',
               background: 'rgba(10,10,10,0.6)',
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.06)',
             }}
           >
@@ -319,8 +352,6 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
               borderRadius: 18,
               border: `1px solid ${cat.acento}99`,
               background: `linear-gradient(135deg, ${cat.acento}1f, rgba(10,10,10,0.75) 70%)`,
-              backdropFilter: 'blur(6px)',
-              WebkitBackdropFilter: 'blur(6px)',
               boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 44px -22px ${cat.acento}66`,
             }}
           >
