@@ -220,19 +220,19 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
           aria-hidden
           className="absolute pointer-events-none animate-aurora-1"
           style={{ left: '-8%', top: '4%', width: 780, height: 780, borderRadius: '50%',
-                   background: `radial-gradient(circle, ${cat.acento}22, transparent 68%)` }}
+                   background: `radial-gradient(circle, ${cat.acento}3d, transparent 70%)` }}
         />
         <span
           aria-hidden
           className="absolute pointer-events-none animate-aurora-2"
           style={{ right: '-6%', top: '22%', width: 900, height: 900, borderRadius: '50%',
-                   background: `radial-gradient(circle, ${cat.acento}1c, transparent 66%)` }}
+                   background: `radial-gradient(circle, ${cat.acento}33, transparent 68%)` }}
         />
         <span
           aria-hidden
           className="absolute pointer-events-none animate-aurora-3"
           style={{ left: '32%', bottom: '-14%', width: 820, height: 820, borderRadius: '50%',
-                   background: `radial-gradient(circle, ${cat.acento}16, transparent 70%)` }}
+                   background: `radial-gradient(circle, ${cat.acento}2b, transparent 72%)` }}
         />
 
       <div

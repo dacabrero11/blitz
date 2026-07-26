@@ -237,12 +237,21 @@ body {
 @media (prefers-reduced-motion: reduce) { .animate-index-scan { animation: none; opacity: 0.6; } }
 
 /* ─── AURORA de fondo (lenta y tenue, color por categoria) ─── */
-@keyframes aurora-1 { 0%,100% { transform: translate3d(0,0,0) scale(1);    } 50% { transform: translate3d(9%,-7%,0) scale(1.22); } }
-@keyframes aurora-2 { 0%,100% { transform: translate3d(0,0,0) scale(1.12); } 50% { transform: translate3d(-8%,8%,0) scale(0.9);  } }
-@keyframes aurora-3 { 0%,100% { transform: translate3d(0,0,0) scale(0.95); } 50% { transform: translate3d(6%,10%,0) scale(1.18); } }
-.animate-aurora-1 { animation: aurora-1 28s ease-in-out infinite; }
-.animate-aurora-2 { animation: aurora-2 37s ease-in-out infinite; }
-.animate-aurora-3 { animation: aurora-3 32s ease-in-out infinite; }
+@keyframes aurora-1 {
+  0%,100% { transform: translate3d(0,0,0) scale(1);    opacity: 0.85; }
+  50%     { transform: translate3d(17%,-13%,0) scale(1.38); opacity: 1; }
+}
+@keyframes aurora-2 {
+  0%,100% { transform: translate3d(0,0,0) scale(1.15); opacity: 1; }
+  50%     { transform: translate3d(-15%,15%,0) scale(0.82); opacity: 0.8; }
+}
+@keyframes aurora-3 {
+  0%,100% { transform: translate3d(0,0,0) scale(0.9);  opacity: 0.9; }
+  50%     { transform: translate3d(13%,18%,0) scale(1.32); opacity: 1; }
+}
+.animate-aurora-1 { animation: aurora-1 15s ease-in-out infinite; }
+.animate-aurora-2 { animation: aurora-2 19s ease-in-out infinite; }
+.animate-aurora-3 { animation: aurora-3 17s ease-in-out infinite; }
 
 /* ─── PROCESO: luz que recorre el riel + destello de cada paso ─── */
 @keyframes proc-travel {
@@ -257,10 +266,22 @@ body {
   16%  { transform: scale(1);    box-shadow: 0 0 0 0 transparent; }
   100% { transform: scale(1);    box-shadow: 0 0 0 0 transparent; }
 }
+@keyframes proc-fill {
+  0%   { transform: scaleX(0);    opacity: 1; }
+  90%  { transform: scaleX(0.9);  opacity: 1; }
+  100% { transform: scaleX(1);    opacity: 0; }
+}
+@keyframes proc-ring {
+  0%   { transform: scale(0.75); opacity: 0.85; }
+  65%  { transform: scale(2.05); opacity: 0; }
+  100% { transform: scale(2.05); opacity: 0; }
+}
+.animate-proc-fill { animation: proc-fill 5.2s linear infinite; }
+.animate-proc-ring { animation: proc-ring 5.2s linear infinite; }
 .animate-proc-travel { animation: proc-travel 5.2s linear infinite; }
 .animate-proc-pulse  { animation: proc-pulse 5.2s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
-  .animate-proc-travel, .animate-proc-pulse { animation: none; }
+  .animate-proc-travel, .animate-proc-pulse, .animate-proc-fill, .animate-proc-ring { animation: none; }
 }
