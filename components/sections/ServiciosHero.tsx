@@ -32,12 +32,12 @@ export function ServiciosHero() {
       />
 
       <div
-        className="relative w-full mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] gap-12 lg:gap-20 items-center"
-        style={{ maxWidth: 1700 }}
+        className="relative w-full mx-auto grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_auto] gap-12 xl:gap-14 items-center"
+        style={{ maxWidth: 1250 }}
       >
         <div>
           <p className="text-label mb-3">Lo que hacemos</p>
-          <h1 className="text-d1">
+          <h1 className="text-d1" style={{ fontSize: 'clamp(50px, 9vw, 136px)' }}>
             Servicios
             <span style={{ color: 'var(--red)', display: 'block' }}>digitales.</span>
           </h1>
