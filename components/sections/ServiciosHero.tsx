@@ -11,7 +11,7 @@ export function ServiciosHero() {
         alt="Servicios digitales BLITZ"
         fill
         className="pointer-events-none"
-        style={{ objectFit: 'cover', objectPosition: 'center', filter: 'brightness(1.6) contrast(0.88)', zIndex: 0 }}
+        style={{ objectFit: 'cover', objectPosition: 'center', filter: 'brightness(1.12) contrast(1.02)', zIndex: 0 }}
         priority
       />
       <div

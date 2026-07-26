@@ -273,6 +273,7 @@ export const CATEGORIAS: Categoria[] = [
       titleWhite: 'Servicios de',
       titleAccent: 'Diseño.',
       heroDescription: 'Diseño estratégico que comunica, conecta y convierte. Hacemos que tu marca sea imposible de ignorar.',
+      heroVisual: '/servicios/hero-diseno.jpg',
       features: [
         { icon: 'star', title: 'Diseños que impactan', desc: 'Creatividad con propósito y enfoque en resultados.' },
         { icon: 'target', title: 'Alineado a tu marca', desc: 'Cada pieza refleja la esencia de tu negocio.' },

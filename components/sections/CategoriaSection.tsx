@@ -85,22 +85,6 @@ function CardImagePlaceholder({ acento }: { acento: string }) {
   )
 }
 
-function Badge({ icon, label, acento }: { icon: string; label: string; acento: string }) {
-  return (
-    <div className="flex flex-col items-center gap-1.5" style={{ width: 74 }}>
-      <div
-        className="flex items-center justify-center"
-        style={{ width: 44, height: 44, background: 'rgba(16,16,16,0.9)', border: `1px solid ${acento}55`, borderRadius: 12, boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.10)' }}
-      >
-        <Ico name={icon} size={19} color={acento} />
-      </div>
-      <span className="font-display font-bold uppercase text-center" style={{ fontSize: 8.5, letterSpacing: '0.08em', color: 'var(--gray-2)' }}>
-        {label}
-      </span>
-    </div>
-  )
-}
-
 export function CategoriaSection({ cat, index }: { cat: Categoria; index: number }) {
   const l = cat.landing
   if (!l) return null
@@ -108,12 +92,53 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
   const cardMinHeight = cols === 3 ? 226 : 200
 
   return (
-    <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
+    <section style={{ borderBottom: '1px solid var(--border-2)' }}>
       <BeamSync />
-      <div className="w-full mx-auto" style={{ maxWidth: 1700 }}>
-        {/* ─── HERO ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-10 lg:gap-14 items-center" style={{ marginBottom: 104 }}>
-          <div>
+
+      {/* ─── HERO: la imagen es el fondo, el texto va encima ─── */}
+      <div className="relative overflow-hidden" style={{ background: '#080808' }}>
+        {l.heroVisual ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={l.heroVisual}
+            alt={`${l.titleWhite} ${l.titleAccent}`}
+            className="absolute inset-0 w-full h-full"
+            style={{ objectFit: 'cover', objectPosition: 'right center', zIndex: 0 }}
+          />
+        ) : (
+          <div className="absolute inset-0" style={{ zIndex: 0 }}>
+            <HeroVisualPlaceholder acento={cat.acento} />
+          </div>
+        )}
+
+        {/* velos para que el texto se lea sobre la imagen */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            zIndex: 1,
+            background: 'linear-gradient(90deg, rgba(8,8,8,0.96) 0%, rgba(8,8,8,0.9) 32%, rgba(8,8,8,0.45) 62%, rgba(8,8,8,0.12) 100%)',
+          }}
+        />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 1, background: 'linear-gradient(0deg, rgba(8,8,8,0.85) 0%, transparent 34%)' }}
+        />
+
+        <div
+          className="relative w-full mx-auto"
+          style={{
+            zIndex: 2,
+            maxWidth: 1700,
+            minHeight: 520,
+            display: 'flex',
+            alignItems: 'center',
+            paddingTop: 'var(--section-py)',
+            paddingBottom: 'var(--section-py)',
+            paddingLeft: 'var(--section-px)',
+            paddingRight: 'var(--section-px)',
+          }}
+        >
+          <div style={{ maxWidth: 560 }}>
             <div className="flex items-center gap-2 mb-4">
               <span className="font-display font-black" style={{ fontSize: 14, color: cat.acento }}>
                 {String(index + 1).padStart(2, '0')} /
@@ -149,7 +174,10 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
             </div>
 
             {l.miniCta && (
-              <div className="flex items-center justify-between gap-4 p-4 flex-wrap mt-8" style={{ border: `1px solid ${cat.acento}55`, background: `${cat.acento}0d` }}>
+              <div
+                className="flex items-center justify-between gap-4 p-4 flex-wrap mt-8"
+                style={{ border: `1px solid ${cat.acento}55`, background: 'rgba(10,10,10,0.6)', borderRadius: 12 }}
+              >
                 <div className="flex items-center gap-3">
                   <MessageCircle size={18} color={cat.acento} />
                   <div>
@@ -162,49 +190,27 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-display font-bold uppercase flex-shrink-0 px-4 py-2 transition-opacity hover:opacity-85"
-                  style={{ fontSize: 10.5, color: '#fff', background: cat.acento }}
+                  style={{ fontSize: 10.5, color: '#fff', background: cat.acento, borderRadius: 8 }}
                 >
                   {l.miniCta.buttonLabel}
                 </a>
               </div>
             )}
           </div>
-
-          {/* Visual + badges */}
-          <div className="flex items-center gap-4">
-            {l.heroBadgesLeft && (
-              <div className="hidden xl:flex flex-col gap-5 flex-shrink-0">
-                {l.heroBadgesLeft.map((b) => <Badge key={b.label} {...b} acento={cat.acento} />)}
-              </div>
-            )}
-
-            <div className="flex-1 min-w-0">
-              {l.heroVisual ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={l.heroVisual}
-                  alt={`${l.titleWhite} ${l.titleAccent}`}
-                  className="w-full h-auto"
-                  style={{
-                    /* el lado izquierdo de estas imagenes es casi negro:
-                       sin marco se funde con el fondo de la seccion */
-                    maskImage: 'linear-gradient(90deg, transparent 0%, #000 16%, #000 100%)',
-                    WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, #000 16%, #000 100%)',
-                  }}
-                />
-              ) : (
-                <HeroVisualPlaceholder acento={cat.acento} />
-              )}
-            </div>
-
-            {l.heroBadgesRight && (
-              <div className="hidden xl:flex flex-col gap-5 flex-shrink-0">
-                {l.heroBadgesRight.map((b) => <Badge key={b.label} {...b} acento={cat.acento} />)}
-              </div>
-            )}
-          </div>
         </div>
+      </div>
 
+      {/* ─── CONTENIDO ─── */}
+      <div
+        className="w-full mx-auto"
+        style={{
+          maxWidth: 1700,
+          paddingTop: 'var(--section-py)',
+          paddingBottom: 'var(--section-py)',
+          paddingLeft: 'var(--section-px)',
+          paddingRight: 'var(--section-px)',
+        }}
+      >
         {/* ─── CARDS: 4 per row ─── */}
         <div className="svc-grid" data-cols={Math.min(cat.items.length, 4)} style={{ marginBottom: 96 }}>
           {cat.items.map((item) => (
