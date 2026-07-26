@@ -224,10 +224,14 @@ body {
 
 /* ─── Indice de categorias del hero de servicios ─── */
 @keyframes index-scan {
-  0%        { top: 0%;   opacity: 0; }
-  12%       { opacity: 1; }
-  88%       { opacity: 1; }
-  100%      { top: 100%; opacity: 0; }
+  0%   { top: 0%;   opacity: 0; background: var(--idx-c1); box-shadow: 0 0 14px 3px var(--idx-g1); }
+  10%  { opacity: 1; }
+  30%  { background: var(--idx-c1); box-shadow: 0 0 14px 3px var(--idx-g1); }
+  38%  { background: var(--idx-c2); box-shadow: 0 0 14px 3px var(--idx-g2); }
+  63%  { background: var(--idx-c2); box-shadow: 0 0 14px 3px var(--idx-g2); }
+  71%  { background: var(--idx-c3); box-shadow: 0 0 14px 3px var(--idx-g3); }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; background: var(--idx-c3); box-shadow: 0 0 14px 3px var(--idx-g3); }
 }
-.animate-index-scan { animation: index-scan 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.animate-index-scan { animation: index-scan 4.6s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .animate-index-scan { animation: none; opacity: 0.6; } }
