@@ -92,7 +92,15 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
   const cardMinHeight = cols === 3 ? 226 : 200
 
   return (
-    <section style={{ borderBottom: '1px solid var(--border-2)', background: '#080808', paddingTop: 76 }}>
+    <section
+      id={cat.slug}
+      style={{
+        borderBottom: '1px solid var(--border-2)',
+        background: '#080808',
+        paddingTop: 76,
+        scrollMarginTop: 'calc(var(--nav-h) + 16px)',
+      }}
+    >
       <BeamSync />
 
       {/* ─── HERO: la imagen es el fondo, el texto va encima ─── */}

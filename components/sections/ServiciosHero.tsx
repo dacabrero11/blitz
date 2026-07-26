@@ -1,3 +1,5 @@
+import { CategoriaIndex } from '@/components/ui/CategoriaIndex'
+
 export function ServiciosHero() {
   return (
     <section
@@ -29,15 +31,22 @@ export function ServiciosHero() {
         style={{ height: 120, background: 'linear-gradient(0deg, #080808, transparent)' }}
       />
 
-      <div className="relative w-full mx-auto" style={{ maxWidth: 1700 }}>
-        <p className="text-label mb-3">Lo que hacemos</p>
-        <h1 className="text-d1">
-          Servicios
-          <span style={{ color: 'var(--red)', display: 'block' }}>digitales.</span>
-        </h1>
-        <p className="mt-5" style={{ color: 'var(--gray-1)', fontSize: 14.5, lineHeight: 1.75, maxWidth: 520 }}>
-          Desde agentes de IA hasta identidad de marca. Todo lo que tu negocio necesita para crecer digitalmente — en un solo lugar.
-        </p>
+      <div
+        className="relative w-full mx-auto grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] gap-12 lg:gap-20 items-center"
+        style={{ maxWidth: 1700 }}
+      >
+        <div>
+          <p className="text-label mb-3">Lo que hacemos</p>
+          <h1 className="text-d1">
+            Servicios
+            <span style={{ color: 'var(--red)', display: 'block' }}>digitales.</span>
+          </h1>
+          <p className="mt-5" style={{ color: 'var(--gray-1)', fontSize: 14.5, lineHeight: 1.75, maxWidth: 520 }}>
+            Desde agentes de IA hasta identidad de marca. Todo lo que tu negocio necesita para crecer digitalmente — en un solo lugar.
+          </p>
+        </div>
+
+        <CategoriaIndex />
       </div>
     </section>
   )

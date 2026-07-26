@@ -221,3 +221,13 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-cta-breathe, .animate-bolt-flash, .animate-bolt-glow, .animate-beam { animation: none; }
 }
+
+/* ─── Indice de categorias del hero de servicios ─── */
+@keyframes index-scan {
+  0%        { top: 0%;   opacity: 0; }
+  12%       { opacity: 1; }
+  88%       { opacity: 1; }
+  100%      { top: 100%; opacity: 0; }
+}
+.animate-index-scan { animation: index-scan 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@media (prefers-reduced-motion: reduce) { .animate-index-scan { animation: none; opacity: 0.6; } }
