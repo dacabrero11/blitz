@@ -235,3 +235,32 @@ body {
 }
 .animate-index-scan { animation: index-scan 4.6s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .animate-index-scan { animation: none; opacity: 0.6; } }
+
+/* ─── AURORA de fondo (lenta y tenue, color por categoria) ─── */
+@keyframes aurora-1 { 0%,100% { transform: translate3d(0,0,0) scale(1);    } 50% { transform: translate3d(9%,-7%,0) scale(1.22); } }
+@keyframes aurora-2 { 0%,100% { transform: translate3d(0,0,0) scale(1.12); } 50% { transform: translate3d(-8%,8%,0) scale(0.9);  } }
+@keyframes aurora-3 { 0%,100% { transform: translate3d(0,0,0) scale(0.95); } 50% { transform: translate3d(6%,10%,0) scale(1.18); } }
+.animate-aurora-1 { animation: aurora-1 28s ease-in-out infinite; }
+.animate-aurora-2 { animation: aurora-2 37s ease-in-out infinite; }
+.animate-aurora-3 { animation: aurora-3 32s ease-in-out infinite; }
+
+/* ─── PROCESO: luz que recorre el riel + destello de cada paso ─── */
+@keyframes proc-travel {
+  0%   { left: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+@keyframes proc-pulse {
+  /* el destello arranca en 0% para coincidir exacto con el paso de la luz */
+  0%   { transform: scale(1.16); box-shadow: 0 0 18px 4px var(--proc-glow); }
+  16%  { transform: scale(1);    box-shadow: 0 0 0 0 transparent; }
+  100% { transform: scale(1);    box-shadow: 0 0 0 0 transparent; }
+}
+.animate-proc-travel { animation: proc-travel 5.2s linear infinite; }
+.animate-proc-pulse  { animation: proc-pulse 5.2s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
+  .animate-proc-travel, .animate-proc-pulse { animation: none; }
+}

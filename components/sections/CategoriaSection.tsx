@@ -1,5 +1,6 @@
 import { TiltCard } from '@/components/ui/TiltCard'
 import { BeamSync } from '@/components/ui/BeamSync'
+import { ProcesoFlow } from '@/components/ui/ProcesoFlow'
 import {
   Zap, TrendingUp, DollarSign, Shield, Search, Edit3, Settings, BarChart3,
   Star, Target, Video, CheckCircle, ArrowRight, MessageCircle, Monitor,
@@ -213,8 +214,29 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
       </div>
 
       {/* ─── CONTENIDO ─── */}
+      <div className="relative overflow-hidden">
+        {/* aurora: resplandores lentos con el color de la categoria */}
+        <span
+          aria-hidden
+          className="absolute pointer-events-none animate-aurora-1"
+          style={{ left: '-8%', top: '4%', width: 780, height: 780, borderRadius: '50%',
+                   background: `radial-gradient(circle, ${cat.acento}22, transparent 68%)` }}
+        />
+        <span
+          aria-hidden
+          className="absolute pointer-events-none animate-aurora-2"
+          style={{ right: '-6%', top: '22%', width: 900, height: 900, borderRadius: '50%',
+                   background: `radial-gradient(circle, ${cat.acento}1c, transparent 66%)` }}
+        />
+        <span
+          aria-hidden
+          className="absolute pointer-events-none animate-aurora-3"
+          style={{ left: '32%', bottom: '-14%', width: 820, height: 820, borderRadius: '50%',
+                   background: `radial-gradient(circle, ${cat.acento}16, transparent 70%)` }}
+        />
+
       <div
-        className="w-full mx-auto"
+        className="relative w-full mx-auto"
         style={{
           maxWidth: 1700,
           paddingTop: 'var(--section-py)',
@@ -350,30 +372,14 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
             <p className="font-display font-bold uppercase mb-6" style={{ fontSize: 11, letterSpacing: '0.16em', color: cat.acento }}>
               Nuestro proceso
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {l.process.map((step, i) => (
-                <div key={step.title} className="relative flex gap-3">
-                  <div
-                    className="flex items-center justify-center flex-shrink-0"
-                    style={{ width: 38, height: 38, border: `1px solid ${cat.acento}66`, borderRadius: 12, background: `${cat.acento}1a` }}
-                  >
-                    <Ico name={step.icon} size={16} color={cat.acento} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="font-display font-black mb-0.5" style={{ fontSize: 11, color: cat.acento }}>
-                      {String(i + 1).padStart(2, '0')}
-                    </div>
-                    <div className="font-display font-bold uppercase mb-1" style={{ fontSize: 11.5, color: 'var(--white)' }}>
-                      {step.title}
-                    </div>
-                    <p style={{ fontSize: 10.5, color: 'var(--gray-2)', lineHeight: 1.45 }}>{step.desc}</p>
-                  </div>
-                  {i < l.process.length - 1 && (
-                    <ArrowRight size={13} color={cat.acento} className="hidden lg:block absolute" style={{ right: -16, top: 12, opacity: 0.6 }} />
-                  )}
-                </div>
-              ))}
-            </div>
+            <ProcesoFlow
+              acento={cat.acento}
+              steps={l.process.map((step) => ({
+                icon: <Ico name={step.icon} size={16} color={cat.acento} />,
+                title: step.title,
+                desc: step.desc,
+              }))}
+            />
           </div>
 
           <div
@@ -403,6 +409,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
             </a>
           </div>
         </div>
+      </div>
       </div>
     </section>
   )
