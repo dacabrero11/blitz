@@ -92,7 +92,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
   const cardMinHeight = cols === 3 ? 226 : 200
 
   return (
-    <section style={{ borderBottom: '1px solid var(--border-2)' }}>
+    <section style={{ borderBottom: '1px solid var(--border-2)', background: '#080808', paddingTop: 76 }}>
       <BeamSync />
 
       {/* ─── HERO: la imagen es el fondo, el texto va encima ─── */}
@@ -103,7 +103,7 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
             src={l.heroVisual}
             alt={`${l.titleWhite} ${l.titleAccent}`}
             className="absolute inset-0 w-full h-full"
-            style={{ objectFit: 'cover', objectPosition: 'right center', zIndex: 0 }}
+            style={{ objectFit: 'cover', objectPosition: l.heroVisualPosition ?? 'right center', zIndex: 0 }}
           />
         ) : (
           <div className="absolute inset-0" style={{ zIndex: 0 }}>
@@ -121,7 +121,11 @@ export function CategoriaSection({ cat, index }: { cat: Categoria; index: number
         />
         <div
           className="absolute inset-0 pointer-events-none"
-          style={{ zIndex: 1, background: 'linear-gradient(0deg, rgba(8,8,8,0.85) 0%, transparent 34%)' }}
+          style={{ zIndex: 1, background: 'linear-gradient(0deg, #080808 0%, rgba(8,8,8,0.7) 12%, transparent 40%)' }}
+        />
+        <div
+          className="absolute inset-x-0 top-0 pointer-events-none"
+          style={{ zIndex: 1, height: 90, background: 'linear-gradient(180deg, #080808, transparent)' }}
         />
 
         <div

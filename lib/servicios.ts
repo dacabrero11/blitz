@@ -63,6 +63,7 @@ export interface CategoriaLanding {
   heroBadgesLeft?: CategoriaBadge[]
   heroBadgesRight?: CategoriaBadge[]
   heroVisual?: string
+  heroVisualPosition?: string
   miniCta?: { question: string; note: string; buttonLabel: string }
   process: CategoriaProcessStep[]
   ctaTitle: string
@@ -209,6 +210,7 @@ export const CATEGORIAS: Categoria[] = [
         { icon: 'chart', title: 'Optimizamos', desc: 'Medimos, ajustamos y escalamos resultados.' },
       ],
       heroVisual: '/servicios/hero-automatizacion.jpg',
+      heroVisualPosition: 'right top',
       ctaTitle: 'Automatiza hoy. Escala mañana.',
       ctaSubtitle: 'Agenda una consultoría gratuita y descubre cómo podemos ayudarte.',
     },
