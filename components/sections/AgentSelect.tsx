@@ -228,6 +228,10 @@ export function AgentSelect() {
 
   const isDesktop = useMediaQuery('(min-width: 1024px)')
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
+  /* Portátiles de 768–800px de alto: la ficha del operador es más alta que
+     el escenario y empuja el roster fuera de pantalla. En esos casos se
+     compactan paddings y tipografía en vez de encoger las cards. */
+  const short = useMediaQuery('(max-height: 880px)')
   const rich = isDesktop && !reduced
 
   const agent = AGENTS[active]
@@ -475,7 +479,7 @@ export function AgentSelect() {
 
       <div
         className="relative flex flex-col"
-        style={{ zIndex: 5, minHeight: 'calc(100svh - var(--nav-h))', padding: 'clamp(20px,3vw,40px) var(--section-px) 0' }}
+        style={{ zIndex: 5, minHeight: 'calc(100svh - var(--nav-h))', padding: `${short ? 16 : 40}px var(--section-px) 0` }}
       >
         <div
           className="w-full mx-auto flex-1 grid items-center gap-x-8"
@@ -544,7 +548,7 @@ export function AgentSelect() {
           <div
             ref={stageRef}
             className="relative flex items-end justify-center"
-            style={{ height: isDesktop ? 'min(60vh, 560px)' : 'min(44vh, 380px)', marginTop: isDesktop ? 0 : 24 }}
+            style={{ height: isDesktop ? (short ? 'min(40vh, 330px)' : 'min(42vh, 400px)') : 'min(38vh, 330px)', marginTop: isDesktop ? 0 : 24 }}
           >
             {/* Encuadre HUD */}
             <div className="absolute pointer-events-none" style={{ inset: '-2% 6% 4% 6%' }}>
@@ -768,10 +772,10 @@ export function AgentSelect() {
                 </span>
               </div>
 
-              <div style={{ height: 1, background: `linear-gradient(90deg, ${accent}, transparent)`, margin: '18px 0 20px', transition: 'background 500ms ease' }} />
+              <div style={{ height: 1, background: `linear-gradient(90deg, ${accent}, transparent)`, margin: short ? '11px 0 12px' : '18px 0 20px', transition: 'background 500ms ease' }} />
 
               {/* Lema en tres tiempos */}
-              <div className="font-display font-black uppercase" style={{ fontSize: 'clamp(20px,2vw,27px)', lineHeight: 1.08 }}>
+              <div className="font-display font-black uppercase" style={{ fontSize: short ? 'clamp(17px,1.6vw,21px)' : 'clamp(20px,2vw,27px)', lineHeight: 1.08 }}>
                 {taglineLines.map((line, i) => (
                   <div
                     key={line}
@@ -786,17 +790,18 @@ export function AgentSelect() {
                 ))}
               </div>
 
-              <p className="mt-5" style={{ color: 'var(--gray-1)', fontSize: 14, maxWidth: 330, marginInline: isDesktop ? undefined : 'auto' }}>
+              <p style={{ marginTop: short ? 10 : 20, color: 'var(--gray-1)', fontSize: short ? 13 : 14, lineHeight: 1.5, maxWidth: 330, marginInline: isDesktop ? undefined : 'auto' }}>
                 {agent.description}
               </p>
 
               <Link
                 href={`/agentes/${agent.id}`}
-                className="btn-clip inline-flex items-center gap-2.5 font-display font-bold uppercase mt-7"
+                className="btn-clip inline-flex items-center gap-2.5 font-display font-bold uppercase"
                 style={{
+                  marginTop: short ? 14 : 28,
                   background: accent,
                   color: '#fff',
-                  padding: '14px 26px',
+                  padding: short ? '11px 22px' : '14px 26px',
                   fontSize: 13,
                   letterSpacing: '0.13em',
                   transition: 'background 500ms ease, box-shadow 260ms ease, transform 260ms var(--ease-out)',
@@ -844,7 +849,7 @@ export function AgentSelect() {
         {/* ── Fila de cards ───────────────────────────────────────── */}
         <div
           className="w-full mx-auto"
-          style={{ maxWidth: 1500, marginTop: 'clamp(20px,3vh,38px)', ...(ready ? reveal(260) : { opacity: 0 }) }}
+          style={{ maxWidth: 1500, marginTop: short ? 14 : 'clamp(20px,3vh,38px)', ...(ready ? reveal(260) : { opacity: 0 }) }}
         >
           <div
             className="flex gap-3 lg:grid"
@@ -867,8 +872,12 @@ export function AgentSelect() {
                   aria-current={on}
                   className="group relative overflow-hidden shrink-0 lg:shrink text-left"
                   style={{
-                    width: isDesktop ? '100%' : 148,
-                    height: isDesktop ? 'clamp(150px, 19vh, 205px)' : 168,
+                    width: isDesktop ? '100%' : 176,
+                    // 5/6 es la proporción exacta de los roster-*.jpg, así que
+                    // object-cover no recorta nada. El tope de alto evita que en
+                    // pantallas anchas y bajas las cards empujen al HUD fuera.
+                    aspectRatio: '5 / 6',
+                    maxHeight: isDesktop ? (short ? 'min(31vh, 260px)' : 'min(34vh, 340px)') : undefined,
                     scrollSnapAlign: 'center',
                     border: `1px solid ${on ? accent : 'var(--border)'}`,
                     background: '#0a0a0a',
@@ -883,14 +892,17 @@ export function AgentSelect() {
                     if (!on) e.currentTarget.style.transform = 'translateY(0)'
                   }}
                 >
-                  {a.cardImage && (
+                  {(a.rosterImage ?? a.cardImage) && (
                     <Image
-                      src={a.cardImage}
+                      src={(a.rosterImage ?? a.cardImage)!}
                       alt=""
                       fill
-                      sizes="(max-width: 1023px) 150px, 18vw"
+                      sizes="(max-width: 1023px) 180px, 20vw"
                       className="object-cover"
                       style={{
+                        // Cuando el tope de alto obliga a recortar, que se pierda
+                        // torso y no cabeza
+                        objectPosition: 'center 28%',
                         filter: on ? 'saturate(1.15) brightness(0.95)' : 'grayscale(0.75) brightness(0.5)',
                         transform: on ? 'scale(1.05)' : 'scale(1)',
                         transition: 'filter 450ms ease, transform 600ms var(--ease-out)',
@@ -900,7 +912,7 @@ export function AgentSelect() {
                   <span
                     aria-hidden
                     className="absolute inset-0"
-                    style={{ background: 'linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.1) 40%, rgba(8,8,8,0.94) 100%)' }}
+                    style={{ background: 'linear-gradient(180deg, rgba(8,8,8,0.5) 0%, transparent 32%, rgba(8,8,8,0.55) 68%, rgba(8,8,8,0.95) 100%)' }}
                   />
 
                   {/* Barra de energía recorriendo la card activa */}
@@ -934,13 +946,13 @@ export function AgentSelect() {
                     {a.unitCode}
                   </span>
 
-                  <span className="absolute" style={{ left: 10, right: 10, bottom: 9 }}>
-                    <span className="block font-display font-black uppercase" style={{ fontSize: 17, lineHeight: 1 }}>
+                  <span className="absolute" style={{ left: 12, right: 12, bottom: 12 }}>
+                    <span className="block font-display font-black uppercase" style={{ fontSize: 20, lineHeight: 1 }}>
                       {a.name}
                     </span>
                     <span
                       className="block font-display font-bold uppercase mt-1"
-                      style={{ fontSize: 9, letterSpacing: '0.12em', color: on ? accent : 'var(--gray-1)', transition: 'color 380ms ease' }}
+                      style={{ fontSize: 10, letterSpacing: '0.12em', color: on ? accent : 'var(--gray-1)', transition: 'color 380ms ease' }}
                     >
                       {a.role}
                     </span>
@@ -954,7 +966,7 @@ export function AgentSelect() {
         {/* ── Barra HUD inferior ──────────────────────────────────── */}
         <div
           className="w-full mx-auto flex items-center gap-3"
-          style={{ maxWidth: 1500, padding: 'clamp(14px,2vh,22px) 0 clamp(16px,2.4vh,26px)' }}
+          style={{ maxWidth: 1500, padding: short ? '10px 0 12px' : 'clamp(14px,2vh,22px) 0 clamp(16px,2.4vh,26px)' }}
           aria-hidden
         >
           <span style={{ flex: 1, height: 1, background: `linear-gradient(90deg, transparent, ${accent}55)`, transition: 'background 500ms ease' }} />
