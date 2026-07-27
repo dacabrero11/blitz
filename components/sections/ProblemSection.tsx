@@ -1,86 +1,313 @@
+'use client'
+
 import Image from 'next/image'
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
+import { AlertTriangle, ArrowRight, ArrowDown } from 'lucide-react'
 
 const PROBLEMS = [
-  { n: '01', icon: '/icons/icon-x.png', title: 'Tu negocio cierra. La competencia no.', desc: 'Mientras duermes, un cliente pregunta por WhatsApp y nadie responde. Lo atendió otra empresa.' },
-  { n: '02', icon: '/icons/icon-globe.png', title: 'Una página web estática no vende.', desc: 'Tener presencia digital no es suficiente. Necesitas una web que convierta visitantes en clientes reales.' },
-  { n: '03', icon: '/icons/icon-user.png', title: 'Contratar personal es caro y lento.', desc: 'Un agente de IA hace el trabajo de 3 empleados a una fracción del costo, sin renunciar los lunes.' },
-  { n: '04', icon: '/icons/icon-barchart.png', title: 'No sabes qué pasa con tus datos.', desc: 'Sin análisis en tiempo real, tomas decisiones a ciegas. Tus competidores ya saben lo que tú ignoras.' },
+  { n: '01', icon: '/icons/icon-x.png', title: 'Tu negocio cierra. La competencia no.', desc: 'Mientras duermes, un cliente pregunta por WhatsApp y nadie responde. Lo atendió otra empresa.', impacto: 'Impacto en ventas' },
+  { n: '02', icon: '/icons/icon-globe.png', title: 'Una página web estática no vende.', desc: 'Tener presencia digital no es suficiente. Necesitas una web que convierta visitantes en clientes reales.', impacto: 'Impacto en crecimiento' },
+  { n: '03', icon: '/icons/icon-user.png', title: 'Contratar personal es caro y lento.', desc: 'Un agente de IA hace el trabajo de 3 empleados a una fracción del costo, sin renunciar los lunes.', impacto: 'Impacto en costos' },
+  { n: '04', icon: '/icons/icon-barchart.png', title: 'No sabes qué pasa con tus datos.', desc: 'Sin análisis en tiempo real, tomas decisiones a ciegas. Tus competidores ya saben lo que tú ignoras.', impacto: 'Impacto en decisiones' },
 ]
 
+const CHEQUEOS = ['Web analysis', 'Communications', 'Process review', 'Data intelligence']
+
+const ROJO = '#E53E3E'
+
+/* Divide un titulo para pintar el punto final en rojo */
+function TituloConPunto({ texto }: { texto: string }) {
+  const sinPunto = texto.replace(/\.$/, '')
+  return (
+    <>
+      {sinPunto}
+      <span style={{ color: ROJO }}>.</span>
+    </>
+  )
+}
+
+function Radar() {
+  return (
+    <div
+      className="relative flex-shrink-0 overflow-hidden"
+      style={{ width: 128, height: 96, border: `1px solid ${ROJO}44`, background: 'rgba(8,8,8,0.6)' }}
+    >
+      <svg viewBox="0 0 128 96" className="absolute inset-0" width="128" height="96">
+        {[16, 30, 44].map((r) => (
+          <ellipse key={r} cx="64" cy="88" rx={r * 1.35} ry={r} fill="none" stroke={`${ROJO}33`} strokeWidth="1" />
+        ))}
+        <line x1="64" y1="88" x2="64" y2="24" stroke={`${ROJO}26`} strokeWidth="1" />
+        <line x1="4" y1="88" x2="124" y2="88" stroke={`${ROJO}26`} strokeWidth="1" />
+        <circle cx="86" cy="62" r="1.8" fill={ROJO} />
+        <circle cx="44" cy="70" r="1.5" fill={ROJO} />
+        <circle cx="72" cy="46" r="1.5" fill={ROJO} />
+      </svg>
+      <div
+        className="absolute animate-radar-sweep"
+        style={{
+          left: '50%', bottom: -60, width: 120, height: 120, marginLeft: -60,
+          transformOrigin: 'center',
+          background: `conic-gradient(from 0deg, ${ROJO}66, transparent 55deg)`,
+        }}
+      />
+    </div>
+  )
+}
+
 export function ProblemSection() {
+  const panelRef = useRef<HTMLDivElement>(null)
+  const [pct, setPct] = useState(0)
+  const [arrancado, setArrancado] = useState(false)
+
+  /* El escaneo corre cuando el panel entra en pantalla */
+  useEffect(() => {
+    const el = panelRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setArrancado(true)
+          io.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (!arrancado) return
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) {
+      setPct(100)
+      return
+    }
+    let n = 0
+    const id = setInterval(() => {
+      n += 2
+      setPct(n)
+      if (n >= 100) clearInterval(id)
+    }, 26)
+    return () => clearInterval(id)
+  }, [arrancado])
+
+  const listos = Math.min(CHEQUEOS.length, Math.floor((pct / 100) * (CHEQUEOS.length + 0.5)))
+
   return (
     <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)', background: '#050505' }}>
-      <Image
-        src="/hero-bg.jpg"
-        alt=""
-        fill
-        className="pointer-events-none"
-        style={{ objectFit: 'cover', objectPosition: 'center 20%', zIndex: 0, opacity: 0.55 }}
-      />
+      <Image src="/hero-bg.jpg" alt="" fill className="pointer-events-none" style={{ objectFit: 'cover', objectPosition: 'center 20%', zIndex: 0, opacity: 0.4 }} />
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(229,62,62,0.16), transparent 70%)', zIndex: 1 }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, #050505 0%, rgba(5,5,5,0.94) 35%, rgba(5,5,5,0.75) 70%, rgba(5,5,5,0.55) 100%)', zIndex: 1 }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, #050505 0%, rgba(5,5,5,0.95) 40%, rgba(5,5,5,0.8) 100%)', zIndex: 1 }} />
 
       <div className="container relative" style={{ zIndex: 3 }}>
-        {/* Header: "///" mark + label + line */}
-        <div className="flex items-center gap-3 mb-10">
-          <div className="flex items-end gap-[3px] flex-shrink-0">
-            {[0, 1, 2].map((i) => (
-              <span key={i} style={{ width: 4, height: 15 - i * 3, background: 'var(--red)', transform: 'skewX(-18deg)' }} />
-            ))}
-          </div>
-          <span className="text-label whitespace-nowrap" style={{ letterSpacing: '0.15em' }}>El problema</span>
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(229,62,62,0.5), rgba(229,62,62,0.08))' }} />
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-10 lg:gap-14">
+          {/* ── Columna izquierda: titulo + diagnostico ── */}
+          <div>
+            <p className="text-label mb-3">El problema</p>
+            <h2 className="text-d2 mb-5">
+              Tu negocio tiene
+              <span style={{ color: ROJO, display: 'block' }}>fugas.</span>
+            </h2>
+            <p className="mb-8" style={{ fontSize: 14, color: 'var(--gray-1)', lineHeight: 1.75, maxWidth: 430 }}>
+              Mientras tú te enfocas en crecer, estos problemas están frenando tus resultados todos los días.
+            </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {PROBLEMS.map(({ n, icon, title, desc }, i) => (
-            <div
-              key={n}
-              className="relative p-7 sm:p-8"
-              style={{
-                background: 'rgba(6,6,6,0.82)',
-                border: '1px solid rgba(229,62,62,0.28)',
-                backdropFilter: 'blur(4px)',
-                clipPath: 'polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%)',
-              }}
-            >
-              {/* Glowing top accent — animated pulse, staggered per card */}
-              <div
-                className="absolute pointer-events-none animate-card-glow"
-                style={{ top: -1, left: '50%', transform: 'translateX(-50%)', width: '55%', height: 2, background: 'linear-gradient(90deg, transparent, var(--red), transparent)', animationDelay: `${i * 0.4}s` }}
-              />
-              <div
-                className="absolute pointer-events-none animate-card-glow"
-                style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 140, height: 24, background: 'radial-gradient(ellipse at center, rgba(229,62,62,0.55), transparent 72%)', filter: 'blur(4px)', animationDelay: `${i * 0.4}s` }}
-              />
-
-              {/* Icon badge — exact PNG provided (octagon + border + glow baked in) */}
-              <div className="absolute" style={{ top: 16, right: 16, width: 60, height: 60 }}>
-                <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
-                {/* Traveling light chasing the octagon border, looping */}
-                <svg
-                  viewBox="0 0 100 100"
-                  className="absolute inset-0 animate-icon-chase pointer-events-none"
-                  style={{ animationDelay: `${i * 0.35}s`, filter: 'drop-shadow(0 0 4px rgba(255,90,90,0.9)) drop-shadow(0 0 8px rgba(229,62,62,0.6))' }}
-                >
-                  <polygon
-                    points="20,1 80,1 99,20 99,80 80,99 20,99 1,80 1,20"
-                    fill="none"
-                    stroke="#ff8080"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeDasharray="55 292"
-                  />
-                </svg>
+            {/* Ventana de diagnostico */}
+            <div ref={panelRef} style={{ border: `1px solid ${ROJO}40`, background: 'rgba(8,8,8,0.82)' }}>
+              <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: `1px solid ${ROJO}2b`, background: 'rgba(229,62,62,0.06)' }}>
+                <div className="flex items-center gap-2">
+                  <span className="font-display font-black" style={{ fontSize: 11, color: ROJO, letterSpacing: '0.06em' }}>///</span>
+                  <span className="font-display font-bold uppercase" style={{ fontSize: 10.5, letterSpacing: '0.12em', color: 'var(--gray-1)' }}>
+                    Sistema de diagnóstico BLITZ
+                  </span>
+                </div>
+                <div className="flex items-center gap-2" style={{ color: 'var(--gray-3)' }}>
+                  <span style={{ width: 9, height: 1, background: 'currentColor', display: 'block' }} />
+                  <span style={{ fontSize: 11, lineHeight: 1 }}>✕</span>
+                </div>
               </div>
 
-              <div className="font-display font-black leading-none mb-3" style={{ fontSize: 64, color: 'var(--red)' }}>{n}</div>
-              <h3 className="font-display font-bold uppercase mb-3" style={{ fontSize: 21, color: 'var(--white)', lineHeight: 1.15, maxWidth: '85%' }}>
-                {title.replace(/\.$/, '')}<span style={{ color: 'var(--red)' }}>.</span>
-              </h3>
-              <p style={{ fontSize: 13, color: 'var(--gray-2)', lineHeight: 1.7, maxWidth: '90%' }}>{desc}</p>
+              <div className="p-4">
+                <div className="flex items-end justify-between mb-2">
+                  <span className="font-display uppercase" style={{ fontSize: 11.5, color: 'var(--gray-1)', letterSpacing: '0.06em' }}>
+                    Escaneando tu negocio...
+                  </span>
+                  <span className="font-display font-black" style={{ fontSize: 22, color: ROJO, lineHeight: 1 }}>
+                    {pct}%
+                  </span>
+                </div>
+
+                {/* barra segmentada */}
+                <div className="flex gap-[3px] mb-4">
+                  {Array.from({ length: 28 }).map((_, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        flex: 1,
+                        height: 12,
+                        background: i < Math.round((pct / 100) * 28) ? ROJO : 'rgba(229,62,62,0.13)',
+                        transition: 'background 160ms linear',
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <div className="flex gap-4 items-start">
+                  <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                    {CHEQUEOS.map((c, i) => {
+                      const ok = i < listos
+                      return (
+                        <div key={c} className="flex items-center gap-2" style={{ opacity: ok ? 1 : 0.35, transition: 'opacity 260ms ease' }}>
+                          <span className="font-display" style={{ fontSize: 10, color: 'var(--gray-2)' }}>
+                            [{String(i + 1).padStart(2, '0')}]
+                          </span>
+                          <span className="font-display uppercase" style={{ fontSize: 10, color: 'var(--gray-1)', letterSpacing: '0.05em' }}>
+                            {c}
+                          </span>
+                          <span className="flex-1" style={{ borderBottom: '1px dotted rgba(255,255,255,0.14)', minWidth: 10 }} />
+                          <span className="font-display font-bold" style={{ fontSize: 10, color: ok ? '#4ade80' : 'var(--gray-3)' }}>
+                            {ok ? 'OK' : '··'}
+                          </span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  <Radar />
+                </div>
+              </div>
             </div>
-          ))}
+
+            {/* Diagnostico completado */}
+            <div
+              className="mt-4 p-5 flex items-start gap-4"
+              style={{
+                border: `1px solid ${ROJO}66`,
+                background: 'rgba(229,62,62,0.07)',
+                opacity: pct >= 100 ? 1 : 0.35,
+                transform: pct >= 100 ? 'translateY(0)' : 'translateY(8px)',
+                transition: 'opacity 500ms ease, transform 500ms cubic-bezier(0.16,1,0.3,1)',
+              }}
+            >
+              <AlertTriangle size={30} color={ROJO} strokeWidth={1.6} className="flex-shrink-0" />
+              <div>
+                <div className="font-display font-bold uppercase" style={{ fontSize: 12.5, color: 'var(--white)', letterSpacing: '0.06em' }}>
+                  Diagnóstico completado
+                </div>
+                <div className="font-display font-black uppercase my-1" style={{ fontSize: 19, color: 'var(--white)', lineHeight: 1.1 }}>
+                  4 problemas críticos detectados
+                </div>
+                <div className="font-display uppercase" style={{ fontSize: 11, color: 'var(--gray-1)', letterSpacing: '0.06em' }}>
+                  Recomendación: <span style={{ color: ROJO, fontWeight: 700 }}>Activar ecosistema BLITZ</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ── Columna derecha: problemas detectados ── */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <span style={{ width: 9, height: 9, background: ROJO, flexShrink: 0 }} />
+              <span className="font-display font-bold uppercase whitespace-nowrap" style={{ fontSize: 10.5, letterSpacing: '0.14em', color: 'var(--gray-1)' }}>
+                Problemas detectados
+              </span>
+              <span className="flex-1 h-px" style={{ background: `linear-gradient(90deg, ${ROJO}80, ${ROJO}14)` }} />
+              <span className="flex gap-[3px] flex-shrink-0">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <span key={i} style={{ width: 3, height: 11, background: i < 3 ? ROJO : `${ROJO}40` }} />
+                ))}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {PROBLEMS.map(({ n, icon, title, desc, impacto }) => (
+                <div
+                  key={n}
+                  className="relative p-5"
+                  style={{
+                    border: `1px solid ${ROJO}4d`,
+                    background: 'rgba(10,10,10,0.72)',
+                    clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px))',
+                  }}
+                >
+                  {/* esquinas tipo HUD */}
+                  <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: 14, height: 2, background: ROJO }} />
+                  <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: 2, height: 14, background: ROJO }} />
+                  <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: 14, height: 2, background: ROJO }} />
+                  <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: 2, height: 14, background: ROJO }} />
+
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2.5">
+                      <span className="font-display font-black" style={{ fontSize: 30, color: ROJO, lineHeight: 1 }}>{n}</span>
+                      <span
+                        className="font-display font-bold uppercase"
+                        style={{ fontSize: 8, letterSpacing: '0.12em', color: ROJO, border: `1px solid ${ROJO}66`, padding: '2px 6px' }}
+                      >
+                        Critical
+                      </span>
+                    </div>
+                    <div className="relative flex-shrink-0" style={{ width: 44, height: 44 }}>
+                      <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
+                    </div>
+                  </div>
+
+                  <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 16, color: 'var(--white)', lineHeight: 1.15 }}>
+                    <TituloConPunto texto={title} />
+                  </h3>
+                  <p className="mb-4" style={{ fontSize: 11.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{desc}</p>
+
+                  <div
+                    className="flex items-center justify-between gap-2 px-3 py-2"
+                    style={{ border: `1px solid ${ROJO}33`, background: 'rgba(229,62,62,0.05)' }}
+                  >
+                    <span className="font-display uppercase" style={{ fontSize: 8.5, letterSpacing: '0.1em', color: 'var(--gray-2)' }}>
+                      {impacto}
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="font-display font-bold uppercase" style={{ fontSize: 9, color: ROJO }}>Alto</span>
+                      <span className="flex gap-[3px]">
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <span key={i} style={{ width: 8, height: 9, background: ROJO }} />
+                        ))}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Barra inferior ── */}
+        <div
+          className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 px-6 py-5"
+          style={{ border: `1px solid ${ROJO}40`, background: 'rgba(10,10,10,0.6)' }}
+        >
+          <AlertTriangle size={26} color={ROJO} strokeWidth={1.6} className="flex-shrink-0" />
+          <div className="flex-1" style={{ minWidth: 260 }}>
+            <div style={{ fontSize: 12.5, color: 'var(--gray-1)' }}>Estos problemas te cuestan tiempo, dinero y oportunidades.</div>
+            <div className="font-display font-black uppercase" style={{ fontSize: 15, color: 'var(--white)' }}>
+              BLITZ existe para <span style={{ color: ROJO }}>eliminarlos.</span>
+            </div>
+          </div>
+          <span className="font-display uppercase hidden xl:block" style={{ fontSize: 10, letterSpacing: '0.12em', color: 'var(--gray-2)' }}>
+            La solución está a un click
+          </span>
+          <Link
+            href="/servicios"
+            className="inline-flex items-center gap-2 font-display font-bold uppercase transition-opacity hover:opacity-85 flex-shrink-0"
+            style={{ fontSize: 11.5, letterSpacing: '0.08em', color: ROJO, border: `1px solid ${ROJO}`, padding: '11px 20px' }}
+          >
+            Ver cómo lo hacemos
+            <ArrowRight size={14} />
+          </Link>
+          <div className="hidden xl:flex flex-col items-center gap-1 flex-shrink-0" style={{ borderLeft: '1px solid rgba(255,255,255,0.12)', paddingLeft: 20 }}>
+            <span className="font-display uppercase text-center" style={{ fontSize: 8.5, letterSpacing: '0.1em', color: 'var(--gray-2)', lineHeight: 1.4 }}>
+              Scroll<br />para descubrir
+            </span>
+            <ArrowDown size={13} color={ROJO} />
+          </div>
         </div>
       </div>
     </section>

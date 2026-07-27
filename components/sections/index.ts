@@ -1,1 +1,2 @@
-export { ProcessSection, FaqSection, CtaFinal, FooterSection } from './SharedSections'
+export { FaqSection, CtaFinal, FooterSection } from './SharedSections'
+export { ProcessSection } from './ProcessSection'

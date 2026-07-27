@@ -285,3 +285,12 @@ body {
   .animate-aurora-1, .animate-aurora-2, .animate-aurora-3,
   .animate-proc-travel, .animate-proc-pulse, .animate-proc-fill, .animate-proc-ring { animation: none; }
 }
+
+/* ─── HUD: radar del diagnostico y flechas del timeline ─── */
+@keyframes radar-sweep { to { transform: rotate(360deg); } }
+@keyframes chevron-flow { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+.animate-radar-sweep { animation: radar-sweep 3.4s linear infinite; }
+.animate-chevron     { animation: chevron-flow 1.7s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-radar-sweep, .animate-chevron { animation: none; }
+}
