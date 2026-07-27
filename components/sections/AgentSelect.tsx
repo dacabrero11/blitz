@@ -32,22 +32,47 @@ function useMediaQuery(query: string) {
 /* ── HUD: piezas pequeñas, nunca por encima del personaje ─────────── */
 
 /** Esquinas de encuadre, finas y cortas. */
-function ScanCorners({ size = 28, opacity = 0.42 }: { size?: number; opacity?: number }) {
-  const base: React.CSSProperties = { position: 'absolute', width: size, height: size, opacity }
+function ScanCorners({ size = 28, opacity = 0.42, focusKey, animate }: { size?: number; opacity?: number; focusKey: number; animate: boolean }) {
+  // fx/fy marcan hacia dónde se abre cada esquina en el autofocus
+  const corners: Array<[React.CSSProperties, number, number]> = [
+    [{ top: 0, left: 0, borderTop: `1px solid ${ACCENT}`, borderLeft: `1px solid ${ACCENT}` }, -1, -1],
+    [{ top: 0, right: 0, borderTop: `1px solid ${ACCENT}`, borderRight: `1px solid ${ACCENT}` }, 1, -1],
+    [{ bottom: 0, left: 0, borderBottom: `1px solid ${ACCENT}`, borderLeft: `1px solid ${ACCENT}` }, -1, 1],
+    [{ bottom: 0, right: 0, borderBottom: `1px solid ${ACCENT}`, borderRight: `1px solid ${ACCENT}` }, 1, 1],
+  ]
   return (
     <>
-      <span aria-hidden style={{ ...base, top: 0, left: 0, borderTop: `1px solid ${ACCENT}`, borderLeft: `1px solid ${ACCENT}` }} />
-      <span aria-hidden style={{ ...base, top: 0, right: 0, borderTop: `1px solid ${ACCENT}`, borderRight: `1px solid ${ACCENT}` }} />
-      <span aria-hidden style={{ ...base, bottom: 0, left: 0, borderBottom: `1px solid ${ACCENT}`, borderLeft: `1px solid ${ACCENT}` }} />
-      <span aria-hidden style={{ ...base, bottom: 0, right: 0, borderBottom: `1px solid ${ACCENT}`, borderRight: `1px solid ${ACCENT}` }} />
+      {corners.map(([pos, fx, fy], i) => (
+        <span
+          key={`${i}-${focusKey}`}
+          aria-hidden
+          className={animate ? 'animate-op-focus' : ''}
+          style={{
+            position: 'absolute',
+            width: size,
+            height: size,
+            opacity,
+            ...pos,
+            // @ts-expect-error — variables CSS leídas por el keyframe
+            '--fx': fx,
+            '--fy': fy,
+            animationDelay: `${i * 45}ms`,
+          }}
+        />
+      ))}
     </>
   )
 }
 
 /** Retícula de puntería, discreta y en giro lento. */
-function Crosshair({ size = 26, reduced }: { size?: number; reduced: boolean }) {
+function Crosshair({ size = 26, reduced, lockKey }: { size?: number; reduced: boolean; lockKey: number }) {
   return (
-    <span aria-hidden style={{ position: 'relative', display: 'inline-block', width: size, height: size, opacity: 0.55 }}>
+    <span
+      key={lockKey}
+      aria-hidden
+      className={reduced ? '' : 'animate-op-lock'}
+      style={{ position: 'relative', display: 'inline-block', width: size, height: size, opacity: 0.55 }}
+    >
       <span
         className={reduced ? '' : 'animate-op-spin'}
         style={{
@@ -69,10 +94,21 @@ function Crosshair({ size = 26, reduced }: { size?: number; reduced: boolean }) 
 
 export function AgentSelect() {
   const [active, setActive] = useState(0)
+  const [swaps, setSwaps] = useState(0)
+  const [chroma, setChroma] = useState(false)
+  const [onScreen, setOnScreen] = useState(true)
   const [ready, setReady] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef(0)
   const inViewRef = useRef(false)
+  const idleRef = useRef<number | null>(null)
+  const chromaTimer = useRef<number | null>(null)
+
+  /* Telemetría: se escribe directo sobre los nodos. Si pasara por estado,
+     cada tick repintaría la sección entera. */
+  const sigRef = useRef<HTMLSpanElement>(null)
+  const syncRef = useRef<HTMLSpanElement>(null)
 
   const isDesktop = useMediaQuery('(min-width: 1024px)')
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -85,23 +121,48 @@ export function AgentSelect() {
     return () => window.clearTimeout(t)
   }, [])
 
-  const select = useCallback((next: number) => {
-    const target = ((next % AGENTS.length) + AGENTS.length) % AGENTS.length
-    if (target === activeRef.current) return
-    activeRef.current = target
-    setActive(target)
-  }, [])
+  const select = useCallback(
+    (next: number) => {
+      const target = ((next % AGENTS.length) + AGENTS.length) % AGENTS.length
+      if (target === activeRef.current) return
+      activeRef.current = target
+      setActive(target)
+      setSwaps((s) => s + 1)
+
+      // Aberración cromática: solo durante el cambio, luego se desmonta
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setChroma(true)
+        if (chromaTimer.current) window.clearTimeout(chromaTimer.current)
+        chromaTimer.current = window.setTimeout(() => setChroma(false), 280)
+      }
+    },
+    []
+  )
 
   const step = useCallback((delta: number) => select(activeRef.current + delta), [select])
+
+  useEffect(
+    () => () => {
+      if (chromaTimer.current) window.clearTimeout(chromaTimer.current)
+      if (idleRef.current) window.clearTimeout(idleRef.current)
+    },
+    []
+  )
 
   /* Observer y teclado: se registran una sola vez y leen el índice del ref,
      nunca del estado, para no recrearse en cada cambio de operador. */
   useEffect(() => {
     const el = sectionRef.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => (inViewRef.current = e.intersectionRatio > 0.3), {
-      threshold: [0, 0.3, 1],
-    })
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inViewRef.current = e.intersectionRatio > 0.3
+        // Pausar el Ken Burns fuera de pantalla: es un transform continuo
+        // sobre una imagen del tamaño del viewport
+        setOnScreen(e.intersectionRatio > 0.02)
+      },
+      { threshold: [0, 0.02, 0.3, 1] }
+    )
     io.observe(el)
     return () => io.disconnect()
   }, [])
@@ -122,6 +183,70 @@ export function AgentSelect() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [step])
+
+  /* Parallax con el mouse. Se escribe sobre el nodo, no por estado: cada píxel
+     de movimiento provocaría un render de la sección completa. */
+  useEffect(() => {
+    if (!isDesktop || reduced) return
+    const el = sectionRef.current
+    if (!el) return
+    let raf = 0
+    function onMove(e: MouseEvent) {
+      const r = el!.getBoundingClientRect()
+      const nx = (e.clientX - r.left) / r.width - 0.5
+      const ny = (e.clientY - r.top) / r.height - 0.5
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        if (bgRef.current) bgRef.current.style.transform = `translate3d(${-nx * 12}px, ${-ny * 8}px, 0)`
+      })
+    }
+    el.addEventListener('mousemove', onMove)
+    return () => {
+      el.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf)
+    }
+  }, [isDesktop, reduced])
+
+  /* Telemetría del HUD. Escribe textContent directamente y se detiene cuando
+     la sección no está en pantalla o la pestaña está oculta. */
+  useEffect(() => {
+    if (!isDesktop || reduced) return
+    let sync = 0
+    const id = window.setInterval(() => {
+      if (!inViewRef.current || document.hidden) return
+      sync = (sync + 1) % 1000
+      if (sigRef.current) sigRef.current.textContent = `SIG ${(94 + Math.floor(Math.random() * 6)).toString()}%`
+      if (syncRef.current) syncRef.current.textContent = `SYNC ${sync.toString().padStart(3, '0')}`
+    }, 1400)
+    return () => window.clearInterval(id)
+  }, [isDesktop, reduced])
+
+  /* Auto-rotación: arranca a los 20s sin que nadie toque nada y se detiene en
+     cuanto el usuario interactúa. No corre si la sección no se ve. */
+  const armIdle = useCallback(() => {
+    if (reduced) return
+    if (idleRef.current) window.clearTimeout(idleRef.current)
+    idleRef.current = window.setTimeout(function tick() {
+      if (inViewRef.current && !document.hidden) step(1)
+      idleRef.current = window.setTimeout(tick, 20000)
+    }, 20000)
+  }, [reduced, step])
+
+  useEffect(() => {
+    armIdle()
+    const el = sectionRef.current
+    if (!el) return
+    const reset = () => armIdle()
+    el.addEventListener('pointerdown', reset)
+    el.addEventListener('pointermove', reset, { passive: true })
+    window.addEventListener('keydown', reset)
+    return () => {
+      el.removeEventListener('pointerdown', reset)
+      el.removeEventListener('pointermove', reset)
+      window.removeEventListener('keydown', reset)
+      if (idleRef.current) window.clearTimeout(idleRef.current)
+    }
+  }, [armIdle])
 
   /* Swipe en táctil */
   const touch = useRef<{ x: number; y: number } | null>(null)
@@ -159,6 +284,7 @@ export function AgentSelect() {
           Sangra hasta el borde derecho y de arriba abajo. El flanco
           izquierdo se disuelve en negro: nunca debe leerse como tarjeta. */}
       <div
+        ref={bgRef}
         className="absolute pointer-events-none"
         style={
           isDesktop
@@ -179,7 +305,8 @@ export function AgentSelect() {
         >
           {/* Las cinco montadas desde el inicio: así el cambio es un fundido
               cruzado real y no un parpadeo en negro mientras carga la nueva.
-              La transición vive en CSS, no en keyframes, para no remontar. */}
+              Tres transforms anidados que no deben pisarse:
+              exterior = parallax · medio = fundido · interior = Ken Burns. */}
           {AGENTS.map((a, i) => {
             const on = i === active
             return (
@@ -196,18 +323,43 @@ export function AgentSelect() {
                   // promoverlas todas a la vez cuesta más de lo que ahorra.
                 }}
               >
-                <Image
-                  src={a.heroFull ?? a.heroBg ?? a.image}
-                  alt={on ? `${a.name} — ${a.role}` : ''}
-                  fill
-                  sizes={isDesktop ? '74vw' : '100vw'}
-                  priority={i === 0}
-                  loading={i === 0 ? undefined : 'eager'}
-                  className="object-cover"
-                />
+                <div className={`absolute inset-0 ${on && !reduced && onScreen ? 'animate-op-kenburns' : ''}`}>
+                  <Image
+                    src={a.heroFull ?? a.heroBg ?? a.image}
+                    alt={on ? `${a.name} — ${a.role}` : ''}
+                    fill
+                    sizes={isDesktop ? '74vw' : '100vw'}
+                    priority={i === 0}
+                    loading={i === 0 ? undefined : 'eager'}
+                    className="object-cover"
+                  />
+                </div>
               </div>
             )
           })}
+
+          {/* Aberración cromática: dos copias teñidas y desplazadas que se
+              apagan en 220 ms. Se montan solo durante el cambio. */}
+          {chroma && !reduced && (
+            <>
+              <div
+                key={`ca-r-${swaps}`}
+                aria-hidden
+                className="absolute inset-0 animate-op-chroma"
+                style={{ transform: 'translate3d(-5px,0,0)', mixBlendMode: 'screen' }}
+              >
+                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(6) hue-rotate(-38deg) brightness(0.9)' }} />
+              </div>
+              <div
+                key={`ca-c-${swaps}`}
+                aria-hidden
+                className="absolute inset-0 animate-op-chroma"
+                style={{ transform: 'translate3d(5px,0,0)', mixBlendMode: 'screen' }}
+              >
+                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(6) hue-rotate(130deg) brightness(0.9)' }} />
+              </div>
+            </>
+          )}
         </div>
 
         {/* Asiento del texto: penumbra a la izquierda y abajo, sin caja */}
@@ -343,7 +495,7 @@ export function AgentSelect() {
         <div className="relative" style={{ minHeight: isDesktop ? '70vh' : undefined, marginTop: isDesktop ? 0 : 24 }}>
           {isDesktop && (
             <>
-              <ScanCorners size={26} opacity={0.4} />
+              <ScanCorners size={26} opacity={0.4} focusKey={swaps} animate={!reduced} />
 
               {!reduced && (
                 <span
@@ -367,10 +519,16 @@ export function AgentSelect() {
                 className="absolute flex items-center gap-3 font-display uppercase"
                 style={{ top: 8, right: 36, fontSize: 9, letterSpacing: '0.22em', color: 'var(--gray-2)' }}
               >
+                <span ref={sigRef}>SIG 98%</span>
+                <span style={{ width: 14, height: 1, background: 'var(--gray-3)' }} />
+                <span ref={syncRef}>SYNC 000</span>
+                <span style={{ width: 14, height: 1, background: 'var(--gray-3)' }} />
                 <span>13.6929°N 89.2182°W</span>
-                <span style={{ width: 20, height: 1, background: 'var(--gray-3)' }} />
-                <span style={{ color: ACCENT }}>{hudCode}</span>
-                <Crosshair size={24} reduced={reduced} />
+                <span style={{ width: 14, height: 1, background: 'var(--gray-3)' }} />
+                <span key={`code-${swaps}`} className={reduced ? '' : 'animate-op-text'} style={{ color: ACCENT }}>
+                  {hudCode}
+                </span>
+                <Crosshair size={24} reduced={reduced} lockKey={swaps} />
               </div>
 
               <div aria-hidden className="absolute flex flex-col gap-1.5" style={{ right: 8, top: '40%' }}>

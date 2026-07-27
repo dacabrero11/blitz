@@ -345,3 +345,39 @@ body {
   .animate-op-pulse, .animate-op-scan, .animate-op-spin { animation: none; }
   .animate-op-text, .animate-op-in { animation: none; opacity: 1; transform: none; }
 }
+
+/* Ken Burns: la escena respira aunque nadie toque nada. Solo transform. */
+@keyframes op-kenburns {
+  0%   { transform: scale(1) translate3d(0, 0, 0); }
+  50%  { transform: scale(1.05) translate3d(-1.1%, -0.7%, 0); }
+  100% { transform: scale(1) translate3d(0, 0, 0); }
+}
+/* Autofocus: las esquinas del marco se abren y vuelven a cerrarse.
+   Cada esquina lleva su dirección en --fx/--fy. */
+@keyframes op-focus {
+  0%   { transform: translate3d(calc(var(--fx) * 18px), calc(var(--fy) * 18px), 0); opacity: 0.1; }
+  45%  { opacity: 0.85; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0.4; }
+}
+/* Lock-on del crosshair al fijar operador */
+@keyframes op-lock {
+  0%   { transform: scale(1.55) rotate(0deg); opacity: 0.15; }
+  45%  { opacity: 1; }
+  100% { transform: scale(1) rotate(150deg); opacity: 0.55; }
+}
+/* Aberración cromática: dos copias desplazadas que se apagan enseguida */
+@keyframes op-chroma {
+  0%   { opacity: 0.5; }
+  60%  { opacity: 0.2; }
+  100% { opacity: 0; }
+}
+
+.animate-op-kenburns { animation: op-kenburns 26s ease-in-out infinite; }
+.animate-op-focus    { animation: op-focus 760ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-op-lock     { animation: op-lock 720ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-op-chroma   { animation: op-chroma 220ms ease-out 1 forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-op-kenburns, .animate-op-chroma { animation: none; }
+  .animate-op-focus, .animate-op-lock { animation: none; opacity: 0.4; transform: none; }
+}
