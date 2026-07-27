@@ -310,6 +310,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: 'Creamos marcas memorables desde el nombre hasta el manual completo.',
         icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
         cardImage: '/servicios/cards/identidad-de-marca.jpg',
+        mockupImage: '/servicios/cards/identidad-de-marca.jpg',
       },
       {
         slug: 'diseno-para-redes',
@@ -317,6 +318,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: 'Posts, stories, covers y reels que conectan con tu audiencia y fortalecen tu marca.',
         icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z',
         cardImage: '/servicios/cards/diseno-para-redes.jpg',
+        mockupImage: '/servicios/cards/diseno-para-redes.jpg',
       },
       {
         slug: 'material-impreso',
@@ -324,6 +326,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: 'Tarjetas, brochures, flyers, banners y más. Diseño que impresiona en el mundo físico.',
         icon: 'M17 17H17.01M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V7l-4-4z',
         cardImage: '/servicios/cards/material-impreso.jpg',
+        mockupImage: '/servicios/cards/material-impreso.jpg',
       },
       {
         slug: 'diseno-audiovisual',
@@ -331,6 +334,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: 'Edición de video, animaciones, intros y contenido que cuenta tu historia en movimiento.',
         icon: 'm16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5 M2,6 H16 V18 H2 Z',
         cardImage: '/servicios/cards/diseno-audiovisual.jpg',
+        mockupImage: '/servicios/cards/diseno-audiovisual.jpg',
       },
       {
         slug: 'presentaciones',
@@ -338,6 +342,7 @@ export const CATEGORIAS: Categoria[] = [
         descripcion: 'Presentaciones que venden. Diseños profesionales que comunican valor y confianza.',
         icon: 'M2 3h20 M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3 m7 21 5-5 5 5',
         cardImage: '/servicios/cards/presentaciones.jpg',
+        mockupImage: '/servicios/cards/presentaciones.jpg',
       },
     ],
   },
