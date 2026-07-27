@@ -305,109 +305,43 @@ body {
   .animate-detect-flash { animation: none; opacity: 0; }
 }
 
-/* ─── OPERADORES · PANTALLA DE SELECCIÓN DE AGENTE ───────────────────── */
+/* ─── OPERADORES · SELECCIÓN DE OPERADOR ─────────────────────────────── */
 
-/* Anillos del podio: se expanden y desvanecen hacia afuera */
-@keyframes sel-ring {
-  0%   { transform: translate(-50%, -50%) scale(0.55); opacity: 0; }
-  18%  { opacity: 0.75; }
-  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+/* El texto del operador entra por debajo, escalonado */
+@keyframes op-text {
+  0%   { opacity: 0; transform: translate3d(0, 11px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-/* Respiración del disco del podio */
-@keyframes sel-podium {
-  0%, 100% { opacity: 0.55; transform: translateX(-50%) scaleX(1); }
-  50%      { opacity: 0.9;  transform: translateX(-50%) scaleX(1.045); }
+/* Reveal de entrada de la columna izquierda */
+@keyframes op-in {
+  0%   { opacity: 0; transform: translate3d(-10px, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-/* Flotación sutil del personaje */
-@keyframes sel-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-11px); }
+/* Latido del punto de estado */
+@keyframes op-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
 }
-/* Barrido de escaneo que recorre al personaje al seleccionarlo */
-@keyframes sel-scan {
-  0%   { transform: translateY(-110%); opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { transform: translateY(110%); opacity: 0; }
+/* Barrido finísimo del marco de escaneo */
+@keyframes op-scan {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translate3d(0, var(--scan-dist, 300px), 0); opacity: 0; }
 }
-/* Entrada del personaje: sube desde el podio con destello */
-@keyframes sel-enter {
-  0%   { opacity: 0; transform: translateY(38px) scale(0.94); filter: brightness(2.6) contrast(0.7); }
-  55%  { opacity: 1; }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1) contrast(1); }
-}
-/* Deriva lenta de la retícula. Mueve transform, NO background-position:
-   animar background-position repinta la capa entera en cada fotograma. */
-@keyframes sel-drift {
-  0%   { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(64px, 64px, 0); }
-}
-/* Barra de energía que recorre la card activa */
-@keyframes sel-beam {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
-}
-/* Parpadeo de los ticks del HUD inferior */
-@keyframes sel-tick {
-  0%, 100% { opacity: 0.18; }
-  50%      { opacity: 0.85; }
-}
-/* Reveal escalonado de entrada de la sección */
-@keyframes sel-reveal {
-  0%   { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-/* Latido del punto ONLINE */
-@keyframes sel-online {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
-  50%      { opacity: 0.55; box-shadow: 0 0 0 4px transparent; }
-}
-/* Destello del flash de cambio de agente */
-@keyframes sel-flash {
-  0%   { opacity: 0.5; }
-  100% { opacity: 0; }
+/* Giro lento del crosshair */
+@keyframes op-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.animate-sel-ring    { animation: sel-ring 3.2s cubic-bezier(0.2,0.6,0.3,1) infinite; }
-.animate-sel-podium  { animation: sel-podium 3.6s ease-in-out infinite; }
-.animate-sel-float   { animation: sel-float 6.5s ease-in-out infinite; }
-.animate-sel-scan    { animation: sel-scan 900ms cubic-bezier(0.4,0,0.2,1) 1 forwards; }
-.animate-sel-enter   { animation: sel-enter 620ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
-.animate-sel-drift   { animation: sel-drift 9s linear infinite; }
-.animate-sel-beam    { animation: sel-beam 2.4s cubic-bezier(0.5,0,0.5,1) infinite; }
-.animate-sel-tick    { animation: sel-tick 2.2s ease-in-out infinite; }
-.animate-sel-reveal  { animation: sel-reveal 700ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
-.animate-sel-online  { animation: sel-online 1.6s ease-in-out infinite; }
-.animate-sel-flash   { animation: sel-flash 420ms ease-out 1 forwards; }
+.animate-op-text  { animation: op-text 620ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-op-in    { animation: op-in 700ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-op-pulse { animation: op-pulse 2s ease-in-out infinite; }
+.animate-op-scan  { animation: op-scan 5.5s cubic-bezier(0.4,0,0.6,1) infinite; }
+.animate-op-spin  { animation: op-spin 24s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-sel-ring, .animate-sel-podium, .animate-sel-float, .animate-sel-scan,
-  .animate-sel-drift, .animate-sel-beam, .animate-sel-tick, .animate-sel-online,
-  .animate-sel-flash { animation: none; }
-  .animate-sel-enter, .animate-sel-reveal { animation: none; opacity: 1; transform: none; }
-}
-
-/* Onda de choque al cambiar de operador */
-@keyframes sel-shock {
-  0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; border-width: 3px; }
-  100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; border-width: 1px; }
-}
-/* Respiración del cono de luz cenital */
-@keyframes sel-spot {
-  0%, 100% { opacity: 0.34; }
-  50%      { opacity: 0.6; }
-}
-/* Chispas que caen del haz */
-@keyframes sel-spark {
-  0%   { transform: translateY(-10px); opacity: 0; }
-  15%  { opacity: 1; }
-  100% { transform: translateY(190px); opacity: 0; }
-}
-.animate-sel-shock { animation: sel-shock 780ms cubic-bezier(0.2,0.7,0.3,1) 1 forwards; }
-.animate-sel-spot  { animation: sel-spot 4.2s ease-in-out infinite; }
-.animate-sel-spark { animation: sel-spark 2.6s linear infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-sel-shock, .animate-sel-spot, .animate-sel-spark { animation: none; }
-  .animate-sel-shock { opacity: 0; }
+  .animate-op-pulse, .animate-op-scan, .animate-op-spin { animation: none; }
+  .animate-op-text, .animate-op-in { animation: none; opacity: 1; transform: none; }
 }
