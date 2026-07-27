@@ -74,6 +74,7 @@ export function ProblemSection() {
   const panelRef = useRef<HTMLDivElement>(null)
   const [pct, setPct] = useState(0)
   const [arrancado, setArrancado] = useState(false)
+  const [hover, setHover] = useState<number | null>(null)
 
   /* El escaneo corre cuando el panel entra en pantalla */
   useEffect(() => {
@@ -99,13 +100,18 @@ export function ProblemSection() {
       setPct(100)
       return
     }
-    let n = 0
-    const id = setInterval(() => {
-      n += 2
-      setPct(n)
-      if (n >= 100) clearInterval(id)
-    }, 26)
-    return () => clearInterval(id)
+    // se calcula por tiempo transcurrido: si el navegador ralentiza la pestaña,
+    // al volver retoma el valor correcto en vez de quedarse a medias
+    const DURACION = 1400
+    const t0 = performance.now()
+    let raf = 0
+    const tick = (ahora: number) => {
+      const p = Math.min(100, Math.round(((ahora - t0) / DURACION) * 100))
+      setPct(p)
+      if (p < 100) raf = requestAnimationFrame(tick)
+    }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [arrancado])
 
   const listos = Math.min(CHEQUEOS.length, Math.floor((pct / 100) * (CHEQUEOS.length + 0.5)))
@@ -236,60 +242,96 @@ export function ProblemSection() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {PROBLEMS.map(({ n, icon, title, desc, impacto }) => (
-                <div
-                  key={n}
-                  className="relative p-5"
-                  style={{
-                    border: `1px solid ${ROJO}4d`,
-                    background: 'rgba(10,10,10,0.72)',
-                    clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px))',
-                  }}
-                >
-                  {/* esquinas tipo HUD */}
-                  <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: 14, height: 2, background: ROJO }} />
-                  <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: 2, height: 14, background: ROJO }} />
-                  <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: 14, height: 2, background: ROJO }} />
-                  <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: 2, height: 14, background: ROJO }} />
-
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2.5">
-                      <span className="font-display font-black" style={{ fontSize: 30, color: ROJO, lineHeight: 1 }}>{n}</span>
-                      <span
-                        className="font-display font-bold uppercase"
-                        style={{ fontSize: 8, letterSpacing: '0.12em', color: ROJO, border: `1px solid ${ROJO}66`, padding: '2px 6px' }}
-                      >
-                        Critical
-                      </span>
-                    </div>
-                    <div className="relative flex-shrink-0" style={{ width: 44, height: 44 }}>
-                      <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
-                    </div>
-                  </div>
-
-                  <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 16, color: 'var(--white)', lineHeight: 1.15 }}>
-                    <TituloConPunto texto={title} />
-                  </h3>
-                  <p className="mb-4" style={{ fontSize: 11.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{desc}</p>
-
+              {PROBLEMS.map(({ n, icon, title, desc, impacto }, idx) => {
+                const detectado = idx < listos
+                const on = hover === idx
+                return (
                   <div
-                    className="flex items-center justify-between gap-2 px-3 py-2"
-                    style={{ border: `1px solid ${ROJO}33`, background: 'rgba(229,62,62,0.05)' }}
+                    key={n}
+                    onMouseEnter={() => setHover(idx)}
+                    onMouseLeave={() => setHover(null)}
+                    className="relative p-5"
+                    style={{
+                      border: `1px solid ${on ? ROJO : `${ROJO}4d`}`,
+                      background: on ? 'rgba(20,10,10,0.86)' : 'rgba(10,10,10,0.72)',
+                      clipPath: 'polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px))',
+                      opacity: detectado ? 1 : 0,
+                      transform: detectado ? `translateY(${on ? -3 : 0}px)` : 'translateY(12px)',
+                      boxShadow: on ? `0 18px 40px -18px ${ROJO}99` : 'none',
+                      transition:
+                        'opacity 420ms ease, transform 320ms cubic-bezier(0.16,1,0.3,1), border-color 240ms ease, background 240ms ease, box-shadow 300ms ease',
+                    }}
                   >
-                    <span className="font-display uppercase" style={{ fontSize: 8.5, letterSpacing: '0.1em', color: 'var(--gray-2)' }}>
-                      {impacto}
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <span className="font-display font-bold uppercase" style={{ fontSize: 9, color: ROJO }}>Alto</span>
-                      <span className="flex gap-[3px]">
-                        {[0, 1, 2, 3, 4].map((i) => (
-                          <span key={i} style={{ width: 8, height: 9, background: ROJO }} />
-                        ))}
+                    {/* destello al momento de detectarse */}
+                    {detectado && (
+                      <span
+                        aria-hidden
+                        className="absolute inset-0 pointer-events-none animate-detect-flash"
+                        style={{ background: `radial-gradient(ellipse at 50% 0%, ${ROJO}59, transparent 70%)` }}
+                      />
+                    )}
+
+                    {/* esquinas HUD que se dibujan al aparecer */}
+                    <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: detectado ? 14 : 0, height: 2, background: ROJO, transition: 'width 420ms ease 160ms' }} />
+                    <span className="absolute pointer-events-none" style={{ top: 0, left: 0, width: 2, height: detectado ? 14 : 0, background: ROJO, transition: 'height 420ms ease 160ms' }} />
+                    <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: detectado ? 14 : 0, height: 2, background: ROJO, transition: 'width 420ms ease 260ms' }} />
+                    <span className="absolute pointer-events-none" style={{ bottom: 0, right: 0, width: 2, height: detectado ? 14 : 0, background: ROJO, transition: 'height 420ms ease 260ms' }} />
+
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="font-display font-black" style={{ fontSize: 30, color: ROJO, lineHeight: 1 }}>{n}</span>
+                        <span
+                          className={`font-display font-bold uppercase${detectado ? ' animate-critical' : ''}`}
+                          style={{
+                            fontSize: 8, letterSpacing: '0.12em', color: ROJO,
+                            border: `1px solid ${ROJO}66`, padding: '2px 6px',
+                            animationDelay: `${idx * 240}ms`,
+                          }}
+                        >
+                          Critical
+                        </span>
+                      </div>
+                      <div
+                        className="relative flex-shrink-0"
+                        style={{ width: 44, height: 44, transform: on ? 'scale(1.12)' : 'scale(1)', transition: 'transform 320ms cubic-bezier(0.16,1,0.3,1)' }}
+                      >
+                        <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
+                      </div>
+                    </div>
+
+                    <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 16, color: 'var(--white)', lineHeight: 1.15 }}>
+                      <TituloConPunto texto={title} />
+                    </h3>
+                    <p className="mb-4" style={{ fontSize: 11.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{desc}</p>
+
+                    <div
+                      className="flex items-center justify-between gap-2 px-3 py-2"
+                      style={{ border: `1px solid ${on ? `${ROJO}80` : `${ROJO}33`}`, background: 'rgba(229,62,62,0.05)', transition: 'border-color 240ms ease' }}
+                    >
+                      <span className="font-display uppercase" style={{ fontSize: 8.5, letterSpacing: '0.1em', color: 'var(--gray-2)' }}>
+                        {impacto}
                       </span>
-                    </span>
+                      <span className="flex items-center gap-2">
+                        <span className="font-display font-bold uppercase" style={{ fontSize: 9, color: ROJO }}>Alto</span>
+                        {/* el medidor se llena barra por barra al detectarse */}
+                        <span className="flex gap-[3px]">
+                          {[0, 1, 2, 3, 4].map((i) => (
+                            <span
+                              key={i}
+                              style={{
+                                width: 8, height: 9, background: ROJO,
+                                opacity: detectado ? 1 : 0.12,
+                                transform: detectado ? 'scaleY(1)' : 'scaleY(0.4)',
+                                transition: `opacity 260ms ease ${320 + i * 90}ms, transform 260ms cubic-bezier(0.16,1,0.3,1) ${320 + i * 90}ms`,
+                              }}
+                            />
+                          ))}
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
