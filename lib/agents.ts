@@ -46,6 +46,8 @@ export interface Agent {
   katakana?: string
   taglineShort?: string
   heroBg?: string
+  /** Fondo del escenario en la pantalla de selección (/agentes) */
+  stageBg?: string
   heroBgPosition?: string
   cardImage?: string
   cardIcon?: 'target' | 'clipboard' | 'tv' | 'activity' | 'crown'
@@ -79,6 +81,7 @@ export const AGENTS: Agent[] = [
     katakana: 'ストライカー',
     taglineShort: 'Conecta. Persuade. Cierra.',
     heroBg: '/agents/hero-striker.jpg',
+    stageBg: '/agents/stage-striker.jpg',
     highlights: [
       { icon: 'target', label: 'Califica prospectos' },
       { icon: 'chat', label: 'Conversa y persuade' },
@@ -136,6 +139,7 @@ export const AGENTS: Agent[] = [
     katakana: 'ヘラルド',
     taglineShort: 'Organiza. Responde. Coordina.',
     heroBg: '/agents/hero-herald.jpg',
+    stageBg: '/agents/stage-herald.jpg',
     heroBgPosition: 'center 10%',
     highlights: [
       { icon: 'chat', label: 'Responde al instante' },
@@ -193,6 +197,7 @@ export const AGENTS: Agent[] = [
     katakana: 'シグナル',
     taglineShort: 'Crea. Publica. Conecta.',
     heroBg: '/agents/hero-signal.jpg',
+    stageBg: '/agents/stage-signal.jpg',
     highlights: [
       { icon: 'chat', label: 'Genera contenido' },
       { icon: 'target', label: 'Segmenta audiencia' },
@@ -249,6 +254,7 @@ export const AGENTS: Agent[] = [
     katakana: 'オラクル',
     taglineShort: 'Mide. Predice. Decide.',
     heroBg: '/agents/hero-oracle.jpg',
+    stageBg: '/agents/stage-oracle.jpg',
     highlights: [
       { icon: 'target', label: 'Detecta tendencias' },
       { icon: 'chat', label: 'Reportes claros' },
@@ -305,6 +311,7 @@ export const AGENTS: Agent[] = [
     katakana: 'エイペックス',
     taglineShort: 'Coordina. Escala. Domina.',
     heroBg: '/agents/hero-apex.jpg',
+    stageBg: '/agents/stage-apex.jpg',
     heroBgPosition: 'center 15%',
     highlights: [
       { icon: 'target', label: 'Orquesta agentes' },

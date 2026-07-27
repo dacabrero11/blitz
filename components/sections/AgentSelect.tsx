@@ -7,9 +7,11 @@ import { AGENTS } from '@/lib/agents'
 
 /* ══════════════════════════════════════════════════════════════════
    OPERADORES — pantalla de selección de agente.
-   Todo el HUD se tiñe con el accentColor del agente activo, así que
-   cambiar de operador repinta la pantalla completa.
+   El HUD es siempre rojo BLITZ: lo que cambia entre operadores es el
+   escenario de fondo, no la paleta.
    ══════════════════════════════════════════════════════════════════ */
+
+const ACCENT = '#E53E3E'
 
 /* ── Hooks ───────────────────────────────────────────────────────── */
 
@@ -75,7 +77,9 @@ function EmberField({ accent, active }: { accent: string; active: boolean }) {
 
     let w = 0
     let h = 0
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    // El dpr no se sube de 1.5: este canvas se limpia entero en cada fotograma
+    // y a dpr 2 en pantalla ancha eso son millones de píxeles por frame.
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5)
 
     function resize() {
       if (!cv) return
@@ -89,12 +93,12 @@ function EmberField({ accent, active }: { accent: string; active: boolean }) {
     window.addEventListener('resize', resize)
 
     type P = { x: number; y: number; vy: number; vx: number; r: number; a: number; life: number }
-    const COUNT = 46
+    const COUNT = 30
     const particles: P[] = Array.from({ length: COUNT }, () => spawn(true))
 
     function spawn(initial = false): P {
       return {
-        x: w * (0.18 + Math.random() * 0.64),
+        x: w * (0.06 + Math.random() * 0.88),
         y: initial ? Math.random() * h : h + 10,
         vy: -(0.18 + Math.random() * 0.5),
         vx: (Math.random() - 0.5) * 0.22,
@@ -129,7 +133,8 @@ function EmberField({ accent, active }: { accent: string; active: boolean }) {
     }
     tick()
 
-    // Pausar fuera de pantalla y con la pestaña oculta
+    // Pausar fuera de pantalla y con la pestaña oculta: sin esto el canvas
+    // sigue quemando fotogramas mientras el usuario lee más abajo.
     const onVis = () => {
       if (document.hidden) {
         running = false
@@ -141,16 +146,40 @@ function EmberField({ accent, active }: { accent: string; active: boolean }) {
     }
     document.addEventListener('visibilitychange', onVis)
 
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !running && !document.hidden) {
+          running = true
+          tick()
+        } else if (!e.isIntersecting && running) {
+          running = false
+          cancelAnimationFrame(raf)
+        }
+      },
+      { threshold: 0 }
+    )
+    io.observe(cv)
+
     return () => {
       running = false
       cancelAnimationFrame(raf)
+      io.disconnect()
       window.removeEventListener('resize', resize)
       document.removeEventListener('visibilitychange', onVis)
     }
   }, [active])
 
   if (!active) return null
-  return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 2 }} aria-hidden />
+  // Acotado a la franja central: las brasas nacen del podio, no de los bordes,
+  // y limpiar un canvas a pantalla completa cada fotograma era el mayor coste.
+  return (
+    <canvas
+      ref={ref}
+      className="absolute pointer-events-none"
+      style={{ zIndex: 2, left: '50%', transform: 'translateX(-50%)', bottom: '14%', width: 'min(46vw, 620px)', height: 'min(52vh, 460px)' }}
+      aria-hidden
+    />
+  )
 }
 
 /* ── Corchetes de encuadre del HUD ───────────────────────────────── */
@@ -184,14 +213,25 @@ export function AgentSelect() {
   const [ready, setReady] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
   const activeRef = useRef(0)
+
+  /* Parallax + push de cámara, escritos directo sobre el nodo: si esto pasara
+     por estado, cada píxel de movimiento del mouse re-renderizaría la sección. */
+  const cam = useRef({ x: 0, y: 0, scale: 1 })
+  const paintCam = useCallback(() => {
+    const el = bgRef.current
+    if (!el) return
+    const { x, y, scale } = cam.current
+    el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+  }, [])
 
   const isDesktop = useMediaQuery('(min-width: 1024px)')
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
   const rich = isDesktop && !reduced
 
   const agent = AGENTS[active]
-  const accent = agent.accentColor
+  const accent = ACCENT
   const name = useScramble(agent.name, swaps, !reduced)
 
   /* Reveal de entrada */
@@ -209,13 +249,51 @@ export function AgentSelect() {
       activeRef.current = target
       setActive(target)
       setSwaps((s) => s + 1)
+
+      // Empujón de cámara: el fondo entra con un golpe de zoom y se asienta
+      const el = bgRef.current
+      if (el && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.style.transition = 'none'
+        cam.current.scale = 1.07
+        paintCam()
+        requestAnimationFrame(() => {
+          el.style.transition = 'transform 1100ms cubic-bezier(0.16,1,0.3,1)'
+          cam.current.scale = 1
+          paintCam()
+        })
+      }
+
       // En móvil las cards viven al fondo: al tocar una, subir al escenario
       if (scrollToStage && stageRef.current && window.innerWidth < 1024) {
         stageRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
     },
-    []
+    [paintCam]
   )
+
+  /* Parallax con el mouse — solo desktop, y sin re-render */
+  useEffect(() => {
+    if (!rich) return
+    const el = sectionRef.current
+    if (!el) return
+    let raf = 0
+    function onMove(e: MouseEvent) {
+      const r = el!.getBoundingClientRect()
+      const nx = (e.clientX - r.left) / r.width - 0.5
+      const ny = (e.clientY - r.top) / r.height - 0.5
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => {
+        cam.current.x = -nx * 26
+        cam.current.y = -ny * 16
+        paintCam()
+      })
+    }
+    el.addEventListener('mousemove', onMove)
+    return () => {
+      el.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf)
+    }
+  }, [rich, paintCam])
 
   /* Estable: lee el índice del ref, no del estado, para no recrearse en cada cambio */
   const step = useCallback((delta: number) => select(activeRef.current + delta), [select])
@@ -294,45 +372,63 @@ export function AgentSelect() {
     >
       {/* ── Capas de fondo ──────────────────────────────────────── */}
 
-      {/* Escenario del agente activo, con crossfade */}
-      {AGENTS.map((a, i) => (
-        <div
-          key={a.id}
-          aria-hidden
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            opacity: i === active ? 0.34 : 0,
-            transition: 'opacity 700ms ease',
-            zIndex: 0,
-          }}
-        >
-          {a.heroBg && (
-            <Image
-              src={a.heroBg}
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover"
-              style={{ filter: 'blur(3px) brightness(0.5) saturate(1.15)' }}
-              priority={i === 0}
-            />
-          )}
-        </div>
-      ))}
+      {/* Escenario del agente activo, con crossfade + parallax + push de cámara */}
+      <div ref={bgRef} className="absolute inset-0 pointer-events-none" style={{ zIndex: 0, willChange: 'transform' }}>
+        {AGENTS.map((a, i) => (
+          <div
+            key={a.id}
+            aria-hidden
+            className="absolute pointer-events-none"
+            style={{
+              inset: '-4%',
+              opacity: i === active ? 0.62 : 0,
+              transition: 'opacity 720ms ease',
+            }}
+          >
+            {a.stageBg && (
+              <Image
+                src={a.stageBg}
+                alt=""
+                fill
+                sizes="100vw"
+                className="object-cover"
+                style={{ filter: 'brightness(0.82) saturate(1.1)' }}
+                priority={i === 0}
+              />
+            )}
+          </div>
+        ))}
+      </div>
 
-      {/* Retícula con deriva */}
+      {/* Degradado inferior para asentar las cards sobre el fondo */}
       <div
         aria-hidden
-        className={`absolute inset-0 pointer-events-none ${rich ? 'animate-sel-drift' : ''}`}
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 1, background: 'linear-gradient(180deg, rgba(5,5,5,0.55) 0%, transparent 22%, transparent 58%, rgba(5,5,5,0.9) 100%)' }}
+      />
+
+      {/* Retícula con deriva. La máscara vive en el padre estático y solo el
+          hijo se mueve, así el navegador compone en vez de repintar. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none overflow-hidden"
         style={{
           zIndex: 1,
-          backgroundImage: `linear-gradient(${accent}0f 1px, transparent 1px), linear-gradient(90deg, ${accent}0f 1px, transparent 1px)`,
-          backgroundSize: '64px 64px',
           maskImage: 'radial-gradient(ellipse 75% 65% at 50% 55%, #000 20%, transparent 78%)',
           WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 55%, #000 20%, transparent 78%)',
-          transition: 'background-image 600ms ease',
         }}
-      />
+      >
+        <div
+          className={rich ? 'animate-sel-drift' : ''}
+          style={{
+            position: 'absolute',
+            inset: -72,
+            backgroundImage: `linear-gradient(${accent}0f 1px, transparent 1px), linear-gradient(90deg, ${accent}0f 1px, transparent 1px)`,
+            backgroundSize: '64px 64px',
+            willChange: rich ? 'transform' : undefined,
+          }}
+        />
+      </div>
 
       {/* Halo de acento tras el personaje */}
       <div
@@ -354,8 +450,7 @@ export function AgentSelect() {
         className="absolute inset-0 pointer-events-none"
         style={{
           zIndex: 3,
-          background: 'repeating-linear-gradient(180deg, rgba(255,255,255,0.028) 0px, rgba(255,255,255,0.028) 1px, transparent 1px, transparent 3px)',
-          mixBlendMode: 'overlay',
+          background: 'repeating-linear-gradient(180deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px)',
         }}
       />
 
@@ -456,6 +551,61 @@ export function AgentSelect() {
               <Brackets accent={`${accent}88`} size={isDesktop ? 28 : 18} />
             </div>
 
+            {/* Haz de luz cenital sobre el operador */}
+            {!reduced && (
+              <span
+                aria-hidden
+                className="absolute animate-sel-spot pointer-events-none"
+                style={{
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  top: '-6%',
+                  width: 'min(58%, 300px)',
+                  height: '86%',
+                  background: `linear-gradient(180deg, ${accent}3a 0%, ${accent}22 28%, ${accent}12 52%, ${accent}08 72%, transparent 92%)`,
+                  clipPath: 'polygon(38% 0%, 62% 0%, 100% 100%, 0% 100%)',
+                }}
+              />
+            )}
+
+            {/* Chispas cayendo dentro del haz */}
+            {rich &&
+              [0, 1, 2, 3, 4, 5].map((i) => (
+                <span
+                  key={i}
+                  aria-hidden
+                  className="absolute animate-sel-spark pointer-events-none"
+                  style={{
+                    left: `${40 + ((i * 37) % 22)}%`,
+                    top: '8%',
+                    width: 2,
+                    height: 2,
+                    borderRadius: '50%',
+                    background: accent,
+                    boxShadow: `0 0 6px ${accent}`,
+                    animationDelay: `${i * 430}ms`,
+                  }}
+                />
+              ))}
+
+            {/* Onda de choque al seleccionar */}
+            {swaps > 0 && !reduced && (
+              <span
+                key={`shock-${swaps}`}
+                aria-hidden
+                className="absolute animate-sel-shock pointer-events-none"
+                style={{
+                  left: '50%',
+                  bottom: -20,
+                  width: 'min(78%, 400px)',
+                  aspectRatio: '3.4 / 1',
+                  borderRadius: '50%',
+                  border: `2px solid ${accent}`,
+                  boxShadow: `0 0 26px ${accent}70`,
+                }}
+              />
+            )}
+
             {/* Anillos del podio */}
             {!reduced &&
               [0, 1, 2].map((i) => (
@@ -492,6 +642,23 @@ export function AgentSelect() {
               }}
             />
 
+            {/* Resplandor tras el operador — hermano estático en vez de una
+                segunda drop-shadow, que se recalcularía en cada fotograma
+                porque el personaje flota */}
+            <span
+              aria-hidden
+              className="absolute pointer-events-none"
+              style={{
+                left: '50%',
+                bottom: '4%',
+                transform: 'translateX(-50%)',
+                width: 'min(70%, 340px)',
+                height: '62%',
+                background: `radial-gradient(ellipse at 50% 55%, ${accent}34, ${accent}12 42%, transparent 72%)`,
+                zIndex: 1,
+              }}
+            />
+
             {/* Personaje activo */}
             <div
               key={agent.id}
@@ -511,8 +678,7 @@ export function AgentSelect() {
                     height: '100%',
                     width: 'auto',
                     maxWidth: '100%',
-                    filter: `drop-shadow(0 24px 46px ${accent}55) drop-shadow(0 0 90px ${accent}30)`,
-                    transition: 'filter 600ms ease',
+                    filter: `drop-shadow(0 18px 34px ${accent}55)`,
                   }}
                 />
                 {/* Barrido de escaneo al seleccionar */}
@@ -704,10 +870,10 @@ export function AgentSelect() {
                     width: isDesktop ? '100%' : 148,
                     height: isDesktop ? 'clamp(150px, 19vh, 205px)' : 168,
                     scrollSnapAlign: 'center',
-                    border: `1px solid ${on ? a.accentColor : 'var(--border)'}`,
+                    border: `1px solid ${on ? accent : 'var(--border)'}`,
                     background: '#0a0a0a',
                     transform: on ? 'translateY(-6px)' : 'translateY(0)',
-                    boxShadow: on ? `0 18px 38px -18px ${a.accentColor}, inset 0 0 34px -16px ${a.accentColor}` : 'none',
+                    boxShadow: on ? `0 18px 38px -18px ${accent}, inset 0 0 34px -16px ${accent}` : 'none',
                     transition: 'transform 380ms var(--ease-out), box-shadow 380ms ease, border-color 380ms ease',
                   }}
                   onMouseEnter={(e) => {
@@ -747,12 +913,12 @@ export function AgentSelect() {
                         left: 0,
                         width: '35%',
                         height: 2,
-                        background: `linear-gradient(90deg, transparent, ${a.accentColor}, transparent)`,
+                        background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
                       }}
                     />
                   )}
 
-                  {on && <Brackets accent={a.accentColor} size={14} />}
+                  {on && <Brackets accent={accent} size={14} />}
 
                   <span
                     className="absolute font-display font-bold uppercase"
@@ -761,7 +927,7 @@ export function AgentSelect() {
                       left: 8,
                       fontSize: 9,
                       letterSpacing: '0.14em',
-                      color: on ? a.accentColor : 'var(--gray-1)',
+                      color: on ? accent : 'var(--gray-1)',
                       transition: 'color 380ms ease',
                     }}
                   >
@@ -774,7 +940,7 @@ export function AgentSelect() {
                     </span>
                     <span
                       className="block font-display font-bold uppercase mt-1"
-                      style={{ fontSize: 9, letterSpacing: '0.12em', color: on ? a.accentColor : 'var(--gray-1)', transition: 'color 380ms ease' }}
+                      style={{ fontSize: 9, letterSpacing: '0.12em', color: on ? accent : 'var(--gray-1)', transition: 'color 380ms ease' }}
                     >
                       {a.role}
                     </span>

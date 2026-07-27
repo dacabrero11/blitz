@@ -336,10 +336,11 @@ body {
   55%  { opacity: 1; }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1) contrast(1); }
 }
-/* Deriva lenta de la retícula de fondo */
+/* Deriva lenta de la retícula. Mueve transform, NO background-position:
+   animar background-position repinta la capa entera en cada fotograma. */
 @keyframes sel-drift {
-  0%   { background-position: 0 0, 0 0; }
-  100% { background-position: 64px 64px, 64px 64px; }
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(64px, 64px, 0); }
 }
 /* Barra de energía que recorre la card activa */
 @keyframes sel-beam {
@@ -384,4 +385,29 @@ body {
   .animate-sel-drift, .animate-sel-beam, .animate-sel-tick, .animate-sel-online,
   .animate-sel-flash { animation: none; }
   .animate-sel-enter, .animate-sel-reveal { animation: none; opacity: 1; transform: none; }
+}
+
+/* Onda de choque al cambiar de operador */
+@keyframes sel-shock {
+  0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0.9; border-width: 3px; }
+  100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; border-width: 1px; }
+}
+/* Respiración del cono de luz cenital */
+@keyframes sel-spot {
+  0%, 100% { opacity: 0.34; }
+  50%      { opacity: 0.6; }
+}
+/* Chispas que caen del haz */
+@keyframes sel-spark {
+  0%   { transform: translateY(-10px); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(190px); opacity: 0; }
+}
+.animate-sel-shock { animation: sel-shock 780ms cubic-bezier(0.2,0.7,0.3,1) 1 forwards; }
+.animate-sel-spot  { animation: sel-spot 4.2s ease-in-out infinite; }
+.animate-sel-spark { animation: sel-spark 2.6s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sel-shock, .animate-sel-spot, .animate-sel-spark { animation: none; }
+  .animate-sel-shock { opacity: 0; }
 }
