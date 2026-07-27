@@ -227,7 +227,7 @@ export function ProblemSection() {
           </div>
 
           {/* ── Columna derecha: problemas detectados ── */}
-          <div>
+          <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-5">
               <span style={{ width: 9, height: 9, background: ROJO, flexShrink: 0 }} />
               <span className="font-display font-bold uppercase whitespace-nowrap" style={{ fontSize: 10.5, letterSpacing: '0.14em', color: 'var(--gray-1)' }}>
@@ -241,7 +241,7 @@ export function ProblemSection() {
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1" style={{ gridAutoRows: '1fr' }}>
               {PROBLEMS.map(({ n, icon, title, desc, impacto }, idx) => {
                 const detectado = idx < listos
                 const on = hover === idx
@@ -250,7 +250,7 @@ export function ProblemSection() {
                     key={n}
                     onMouseEnter={() => setHover(idx)}
                     onMouseLeave={() => setHover(null)}
-                    className="relative p-5"
+                    className="relative flex flex-col p-6"
                     style={{
                       border: `1px solid ${on ? ROJO : `${ROJO}4d`}`,
                       background: on ? 'rgba(20,10,10,0.86)' : 'rgba(10,10,10,0.72)',
@@ -279,7 +279,7 @@ export function ProblemSection() {
 
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-2.5">
-                        <span className="font-display font-black" style={{ fontSize: 30, color: ROJO, lineHeight: 1 }}>{n}</span>
+                        <span className="font-display font-black" style={{ fontSize: 34, color: ROJO, lineHeight: 1 }}>{n}</span>
                         <span
                           className={`font-display font-bold uppercase${detectado ? ' animate-critical' : ''}`}
                           style={{
@@ -293,16 +293,16 @@ export function ProblemSection() {
                       </div>
                       <div
                         className="relative flex-shrink-0"
-                        style={{ width: 44, height: 44, transform: on ? 'scale(1.12)' : 'scale(1)', transition: 'transform 320ms cubic-bezier(0.16,1,0.3,1)' }}
+                        style={{ width: 48, height: 48, transform: on ? 'scale(1.12)' : 'scale(1)', transition: 'transform 320ms cubic-bezier(0.16,1,0.3,1)' }}
                       >
                         <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
                       </div>
                     </div>
 
-                    <h3 className="font-display font-black uppercase mb-2" style={{ fontSize: 16, color: 'var(--white)', lineHeight: 1.15 }}>
+                    <h3 className="font-display font-black uppercase mb-2.5" style={{ fontSize: 17.5, color: 'var(--white)', lineHeight: 1.15 }}>
                       <TituloConPunto texto={title} />
                     </h3>
-                    <p className="mb-4" style={{ fontSize: 11.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{desc}</p>
+                    <p className="flex-1 mb-5" style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.65 }}>{desc}</p>
 
                     <div
                       className="flex items-center justify-between gap-2 px-3 py-2"
