@@ -304,3 +304,84 @@ body {
   .animate-critical { animation: none; }
   .animate-detect-flash { animation: none; opacity: 0; }
 }
+
+/* ─── OPERADORES · PANTALLA DE SELECCIÓN DE AGENTE ───────────────────── */
+
+/* Anillos del podio: se expanden y desvanecen hacia afuera */
+@keyframes sel-ring {
+  0%   { transform: translate(-50%, -50%) scale(0.55); opacity: 0; }
+  18%  { opacity: 0.75; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+/* Respiración del disco del podio */
+@keyframes sel-podium {
+  0%, 100% { opacity: 0.55; transform: translateX(-50%) scaleX(1); }
+  50%      { opacity: 0.9;  transform: translateX(-50%) scaleX(1.045); }
+}
+/* Flotación sutil del personaje */
+@keyframes sel-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-11px); }
+}
+/* Barrido de escaneo que recorre al personaje al seleccionarlo */
+@keyframes sel-scan {
+  0%   { transform: translateY(-110%); opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { transform: translateY(110%); opacity: 0; }
+}
+/* Entrada del personaje: sube desde el podio con destello */
+@keyframes sel-enter {
+  0%   { opacity: 0; transform: translateY(38px) scale(0.94); filter: brightness(2.6) contrast(0.7); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1) contrast(1); }
+}
+/* Deriva lenta de la retícula de fondo */
+@keyframes sel-drift {
+  0%   { background-position: 0 0, 0 0; }
+  100% { background-position: 64px 64px, 64px 64px; }
+}
+/* Barra de energía que recorre la card activa */
+@keyframes sel-beam {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+/* Parpadeo de los ticks del HUD inferior */
+@keyframes sel-tick {
+  0%, 100% { opacity: 0.18; }
+  50%      { opacity: 0.85; }
+}
+/* Reveal escalonado de entrada de la sección */
+@keyframes sel-reveal {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+/* Latido del punto ONLINE */
+@keyframes sel-online {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 currentColor; }
+  50%      { opacity: 0.55; box-shadow: 0 0 0 4px transparent; }
+}
+/* Destello del flash de cambio de agente */
+@keyframes sel-flash {
+  0%   { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.animate-sel-ring    { animation: sel-ring 3.2s cubic-bezier(0.2,0.6,0.3,1) infinite; }
+.animate-sel-podium  { animation: sel-podium 3.6s ease-in-out infinite; }
+.animate-sel-float   { animation: sel-float 6.5s ease-in-out infinite; }
+.animate-sel-scan    { animation: sel-scan 900ms cubic-bezier(0.4,0,0.2,1) 1 forwards; }
+.animate-sel-enter   { animation: sel-enter 620ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-sel-drift   { animation: sel-drift 9s linear infinite; }
+.animate-sel-beam    { animation: sel-beam 2.4s cubic-bezier(0.5,0,0.5,1) infinite; }
+.animate-sel-tick    { animation: sel-tick 2.2s ease-in-out infinite; }
+.animate-sel-reveal  { animation: sel-reveal 700ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
+.animate-sel-online  { animation: sel-online 1.6s ease-in-out infinite; }
+.animate-sel-flash   { animation: sel-flash 420ms ease-out 1 forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-sel-ring, .animate-sel-podium, .animate-sel-float, .animate-sel-scan,
+  .animate-sel-drift, .animate-sel-beam, .animate-sel-tick, .animate-sel-online,
+  .animate-sel-flash { animation: none; }
+  .animate-sel-enter, .animate-sel-reveal { animation: none; opacity: 1; transform: none; }
+}

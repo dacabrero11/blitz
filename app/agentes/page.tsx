@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import { HangarSection } from '@/components/sections/HangarSection'
-import { OperativeCards } from '@/components/sections/OperativeCards'
+import { AgentSelect } from '@/components/sections/AgentSelect'
 import { CtaFinal, FooterSection } from '@/components/sections/SharedSections'
 
 export const metadata: Metadata = {
@@ -11,8 +10,7 @@ export const metadata: Metadata = {
 export default function AgentesPage() {
   return (
     <>
-      <HangarSection />
-      <OperativeCards />
+      <AgentSelect />
       <CtaFinal />
       <FooterSection />
     </>
