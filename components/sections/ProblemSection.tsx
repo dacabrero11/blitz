@@ -28,28 +28,43 @@ function TituloConPunto({ texto }: { texto: string }) {
 }
 
 function Radar() {
+  const S = 104
+  const C = S / 2
   return (
     <div
       className="relative flex-shrink-0 overflow-hidden"
-      style={{ width: 128, height: 96, border: `1px solid ${ROJO}44`, background: 'rgba(8,8,8,0.6)' }}
+      style={{
+        width: S,
+        height: S,
+        borderRadius: '50%',
+        border: `1px solid ${ROJO}59`,
+        background: 'radial-gradient(circle, rgba(229,62,62,0.07), rgba(6,6,6,0.9) 70%)',
+      }}
     >
-      <svg viewBox="0 0 128 96" className="absolute inset-0" width="128" height="96">
+      {/* anillos y ejes, centrados de verdad */}
+      <svg viewBox={`0 0 ${S} ${S}`} width={S} height={S} className="absolute inset-0">
         {[16, 30, 44].map((r) => (
-          <ellipse key={r} cx="64" cy="88" rx={r * 1.35} ry={r} fill="none" stroke={`${ROJO}33`} strokeWidth="1" />
+          <circle key={r} cx={C} cy={C} r={r} fill="none" stroke={`${ROJO}33`} strokeWidth="1" />
         ))}
-        <line x1="64" y1="88" x2="64" y2="24" stroke={`${ROJO}26`} strokeWidth="1" />
-        <line x1="4" y1="88" x2="124" y2="88" stroke={`${ROJO}26`} strokeWidth="1" />
-        <circle cx="86" cy="62" r="1.8" fill={ROJO} />
-        <circle cx="44" cy="70" r="1.5" fill={ROJO} />
-        <circle cx="72" cy="46" r="1.5" fill={ROJO} />
+        <line x1={C} y1="6" x2={C} y2={S - 6} stroke={`${ROJO}26`} strokeWidth="1" />
+        <line x1="6" y1={C} x2={S - 6} y2={C} stroke={`${ROJO}26`} strokeWidth="1" />
+        <circle cx="70" cy="36" r="2" fill={ROJO} />
+        <circle cx="36" cy="62" r="1.6" fill={ROJO} />
+        <circle cx="64" cy="72" r="1.6" fill={ROJO} />
       </svg>
+
+      {/* barrido: el borde redondeado recorta el cono a un sector circular */}
       <div
-        className="absolute animate-radar-sweep"
+        className="absolute inset-0 animate-radar-sweep"
         style={{
-          left: '50%', bottom: -60, width: 120, height: 120, marginLeft: -60,
-          transformOrigin: 'center',
-          background: `conic-gradient(from 0deg, ${ROJO}66, transparent 55deg)`,
+          borderRadius: '50%',
+          background: `conic-gradient(from 0deg, ${ROJO}80, ${ROJO}26 22deg, transparent 62deg)`,
         }}
+      />
+      <span
+        aria-hidden
+        className="absolute"
+        style={{ left: C - 2, top: C - 2, width: 4, height: 4, borderRadius: '50%', background: ROJO, boxShadow: `0 0 8px 2px ${ROJO}` }}
       />
     </div>
   )
