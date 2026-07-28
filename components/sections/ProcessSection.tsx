@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, ChevronRight, Radar, MonitorCog, Boxes, Rocket, Clock, Send, Cog, Crosshair } from 'lucide-react'
@@ -10,6 +12,7 @@ const STEPS = [
   {
     n: '01',
     title: 'Brief',
+    image: '/proceso/brief.jpg',
     desc: 'Hablamos por WhatsApp en 30 minutos. Entendemos tu negocio, tus clientes, tus metas y los dolores que necesitas resolver.',
     metricaLabel: 'Tiempo',
     metrica: '30 min',
@@ -19,6 +22,7 @@ const STEPS = [
   {
     n: '02',
     title: 'Diseño',
+    image: '/proceso/diseno.jpg',
     desc: 'Diseñamos el sitio y definimos qué agentes necesitas. Te mostramos el plan antes de escribir una sola línea de código.',
     metricaLabel: 'Entrega',
     metrica: '2 - 5 días',
@@ -28,6 +32,7 @@ const STEPS = [
   {
     n: '03',
     title: 'Desarrollo',
+    image: '/proceso/desarrollo.jpg',
     desc: 'Construimos con Next.js 15 y Claude IA. Cada agente se configura con el contexto exacto de tu negocio.',
     metricaLabel: 'Tiempo',
     metrica: '3 - 10 días',
@@ -37,6 +42,7 @@ const STEPS = [
   {
     n: '04',
     title: 'Lanzamiento',
+    image: '/proceso/lanzamiento.jpg',
     desc: 'Tu sitio en vivo. Los agentes operando. Seguimiento post-lanzamiento para asegurar que todo funcione.',
     metricaLabel: 'Deploy',
     metrica: '1 - 3 días',
@@ -78,27 +84,21 @@ function BlitzCore() {
   )
 }
 
-/* Placeholder para la imagen de cada fase */
-function VisualPlaceholder({ Icono }: { Icono: typeof Radar }) {
+/* Visual de cada fase. La proporción es 4/3, la misma a la que se recortaron
+   los archivos, así que object-cover no recorta nada. */
+function FaseVisual({ src, alt, delay }: { src: string; alt: string; delay: number }) {
   return (
     <div
-      className="relative overflow-hidden flex items-center justify-center"
-      style={{ aspectRatio: '16 / 10', border: `1px solid ${ROJO}2b`, background: 'radial-gradient(ellipse at 50% 40%, rgba(229,62,62,0.12), #070707 72%)' }}
+      className="fase-visual relative overflow-hidden"
+      style={{ aspectRatio: '4 / 3', border: `1px solid ${ROJO}2b`, background: '#070707' }}
     >
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `linear-gradient(${ROJO}14 1px, transparent 1px), linear-gradient(90deg, ${ROJO}14 1px, transparent 1px)`,
-          backgroundSize: '22px 22px',
-        }}
-      />
-      <Icono size={46} color={ROJO} strokeWidth={1.1} style={{ opacity: 0.55 }} />
+      <Image src={src} alt={alt} fill sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 22vw" className="fase-img object-cover" />
       <span
-        className="absolute font-display font-bold uppercase"
-        style={{ bottom: 8, right: 10, fontSize: 8, letterSpacing: '0.12em', color: ROJO, opacity: 0.6 }}
-      >
-        Vista previa próximamente
-      </span>
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: `linear-gradient(180deg, transparent 55%, rgba(7,7,7,0.55) 100%)` }}
+      />
+      <span className="fase-sweep" aria-hidden style={{ animationDelay: `${delay}ms` }} />
     </div>
   )
 }
@@ -241,7 +241,7 @@ export function ProcessSection() {
               <h3 className="font-display font-black uppercase text-center mb-4" style={{ fontSize: 20, color: 'var(--white)', lineHeight: 1 }}>
                 {s.title}
               </h3>
-              <VisualPlaceholder Icono={s.Icono} />
+              <FaseVisual src={s.image} alt={`${s.title} — fase ${s.n} del proceso BLITZ`} delay={i * 900} />
               <p className="text-center flex-1 mt-4 mb-5" style={{ fontSize: 11.5, color: 'var(--gray-1)', lineHeight: 1.65 }}>
                 {s.desc}
               </p>

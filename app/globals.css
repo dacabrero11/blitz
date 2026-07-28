@@ -593,3 +593,22 @@ body {
 /* Tira de miniaturas del caso destacado: sin barra de desplazamiento visible */
 .pf-thumbs { scrollbar-width: none; }
 .pf-thumbs::-webkit-scrollbar { display: none; }
+
+/* Visuales de las fases del proceso */
+@keyframes fase-sweep {
+  0%        { transform: translate3d(-120%, 0, 0); }
+  55%, 100% { transform: translate3d(420%, 0, 0); }
+}
+.fase-sweep {
+  position: absolute; top: 0; left: 0; height: 1px; width: 26%;
+  background: linear-gradient(90deg, transparent, #E53E3E, transparent);
+  animation: fase-sweep 6.5s cubic-bezier(0.5,0,0.5,1) infinite;
+  pointer-events: none;
+}
+.fase-img { transition: transform 700ms var(--ease-out), filter 420ms ease; filter: brightness(0.92) saturate(1.05); }
+.fase-visual:hover .fase-img { transform: scale(1.06); filter: brightness(1.08) saturate(1.15); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fase-sweep { animation: none; opacity: 0; }
+  .fase-visual:hover .fase-img { transform: none; }
+}
