@@ -133,7 +133,7 @@ export function AgentSelect() {
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         setChroma(true)
         if (chromaTimer.current) window.clearTimeout(chromaTimer.current)
-        chromaTimer.current = window.setTimeout(() => setChroma(false), 280)
+        chromaTimer.current = window.setTimeout(() => setChroma(false), 380)
       }
     },
     []
@@ -338,25 +338,29 @@ export function AgentSelect() {
             )
           })}
 
-          {/* Aberración cromática: dos copias teñidas y desplazadas que se
-              apagan en 220 ms. Se montan solo durante el cambio. */}
+          {/* Aberración cromática: dos copias magenta y cian, desplazadas 14px,
+              que se apagan en 300 ms. Van en modo screen, que solo aclara, así
+              que las copias necesitan brightness Y contrast: sin subir el
+              contraste la copia sigue siendo casi negra y el efecto queda por
+              debajo del ruido de fondo, o sea invisible. Se montan solo
+              durante el cambio y se desmontan a los 380 ms. */}
           {chroma && !reduced && (
             <>
               <div
                 key={`ca-r-${swaps}`}
                 aria-hidden
                 className="absolute inset-0 animate-op-chroma"
-                style={{ transform: 'translate3d(-5px,0,0)', mixBlendMode: 'screen' }}
+                style={{ transform: 'translate3d(-14px,0,0)', mixBlendMode: 'screen' }}
               >
-                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(6) hue-rotate(-38deg) brightness(0.9)' }} />
+                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(8) hue-rotate(265deg) brightness(2.2) contrast(1.4)' }} />
               </div>
               <div
                 key={`ca-c-${swaps}`}
                 aria-hidden
                 className="absolute inset-0 animate-op-chroma"
-                style={{ transform: 'translate3d(5px,0,0)', mixBlendMode: 'screen' }}
+                style={{ transform: 'translate3d(14px,0,0)', mixBlendMode: 'screen' }}
               >
-                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(6) hue-rotate(130deg) brightness(0.9)' }} />
+                <Image src={agent.heroFull ?? agent.image} alt="" fill sizes={isDesktop ? '74vw' : '100vw'} className="object-cover" style={{ filter: 'sepia(1) saturate(8) hue-rotate(145deg) brightness(2.2) contrast(1.4)' }} />
               </div>
             </>
           )}

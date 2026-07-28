@@ -365,17 +365,19 @@ body {
   45%  { opacity: 1; }
   100% { transform: scale(1) rotate(150deg); opacity: 0.55; }
 }
-/* Aberración cromática: dos copias desplazadas que se apagan enseguida */
+/* Aberración cromática: dos copias desplazadas que se apagan enseguida.
+   Cian y magenta, no rojo: sobre una ilustración ya roja, una capa roja en
+   modo screen no aporta nada y el efecto se pierde. */
 @keyframes op-chroma {
-  0%   { opacity: 0.5; }
-  60%  { opacity: 0.2; }
+  0%   { opacity: 0.72; }
+  45%  { opacity: 0.42; }
   100% { opacity: 0; }
 }
 
 .animate-op-kenburns { animation: op-kenburns 26s ease-in-out infinite; }
 .animate-op-focus    { animation: op-focus 760ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
 .animate-op-lock     { animation: op-lock 720ms cubic-bezier(0.16,1,0.3,1) 1 backwards; }
-.animate-op-chroma   { animation: op-chroma 220ms ease-out 1 forwards; }
+.animate-op-chroma   { animation: op-chroma 300ms ease-out 1 forwards; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-op-kenburns, .animate-op-chroma { animation: none; }
