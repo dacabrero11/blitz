@@ -534,7 +534,8 @@ body {
   animation: pf-sweep 7s cubic-bezier(0.5,0,0.5,1) infinite;
   pointer-events: none; z-index: 2;
 }
-.pf-panel { position: relative; }
+/* overflow hidden: la barra de energía se salía hasta 182px del panel */
+.pf-panel { position: relative; overflow: hidden; }
 
 /* Línea de escaneo sobre el mockup destacado */
 @keyframes pf-scan {

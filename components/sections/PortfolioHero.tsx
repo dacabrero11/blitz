@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, ChevronLeft, ChevronRight, Inbox, TrendingUp, Share2 } from 'lucide-react'
 import { CASO_DESTACADO, METRICAS_HERO } from '@/lib/portfolio'
 import { PfCorners } from '@/components/ui/PfCorners'
+import { TiltPanel } from '@/components/ui/TiltPanel'
 
 const ICONOS = { inbox: Inbox, trend: TrendingUp, share: Share2 }
 
@@ -69,7 +70,12 @@ export function PortfolioHero() {
           {/* ── Izquierda ── */}
           <div>
             <p className="text-label mb-4 animate-pf-in" style={{ color: 'var(--red)' }}>Portafolio</p>
-            <h1 className="text-d1 animate-pf-in" style={{ lineHeight: 0.85, animationDelay: '80ms' }}>
+            <h1
+              className="font-display font-black uppercase animate-pf-in"
+              /* No usa text-d1: a 120px la tinta se metía dentro del panel del
+                 caso destacado. Este techo la deja holgada en toda resolución. */
+              style={{ fontSize: 'clamp(44px, 6vw, 104px)', lineHeight: 0.85, letterSpacing: '-0.01em', animationDelay: '80ms' }}
+            >
               Resultados
               <br />
               <span style={{ color: 'var(--red)' }}>reales.</span>
@@ -95,7 +101,8 @@ export function PortfolioHero() {
           </div>
 
           {/* ── Derecha: caso destacado ── */}
-          <div
+          <TiltPanel
+            accent="#E53E3E"
             className="relative animate-pf-in pf-panel"
             style={{ animationDelay: '200ms', border: '1px solid rgba(229,62,62,0.26)', background: 'rgba(10,10,11,0.7)', padding: 'clamp(18px,2vw,26px)' }}
           >
@@ -195,7 +202,7 @@ export function PortfolioHero() {
                 </div>
               </div>
             </div>
-          </div>
+          </TiltPanel>
         </div>
       </div>
     </section>
