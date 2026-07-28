@@ -6,6 +6,8 @@ import {
 import type { Agent, AgentSkill, AgentProcessStep } from '@/lib/agents'
 import { TechIcon } from '@/components/ui/TechIcon'
 import { AgentDemoChat } from '@/components/ui/AgentDemoChat'
+import { AuroraBg } from '@/components/ui/AuroraBg'
+import { ProcesoFlow } from '@/components/ui/ProcesoFlow'
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
@@ -205,6 +207,7 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
   return (
     <>
       <section className="section-padding agent-detail-bg" style={{ borderBottom: '1px solid var(--border-2)' }}>
+        <AuroraBg />
         {/* Dos columnas asimétricas. Con tres iguales, la de tecnologías solo
             llenaba un tercio y dejaba un hueco muerto bajo ella. */}
         <div className="container relative grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 items-start" style={{ zIndex: 1 }}>
@@ -286,27 +289,21 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
       </section>
 
       {/* Cómo trabaja */}
-      <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
-        <div className="container">
+      <section className="section-padding agent-detail-bg" style={{ borderBottom: '1px solid var(--border-2)' }}>
+        <AuroraBg />
+        <div className="container relative" style={{ zIndex: 1 }}>
           <p className="text-label mb-10">Cómo trabaja {agent.name}</p>
-          <div className="grid grid-cols-1 sm:grid-cols-5 gap-8 sm:gap-4 relative">
-            <div className="hidden sm:block absolute" style={{ top: 22, left: '10%', right: '10%', height: 1, background: 'repeating-linear-gradient(90deg, rgba(229,62,62,0.4) 0 6px, transparent 6px 12px)' }} />
-            {agent.process.map((step) => {
+          <ProcesoFlow
+            acento="#E53E3E"
+            steps={agent.process.map((step) => {
               const Icon = PROCESS_ICONS[step.icon]
-              return (
-                <div key={step.title} className="relative text-center sm:text-left">
-                  <div
-                    className="relative z-10 flex items-center justify-center mb-4 mx-auto sm:mx-0"
-                    style={{ width: 44, height: 44, background: 'var(--black)', border: '1px solid var(--red)', borderRadius: '50%' }}
-                  >
-                    <Icon size={18} color="var(--red)" strokeWidth={2} />
-                  </div>
-                  <div className="font-display font-bold uppercase mb-1.5" style={{ fontSize: 13, color: 'var(--white)' }}>{step.title}</div>
-                  <div style={{ fontSize: 12, color: 'var(--gray-1)', lineHeight: 1.6 }}>{step.desc}</div>
-                </div>
-              )
+              return {
+                icon: <Icon size={18} color="#E53E3E" strokeWidth={2} />,
+                title: step.title,
+                desc: step.desc,
+              }
             })}
-          </div>
+          />
         </div>
       </section>
     </>

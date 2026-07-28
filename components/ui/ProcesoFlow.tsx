@@ -143,7 +143,10 @@ export function ProcesoFlow({ steps, acento }: { steps: ProcesoStep[]; acento: s
         </>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* El número de columnas sigue al de pasos: con un valor fijo, un
+          proceso de 5 dejaba el último en una segunda fila y entonces no hay
+          fila común, así que medir() descarta el riel y no se anima nada. */}
+      <div className="proceso-grid" style={{ ['--pasos' as string]: steps.length }}>
         {steps.map((step, i) => (
           <div
             key={step.title}

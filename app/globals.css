@@ -238,20 +238,20 @@ body {
 
 /* ─── AURORA de fondo (lenta y tenue, color por categoria) ─── */
 @keyframes aurora-1 {
-  0%,100% { transform: translate3d(0,0,0) scale(1);    opacity: 0.85; }
-  50%     { transform: translate3d(17%,-13%,0) scale(1.38); opacity: 1; }
+  0%,100% { transform: translate3d(0,0,0) scale(0.95);      opacity: 0.65; }
+  50%     { transform: translate3d(26%,-20%,0) scale(1.55);  opacity: 1; }
 }
 @keyframes aurora-2 {
-  0%,100% { transform: translate3d(0,0,0) scale(1.15); opacity: 1; }
-  50%     { transform: translate3d(-15%,15%,0) scale(0.82); opacity: 0.8; }
+  0%,100% { transform: translate3d(0,0,0) scale(1.25);      opacity: 1; }
+  50%     { transform: translate3d(-24%,23%,0) scale(0.72);  opacity: 0.6; }
 }
 @keyframes aurora-3 {
-  0%,100% { transform: translate3d(0,0,0) scale(0.9);  opacity: 0.9; }
-  50%     { transform: translate3d(13%,18%,0) scale(1.32); opacity: 1; }
+  0%,100% { transform: translate3d(0,0,0) scale(0.85);      opacity: 0.7; }
+  50%     { transform: translate3d(21%,26%,0) scale(1.48);   opacity: 1; }
 }
-.animate-aurora-1 { animation: aurora-1 15s ease-in-out infinite; }
-.animate-aurora-2 { animation: aurora-2 19s ease-in-out infinite; }
-.animate-aurora-3 { animation: aurora-3 17s ease-in-out infinite; }
+.animate-aurora-1 { animation: aurora-1 9s ease-in-out infinite; }
+.animate-aurora-2 { animation: aurora-2 11s ease-in-out infinite; }
+.animate-aurora-3 { animation: aurora-3 10s ease-in-out infinite; }
 
 /* ─── PROCESO: luz que recorre el riel + destello de cada paso ─── */
 @keyframes proc-travel {
@@ -465,13 +465,14 @@ body {
   .skill-card .skill-ico { animation: none; }
 }
 
-/* ─── Fondo del detalle: deja de ser negro plano ─────────────────────── */
+/* ─── Fondo del detalle: aurora roja en movimiento sobre la retícula ──── */
 .agent-detail-bg {
   position: relative;
-  background:
-    radial-gradient(ellipse 70% 55% at 12% 0%, rgba(229,62,62,0.07), transparent 62%),
-    radial-gradient(ellipse 60% 50% at 92% 88%, rgba(229,62,62,0.05), transparent 60%),
-    #050505;
+  overflow: hidden;
+  background: #050505;
+}
+.agent-aurora {
+  position: absolute; border-radius: 50%; pointer-events: none;
 }
 /* Retícula fina, estática: da textura sin costar un solo fotograma */
 .agent-detail-bg::before {
@@ -484,3 +485,8 @@ body {
   mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 25%, transparent 82%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 25%, transparent 82%);
 }
+
+/* Grid del flujo de proceso: las columnas siguen al número de pasos */
+.proceso-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+@media (min-width: 640px)  { .proceso-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .proceso-grid { grid-template-columns: repeat(var(--pasos, 4), minmax(0, 1fr)); } }
