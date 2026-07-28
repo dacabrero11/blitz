@@ -4,6 +4,8 @@ import {
   MessageCircle, Target, Handshake, CalendarClock, Magnet, CheckCircle,
 } from 'lucide-react'
 import type { Agent, AgentSkill, AgentProcessStep } from '@/lib/agents'
+import { TechIcon } from '@/components/ui/TechIcon'
+import { AgentDemoChat } from '@/components/ui/AgentDemoChat'
 
 const WA_URL = 'https://wa.me/50379102453?text=Hola%20Blitz%2C%20quiero%20información%20sobre%20sus%20servicios'
 
@@ -203,95 +205,79 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
   return (
     <>
       <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
-        <div className="container grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Habilidades principales */}
-          <div>
-            <p className="text-label mb-5">Habilidades principales</p>
-            <div className="flex flex-col gap-3">
-              {agent.skills.map((s) => {
-                const Icon = SKILL_ICONS[s.icon]
-                return (
-                  <div key={s.title} className="p-4 flex gap-3" style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}>
-                    <Icon size={20} color="var(--red)" strokeWidth={2} className="flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="font-display font-bold uppercase mb-1" style={{ fontSize: 13, color: 'var(--white)' }}>{s.title}</div>
-                      <div style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{s.desc}</div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Tecnologías que utiliza */}
-          <div>
-            <p className="text-label mb-5">Tecnologías que utiliza</p>
-            <div className="grid grid-cols-2 gap-3">
-              {agent.techStack.map((t) => (
-                <div
-                  key={t.name}
-                  className="p-4 flex items-center justify-center text-center"
-                  style={{ background: 'var(--black-2)', border: '1px solid var(--border)', minHeight: 64 }}
-                >
-                  <span className="font-display font-bold uppercase" style={{ fontSize: 13, color: 'var(--white)' }}>{t.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Vista en acción */}
-          <div>
-            <p className="text-label mb-5">Vista en acción</p>
-            <div style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}>
-              <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-                <span className="font-display font-bold uppercase" style={{ fontSize: 11, color: 'var(--white)' }}>Conversaciones</span>
-                <span
-                  className="font-bold flex items-center justify-center"
-                  style={{ fontSize: 10, color: 'var(--white)', background: 'var(--red)', width: 20, height: 20, borderRadius: '50%' }}
-                >
-                  {agent.demo.otherContacts.length + 1}
-                </span>
-              </div>
-
-              {/* Active thread */}
-              <div className="px-4 py-3" style={{ borderBottom: '1px solid var(--border)' }}>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="font-display font-bold" style={{ fontSize: 12, color: 'var(--white)' }}>{agent.demo.contactName}</span>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {agent.demo.messages.map((m, i) => (
-                    <div key={i} className={m.from === 'agent' ? 'self-end text-right' : 'self-start'} style={{ maxWidth: '85%' }}>
-                      <div
-                        className="px-3 py-2"
-                        style={{
-                          fontSize: 11.5,
-                          lineHeight: 1.5,
-                          color: m.from === 'agent' ? 'var(--white)' : 'var(--gray-1)',
-                          background: m.from === 'agent' ? 'rgba(229,62,62,0.18)' : 'var(--black)',
-                          border: m.from === 'agent' ? '1px solid rgba(229,62,62,0.4)' : '1px solid var(--border)',
-                        }}
+        {/* Dos columnas asimétricas. Con tres iguales, la de tecnologías solo
+            llenaba un tercio y dejaba un hueco muerto bajo ella. */}
+        <div className="container grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 items-start">
+          {/* ── Columna izquierda: habilidades + tecnologías ── */}
+          <div className="flex flex-col gap-9">
+            <div>
+              <p className="text-label mb-5">Habilidades principales</p>
+              <div className="flex flex-col gap-3">
+                {agent.skills.map((s, i) => {
+                  const Icon = SKILL_ICONS[s.icon]
+                  return (
+                    <div
+                      key={s.title}
+                      className="skill-card btn-clip relative p-4 pl-5 flex gap-3.5"
+                      style={{
+                        background: 'var(--black-2)',
+                        border: '1px solid var(--border)',
+                        animation: `skill-in 620ms cubic-bezier(0.16,1,0.3,1) ${i * 90}ms backwards`,
+                      }}
+                    >
+                      {/* Índice en marca de agua */}
+                      <span
+                        aria-hidden
+                        className="absolute font-display font-black"
+                        style={{ right: 12, top: 6, fontSize: 34, lineHeight: 1, color: 'var(--white)', opacity: 0.05 }}
                       >
-                        {m.text}
-                      </div>
-                      <div style={{ fontSize: 9, color: 'var(--gray-2)', marginTop: 2 }}>{m.time}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
 
-              {/* Other contacts, collapsed */}
-              <div className="px-4 py-2">
-                {agent.demo.otherContacts.map((c) => (
-                  <div key={c.name} className="flex items-center justify-between py-1.5" style={{ borderBottom: '1px solid var(--border)' }}>
-                    <div>
-                      <div style={{ fontSize: 11, color: 'var(--gray-1)' }}>{c.name}</div>
-                      <div style={{ fontSize: 10, color: 'var(--gray-2)' }}>{c.note}</div>
+                      <span
+                        className="skill-ico flex items-center justify-center flex-shrink-0"
+                        style={{ width: 34, height: 34, border: '1px solid rgba(229,62,62,0.3)', background: 'rgba(229,62,62,0.08)' }}
+                      >
+                        <Icon size={17} color="var(--red)" strokeWidth={2} />
+                      </span>
+
+                      <div style={{ position: 'relative', zIndex: 1 }}>
+                        <div className="font-display font-bold uppercase mb-1" style={{ fontSize: 13, letterSpacing: '0.03em', color: 'var(--white)' }}>
+                          {s.title}
+                        </div>
+                        <div style={{ fontSize: 12.5, color: 'var(--gray-1)', lineHeight: 1.6 }}>{s.desc}</div>
+                      </div>
                     </div>
-                    <span style={{ fontSize: 9, color: 'var(--gray-2)' }}>{c.time}</span>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-label mb-5">Tecnologías que utiliza</p>
+              <div className="grid grid-cols-2 gap-3">
+                {agent.techStack.map((t) => (
+                  <div
+                    key={t.name}
+                    className="tech-card btn-clip relative flex flex-col items-center justify-center gap-2.5 px-3 py-5"
+                    style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}
+                  >
+                    <span className="tech-ico" style={{ color: 'var(--gray-1)', display: 'flex' }}>
+                      <TechIcon name={t.name} size={26} />
+                    </span>
+                    <span className="font-display font-bold uppercase text-center" style={{ fontSize: 12, letterSpacing: '0.05em', color: 'var(--white)' }}>
+                      {t.name}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+
+          {/* ── Columna derecha: la demo, protagonista ── */}
+          <div className="lg:sticky" style={{ top: 'calc(var(--nav-h) + 24px)' }}>
+            <p className="text-label mb-5">Vista en acción</p>
+            <AgentDemoChat demo={agent.demo} />
           </div>
         </div>
       </section>

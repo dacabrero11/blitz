@@ -383,3 +383,43 @@ body {
   .animate-op-kenburns, .animate-op-chroma { animation: none; }
   .animate-op-focus, .animate-op-lock { animation: none; opacity: 0.4; transform: none; }
 }
+
+/* ─── VISTA EN ACCIÓN · demo de chat ─────────────────────────────────── */
+
+/* Entrada de cada burbuja de mensaje */
+@keyframes demo-msg {
+  0%   { opacity: 0; transform: translate3d(0, 8px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+/* Puntos del indicador de "escribiendo…" */
+@keyframes demo-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translate3d(0, 0, 0); }
+  30%           { opacity: 1; transform: translate3d(0, -3px, 0); }
+}
+/* Reveal escalonado de las tarjetas de habilidad */
+@keyframes skill-in {
+  0%   { opacity: 0; transform: translate3d(-10px, 0, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.animate-demo-dot { animation: demo-dot 1.3s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-demo-dot { animation: none; }
+}
+
+/* Hover de las tarjetas de habilidad y de tecnología */
+.skill-card { transition: border-color 300ms ease, background 300ms ease, transform 300ms var(--ease-out); }
+.skill-card:hover { border-color: rgba(229,62,62,0.45); background: #101010; transform: translateX(3px); }
+.skill-card .skill-ico { transition: background 300ms ease, border-color 300ms ease, transform 300ms var(--ease-out); }
+.skill-card:hover .skill-ico { background: rgba(229,62,62,0.18); border-color: rgba(229,62,62,0.6); transform: scale(1.08); }
+
+.tech-card { transition: border-color 300ms ease, background 300ms ease, transform 300ms var(--ease-out); }
+.tech-card:hover { border-color: rgba(229,62,62,0.45); background: #101010; transform: translateY(-3px); }
+.tech-card .tech-ico { transition: color 300ms ease, transform 300ms var(--ease-out); }
+.tech-card:hover .tech-ico { color: var(--red); transform: scale(1.1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-card, .skill-card:hover, .tech-card, .tech-card:hover,
+  .skill-card .skill-ico, .tech-card .tech-ico { transform: none; }
+}
