@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { ProblemBackdrop } from '@/components/ui/ProblemBackdrop'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, ArrowRight, ArrowDown } from 'lucide-react'
@@ -118,9 +119,7 @@ export function ProblemSection() {
 
   return (
     <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)', background: '#050505' }}>
-      <Image src="/hero-bg.jpg" alt="" fill className="pointer-events-none" style={{ objectFit: 'cover', objectPosition: 'center 20%', zIndex: 0, opacity: 0.4 }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(229,62,62,0.16), transparent 70%)', zIndex: 1 }} />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to top, #050505 0%, rgba(5,5,5,0.95) 40%, rgba(5,5,5,0.8) 100%)', zIndex: 1 }} />
+      <ProblemBackdrop />
 
       <div className="container relative" style={{ zIndex: 3 }}>
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-10 lg:gap-14">

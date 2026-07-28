@@ -612,3 +612,33 @@ body {
   .fase-sweep { animation: none; opacity: 0; }
   .fase-visual:hover .fase-img { transform: none; }
 }
+
+/* ─── FONDO "TU NEGOCIO TIENE FUGAS" · centro de operaciones ─────────── */
+
+/* Respiración: 20s, escala imperceptible */
+@keyframes ciudad-respira {
+  0%, 100% { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) scale(1); }
+  50%      { transform: translate3d(var(--px, 0px), var(--py, 0px), 0) scale(1.01); }
+}
+/* Scanlines: el hijo mide el doble y se desplaza justo un ciclo del patrón */
+@keyframes ciudad-scan {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, -50%, 0); }
+}
+/* Barrido de IA: 1.5s de paso, ciclo de 14s */
+@keyframes ciudad-barrido {
+  0%      { transform: translate3d(0, -140px, 0); opacity: 0; }
+  1.4%    { opacity: 0.15; }
+  5.3%    { opacity: 0.15; }
+  10.7%   { transform: translate3d(0, 100vh, 0); opacity: 0; }
+  100%    { transform: translate3d(0, 100vh, 0); opacity: 0; }
+}
+
+.animate-ciudad-respira { animation: ciudad-respira 20s ease-in-out infinite; }
+.animate-ciudad-scan    { animation: ciudad-scan 15s linear infinite; }
+.animate-ciudad-barrido { animation: ciudad-barrido 14s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ciudad-respira, .animate-ciudad-scan, .animate-ciudad-barrido { animation: none; }
+  .animate-ciudad-barrido { opacity: 0; }
+}
