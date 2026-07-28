@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { PortfolioHero } from '@/components/sections/PageSections'
-import { CaseStudyDatto } from '@/components/sections/CaseStudyDatto'
-import { CaseStudy } from '@/components/sections/PageSections'
-import { CtaFinal, FooterSection } from '@/components/sections/SharedSections'
+import { PortfolioHero } from '@/components/sections/PortfolioHero'
+import { PortfolioGrid } from '@/components/sections/PortfolioGrid'
+import { PortfolioCta } from '@/components/sections/PortfolioCta'
+import { FooterSection } from '@/components/sections/SharedSections'
 
 export const metadata: Metadata = {
   title: 'Portfolio',
@@ -13,9 +13,8 @@ export default function PortfolioPage() {
   return (
     <>
       <PortfolioHero />
-      <CaseStudyDatto />
-      <CaseStudy />
-      <CtaFinal />
+      <PortfolioGrid />
+      <PortfolioCta />
       <FooterSection />
     </>
   )

@@ -490,3 +490,101 @@ body {
 .proceso-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 @media (min-width: 640px)  { .proceso-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1024px) { .proceso-grid { grid-template-columns: repeat(var(--pasos, 4), minmax(0, 1fr)); } }
+
+/* ─── PORTAFOLIO ─────────────────────────────────────────────────────── */
+
+.portfolio-bg { position: relative; overflow: hidden; background: #050506; }
+.portfolio-bg::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 20%, transparent 84%);
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 35%, #000 20%, transparent 84%);
+}
+.portfolio-aurora { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
+
+/* Entrada escalonada */
+@keyframes pf-in {
+  0%   { opacity: 0; transform: translate3d(0, 14px, 0); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.animate-pf-in { animation: pf-in 720ms cubic-bezier(0.16,1,0.3,1) backwards; }
+
+/* Punto de estado */
+@keyframes pf-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.animate-pf-pulse { animation: pf-pulse 1.8s ease-in-out infinite; }
+
+/* Resplandor del icono del CTA */
+@keyframes pf-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(229,62,62,0); }
+  50%     { box-shadow: 0 0 24px -4px rgba(229,62,62,0.55); }
+}
+.animate-pf-glow { animation: pf-glow 3.2s ease-in-out infinite; }
+
+/* Barra de energía sobre los paneles */
+@keyframes pf-sweep {
+  0%        { transform: translate3d(-110%, 0, 0); }
+  60%, 100% { transform: translate3d(420%, 0, 0); }
+}
+.pf-sweep {
+  position: absolute; top: 0; left: 0; height: 1px; width: 24%;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  animation: pf-sweep 7s cubic-bezier(0.5,0,0.5,1) infinite;
+  pointer-events: none; z-index: 2;
+}
+.pf-panel { position: relative; }
+
+/* Línea de escaneo sobre el mockup destacado */
+@keyframes pf-scan {
+  0%   { transform: translate3d(0, -10%, 0); opacity: 0; }
+  12%  { opacity: 0.8; }
+  88%  { opacity: 0.8; }
+  100% { transform: translate3d(0, 1000%, 0); opacity: 0; }
+}
+.pf-scan {
+  position: absolute; left: 0; right: 0; top: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(229,62,62,0.75), transparent);
+  animation: pf-scan 6s cubic-bezier(0.4,0,0.6,1) infinite;
+  pointer-events: none;
+}
+
+/* Flechas del carrusel */
+.pf-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; flex-shrink: 0;
+  border: 1px solid var(--border); background: var(--black-2); color: var(--gray-1);
+  transition: border-color 260ms ease, color 260ms ease, transform 260ms var(--ease-out);
+}
+.pf-arrow:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); }
+
+/* Chips de filtro */
+.pf-chip { animation: pf-in 560ms cubic-bezier(0.16,1,0.3,1) backwards; transition: all 260ms var(--ease-out); }
+.pf-chip:hover { border-color: rgba(229,62,62,0.6) !important; color: #fff !important; }
+
+/* Tarjetas de proyecto */
+.pf-card {
+  animation: pf-in 700ms cubic-bezier(0.16,1,0.3,1) backwards;
+  transition: border-color 320ms ease, transform 320ms var(--ease-out), box-shadow 320ms ease;
+}
+.pf-card:hover {
+  border-color: rgba(229,62,62,0.55);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 44px -22px rgba(229,62,62,0.75);
+}
+.pf-card-img { transition: transform 620ms var(--ease-out), filter 420ms ease; filter: grayscale(0.35) brightness(0.86); }
+.pf-card:hover .pf-card-img { transform: scale(1.06); filter: grayscale(0) brightness(1); }
+.pf-link { transition: gap 260ms var(--ease-out); }
+.pf-card:hover .pf-link { gap: 10px; }
+
+/* Botones principales */
+.pf-cta { transition: transform 260ms var(--ease-out), box-shadow 260ms ease; box-shadow: 0 12px 32px -14px var(--red); }
+.pf-cta:hover { transform: translateY(-2px); box-shadow: 0 20px 44px -12px var(--red); }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pf-in, .pf-chip, .pf-card { animation: none; opacity: 1; transform: none; }
+  .animate-pf-pulse, .animate-pf-glow, .pf-sweep, .pf-scan { animation: none; }
+  .pf-sweep, .pf-scan { opacity: 0; }
+  .pf-card:hover, .pf-cta:hover, .pf-arrow:hover { transform: none; }
+}
