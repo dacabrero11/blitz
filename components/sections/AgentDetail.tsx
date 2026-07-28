@@ -204,10 +204,10 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
 
   return (
     <>
-      <section className="section-padding" style={{ borderBottom: '1px solid var(--border-2)' }}>
+      <section className="section-padding agent-detail-bg" style={{ borderBottom: '1px solid var(--border-2)' }}>
         {/* Dos columnas asimétricas. Con tres iguales, la de tecnologías solo
             llenaba un tercio y dejaba un hueco muerto bajo ella. */}
-        <div className="container grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 items-start">
+        <div className="container relative grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-8 lg:gap-10 items-start" style={{ zIndex: 1 }}>
           {/* ── Columna izquierda: habilidades + tecnologías ── */}
           <div className="flex flex-col gap-9">
             <div>
@@ -218,13 +218,15 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
                   return (
                     <div
                       key={s.title}
-                      className="skill-card btn-clip relative p-4 pl-5 flex gap-3.5"
+                      className="skill-card btn-clip relative overflow-hidden p-4 pl-5 flex gap-3.5"
                       style={{
                         background: 'var(--black-2)',
                         border: '1px solid var(--border)',
                         animation: `skill-in 620ms cubic-bezier(0.16,1,0.3,1) ${i * 90}ms backwards`,
                       }}
                     >
+                      <span className="card-sweep" style={{ animationDelay: `${i * 1.4}s` }} aria-hidden />
+
                       {/* Índice en marca de agua */}
                       <span
                         aria-hidden
@@ -256,12 +258,13 @@ export function AgentDetailSections({ agent }: { agent: Agent }) {
             <div>
               <p className="text-label mb-5">Tecnologías que utiliza</p>
               <div className="grid grid-cols-2 gap-3">
-                {agent.techStack.map((t) => (
+                {agent.techStack.map((t, i) => (
                   <div
                     key={t.name}
-                    className="tech-card btn-clip relative flex flex-col items-center justify-center gap-2.5 px-3 py-5"
+                    className="tech-card btn-clip relative overflow-hidden flex flex-col items-center justify-center gap-2.5 px-3 py-5"
                     style={{ background: 'var(--black-2)', border: '1px solid var(--border)' }}
                   >
+                    <span className="tech-shine" style={{ animationDelay: `${i * 1.7}s` }} aria-hidden />
                     <span className="tech-ico" style={{ color: 'var(--gray-1)', display: 'flex' }}>
                       <TechIcon name={t.name} size={26} />
                     </span>

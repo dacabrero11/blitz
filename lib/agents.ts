@@ -16,10 +16,16 @@ export interface AgentDemoMessage {
   time: string
 }
 
+export interface AgentDemoThread {
+  name: string
+  note: string
+  time: string
+  messages: AgentDemoMessage[]
+}
 export interface AgentDemo {
   contactName: string
   contactNote: string
-  otherContacts: { name: string; note: string; time: string }[]
+  otherContacts: AgentDemoThread[]
   messages: AgentDemoMessage[]
 }
 
@@ -107,9 +113,39 @@ export const AGENTS: Agent[] = [
       contactName: 'Juan Pérez',
       contactNote: 'Interesado en precios',
       otherContacts: [
-        { name: 'María Gómez', note: 'Cotización enviada', time: '5m' },
-        { name: 'Carlos Luna', note: 'Quiere más información', time: '12m' },
-        { name: 'Laura Sánchez', note: 'Lista para comprar', time: '18m' },
+        {
+          name: 'María Gómez',
+          note: 'Cotización enviada',
+          time: '5m',
+          messages: [
+          { from: 'agent', text: 'Hola María, te envié la cotización al correo. Incluye las tres opciones que conversamos.', time: '10:52 AM' },
+          { from: 'user', text: 'Perfecto, ya la vi. La opción intermedia me interesa', time: '10:58 AM' },
+          { from: 'agent', text: 'Excelente elección. Esa incluye instalación y tres meses de soporte. ¿Te aparto el cupo?', time: '10:59 AM' },
+          { from: 'user', text: 'Sí, apártamelo', time: '11:01 AM' },
+          ],
+        },
+        {
+          name: 'Carlos Luna',
+          note: 'Quiere más información',
+          time: '12m',
+          messages: [
+          { from: 'user', text: 'Vi su publicación pero no me quedó claro qué incluye', time: '10:44 AM' },
+          { from: 'agent', text: 'Claro, Carlos. Cubre el sitio completo, dominio por un año y el agente de WhatsApp. ¿Qué rubro manejas?', time: '10:45 AM' },
+          { from: 'user', text: 'Tengo un taller mecánico', time: '10:48 AM' },
+          { from: 'agent', text: 'Perfecto. Para talleres solemos agregar agenda de citas. Te paso un ejemplo real.', time: '10:49 AM' },
+          ],
+        },
+        {
+          name: 'Laura Sánchez',
+          note: 'Lista para comprar',
+          time: '18m',
+          messages: [
+          { from: 'user', text: 'Ya lo platiqué con mi socio, queremos avanzar', time: '10:36 AM' },
+          { from: 'agent', text: 'Excelente, Laura. Te genero el enlace de pago y arrancamos esta semana.', time: '10:37 AM' },
+          { from: 'user', text: '¿Cuánto tardan en entregar?', time: '10:39 AM' },
+          { from: 'agent', text: 'Entre 7 y 21 días según el alcance. El tuyo entra en 10.', time: '10:40 AM' },
+          ],
+        },
       ],
       messages: [
         { from: 'user', text: '¡Hola! ¿En qué puedo ayudarte hoy?', time: '11:34 AM' },
@@ -169,9 +205,38 @@ export const AGENTS: Agent[] = [
       contactName: 'Ana Ramírez',
       contactNote: 'Quiere agendar una cita',
       otherContacts: [
-        { name: 'Roberto Díaz', note: 'Confirmó su cita', time: '8m' },
-        { name: 'Sofía Martínez', note: 'Reprogramó para el viernes', time: '20m' },
-        { name: 'Diego Hernández', note: 'Pregunta sobre horarios', time: '35m' },
+        {
+          name: 'Roberto Díaz',
+          note: 'Confirmó su cita',
+          time: '8m',
+          messages: [
+          { from: 'agent', text: 'Buenos días Roberto, le recuerdo su cita de mañana a las 10:00.', time: '09:12 AM' },
+          { from: 'user', text: 'Confirmado, ahí estaré', time: '09:18 AM' },
+          { from: 'agent', text: 'Perfecto. Le envío la ubicación y un recordatorio una hora antes.', time: '09:19 AM' },
+          ],
+        },
+        {
+          name: 'Sofía Martínez',
+          note: 'Reprogramó para el viernes',
+          time: '20m',
+          messages: [
+          { from: 'user', text: 'Se me complicó el miércoles, ¿hay espacio otro día?', time: '09:00 AM' },
+          { from: 'agent', text: 'Sin problema. Tengo viernes a las 9:00 o a las 15:00. ¿Cuál le sirve?', time: '09:01 AM' },
+          { from: 'user', text: 'Viernes a las 9 está bien', time: '09:04 AM' },
+          { from: 'agent', text: 'Listo, reprogramada para el viernes a las 9:00. Ya liberé el espacio del miércoles.', time: '09:05 AM' },
+          ],
+        },
+        {
+          name: 'Diego Hernández',
+          note: 'Pregunta sobre horarios',
+          time: '35m',
+          messages: [
+          { from: 'user', text: '¿Atienden los sábados?', time: '08:45 AM' },
+          { from: 'agent', text: 'Sí, sábados de 8:00 a 12:00. Entre semana de 8:00 a 17:00.', time: '08:46 AM' },
+          { from: 'user', text: '¿Necesito cita para el sábado?', time: '08:49 AM' },
+          { from: 'agent', text: 'Los sábados solo con cita. ¿Le agendo una?', time: '08:50 AM' },
+          ],
+        },
       ],
       messages: [
         { from: 'agent', text: 'Hola, ¿tienen disponibilidad para una cita mañana?', time: '9:12 AM' },
@@ -229,9 +294,37 @@ export const AGENTS: Agent[] = [
       contactName: 'Carlos · Ferretería El Martillo',
       contactNote: 'Pidió un post promocional',
       otherContacts: [
-        { name: 'Boutique Luna', note: 'Post de temporada listo', time: '10m' },
-        { name: 'Café Aroma', note: 'Solicitó 3 variaciones', time: '15m' },
-        { name: 'Auto Repuestos SV', note: 'Campaña programada', time: '40m' },
+        {
+          name: 'Boutique Luna',
+          note: 'Post de temporada listo',
+          time: '10m',
+          messages: [
+          { from: 'agent', text: 'Listo el post de temporada: tres piezas para feed y una para historias.', time: '11:20 AM' },
+          { from: 'user', text: 'Me encantan. ¿Podemos ajustar el color del texto?', time: '11:24 AM' },
+          { from: 'agent', text: 'Ya quedó en el morado de tu marca. Te dejo también la versión para reel.', time: '11:26 AM' },
+          ],
+        },
+        {
+          name: 'Café Aroma',
+          note: 'Solicitó 3 variaciones',
+          time: '15m',
+          messages: [
+          { from: 'user', text: '¿Puedes hacer variaciones del post del desayuno?', time: '11:14 AM' },
+          { from: 'agent', text: 'Claro. Te preparo tres: una enfocada en precio, otra en el ambiente y otra en el producto.', time: '11:15 AM' },
+          { from: 'user', text: 'Perfecto, esas tres', time: '11:18 AM' },
+          { from: 'agent', text: 'En camino. Cada una con copy distinto para que no compitan entre sí.', time: '11:19 AM' },
+          ],
+        },
+        {
+          name: 'Auto Repuestos SV',
+          note: 'Campaña programada',
+          time: '40m',
+          messages: [
+          { from: 'agent', text: 'La campaña de fin de mes quedó programada: del 24 al 31.', time: '10:50 AM' },
+          { from: 'user', text: '¿Incluye las historias?', time: '10:54 AM' },
+          { from: 'agent', text: 'Sí, 8 publicaciones de feed y 12 de historias, con el copy ya aprobado.', time: '10:55 AM' },
+          ],
+        },
       ],
       messages: [
         { from: 'agent', text: 'Necesito un post para promocionar nuestra oferta de taladros esta semana', time: '4:02 PM' },
@@ -289,9 +382,36 @@ export const AGENTS: Agent[] = [
       contactName: 'Notificaciones a Gerencia',
       contactNote: 'Reporte y alertas del día',
       otherContacts: [
-        { name: 'Alerta de inventario', note: 'Producto por agotarse', time: '1h' },
-        { name: 'Reporte mensual', note: 'Listo para revisar', time: '3h' },
-        { name: 'Tendencia detectada', note: 'Producto en alza', time: '5h' },
+        {
+          name: 'Alerta de inventario',
+          note: 'Producto por agotarse',
+          time: '1h',
+          messages: [
+          { from: 'agent', text: 'Alerta: el aceite 20W-50 bajó de 12 unidades. Al ritmo actual se agota en 4 días.', time: '10:05 AM' },
+          { from: 'user', text: '¿Cuánto pedimos normalmente?', time: '10:11 AM' },
+          { from: 'agent', text: 'El promedio es 60 unidades cada 3 semanas. Recomiendo 80 por la temporada.', time: '10:12 AM' },
+          ],
+        },
+        {
+          name: 'Reporte mensual',
+          note: 'Listo para revisar',
+          time: '3h',
+          messages: [
+          { from: 'agent', text: 'Reporte de julio listo. Ventas +18% contra junio, ticket promedio $42.', time: '08:30 AM' },
+          { from: 'user', text: '¿Qué explicó el alza?', time: '08:38 AM' },
+          { from: 'agent', text: 'El 62% viene de repuestos de suspensión. Coincide con la campaña del día 12.', time: '08:39 AM' },
+          ],
+        },
+        {
+          name: 'Tendencia detectada',
+          note: 'Producto en alza',
+          time: '5h',
+          messages: [
+          { from: 'agent', text: 'Detecté una tendencia: las baterías subieron 34% en dos semanas.', time: '06:40 AM' },
+          { from: 'user', text: '¿Es estacional?', time: '06:47 AM' },
+          { from: 'agent', text: 'No lo parece. Años anteriores no muestran ese pico en julio. Sugiero ampliar stock.', time: '06:48 AM' },
+          ],
+        },
       ],
       messages: [
         { from: 'user', text: 'Reporte semanal: ventas subieron 18% vs. la semana pasada.', time: '8:00 AM' },
@@ -350,9 +470,36 @@ export const AGENTS: Agent[] = [
       contactName: 'Centro de Comando',
       contactNote: 'Resumen de actividad de todos los agentes',
       otherContacts: [
-        { name: 'Oracle', note: 'Reporte semanal listo', time: '1h' },
-        { name: 'Striker', note: '2 leads calificados', time: '2h' },
-        { name: 'Herald', note: 'Agenda del día confirmada', time: '4h' },
+        {
+          name: 'Oracle',
+          note: 'Reporte semanal listo',
+          time: '1h',
+          messages: [
+          { from: 'agent', text: 'Oracle cerró el reporte semanal. Sin anomalías críticas.', time: '10:10 AM' },
+          { from: 'user', text: 'Dame el resumen en una línea', time: '10:15 AM' },
+          { from: 'agent', text: 'Ventas estables, inventario bajo control y una alerta de reposición ya atendida.', time: '10:16 AM' },
+          ],
+        },
+        {
+          name: 'Striker',
+          note: '2 leads calificados',
+          time: '2h',
+          messages: [
+          { from: 'agent', text: 'Striker calificó 2 leads como alta prioridad y los pasó a tu equipo.', time: '09:08 AM' },
+          { from: 'user', text: '¿Por qué alta prioridad?', time: '09:14 AM' },
+          { from: 'agent', text: 'Ambos pidieron precio y confirmaron presupuesto en la misma conversación.', time: '09:15 AM' },
+          ],
+        },
+        {
+          name: 'Herald',
+          note: 'Agenda del día confirmada',
+          time: '4h',
+          messages: [
+          { from: 'agent', text: 'Herald confirmó las 6 citas de hoy. Una se reprogramó al viernes.', time: '07:20 AM' },
+          { from: 'user', text: '¿Alguna sin confirmar?', time: '07:26 AM' },
+          { from: 'agent', text: 'Ninguna. Todas confirmadas y con recordatorio enviado.', time: '07:27 AM' },
+          ],
+        },
       ],
       messages: [
         { from: 'user', text: 'Striker cerró 3 ventas nuevas hoy.', time: '6:00 PM' },

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import type { AgentDemo } from '@/lib/agents'
+import type { AgentDemo, AgentDemoThread } from '@/lib/agents'
 
 /* ══════════════════════════════════════════════════════════════════
    Vista en acción — la conversación se escribe sola.
@@ -14,7 +14,14 @@ const PAUSA_USUARIO = 700 // antes de que "llegue" un mensaje del cliente
 const ESCRIBIENDO = 1100 // cuánto dura el indicador antes de la respuesta
 
 export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
-  const total = demo.messages.length
+  /* Un solo listado de hilos: el principal primero, luego los demás. */
+  const hilos: AgentDemoThread[] = [
+    { name: demo.contactName, note: demo.contactNote, time: 'ahora', messages: demo.messages },
+    ...demo.otherContacts,
+  ]
+  const [hilo, setHilo] = useState(0)
+  const activo = hilos[hilo]
+  const total = activo.messages.length
   const [visibles, setVisibles] = useState(0)
   const [escribiendo, setEscribiendo] = useState(false)
   const [arrancado, setArrancado] = useState(false)
@@ -54,7 +61,7 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
     }
     if (visibles >= total) return
 
-    const siguiente = demo.messages[visibles]
+    const siguiente = activo.messages[visibles]
     const esAgente = siguiente.from === 'agent'
 
     if (esAgente) {
@@ -69,7 +76,7 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
     const t2 = window.setTimeout(() => setVisibles((v) => v + 1), PAUSA_USUARIO)
     timers.current.push(t2)
     return () => window.clearTimeout(t2)
-  }, [arrancado, visibles, total, demo.messages, reduced])
+  }, [arrancado, visibles, total, activo.messages, reduced])
 
   useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
 
@@ -85,6 +92,16 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
     timers.current = []
     setEscribiendo(false)
     setVisibles(0)
+  }
+
+  const abrirHilo = (i: number) => {
+    if (i === hilo) return
+    timers.current.forEach(window.clearTimeout)
+    timers.current = []
+    setEscribiendo(false)
+    setVisibles(0)
+    setHilo(i)
+    setArrancado(true)
   }
 
   const completo = visibles >= total
@@ -129,7 +146,7 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
               transition: 'transform 260ms var(--ease-out)',
             }}
           >
-            {demo.otherContacts.length + (completo ? 1 : 0)}
+            {hilos.length}
           </span>
         </div>
       </div>
@@ -142,20 +159,20 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
             style={{ width: 26, height: 26, borderRadius: '50%', background: 'rgba(229,62,62,0.16)', border: '1px solid rgba(229,62,62,0.4)', fontSize: 11, color: 'var(--red)' }}
             aria-hidden
           >
-            {demo.contactName.charAt(0)}
+            {activo.name.charAt(0)}
           </span>
           <div>
             <div className="font-display font-bold" style={{ fontSize: 12, color: 'var(--white)', lineHeight: 1.1 }}>
-              {demo.contactName}
+              {activo.name}
             </div>
-            <div style={{ fontSize: 9.5, color: 'var(--gray-2)' }}>{demo.contactNote}</div>
+            <div style={{ fontSize: 9.5, color: 'var(--gray-2)' }}>{activo.note}</div>
           </div>
         </div>
 
         <div ref={scrollRef} className="flex flex-col gap-2.5" style={{ overflowY: 'auto', flex: 1, minHeight: 190, scrollbarWidth: 'none' }}>
-          {demo.messages.slice(0, visibles).map((m, i) => (
+          {activo.messages.slice(0, visibles).map((m, i) => (
             <div
-              key={i}
+              key={`${hilo}-${i}`}
               className={m.from === 'agent' ? 'self-end text-right' : 'self-start'}
               style={{ maxWidth: '86%', animation: reduced ? undefined : 'demo-msg 420ms cubic-bezier(0.16,1,0.3,1) backwards' }}
             >
@@ -197,30 +214,59 @@ export function AgentDemoChat({ demo }: { demo: AgentDemo }) {
         </div>
       </div>
 
-      {/* Otros contactos */}
-      <div className="px-4 py-2">
-        {demo.otherContacts.map((c, i) => (
-          <div
-            key={c.name}
-            className="flex items-center justify-between py-2"
-            style={{ borderBottom: i < demo.otherContacts.length - 1 ? '1px solid var(--border)' : 'none' }}
-          >
-            <div className="flex items-center gap-2.5">
-              <span
-                className="flex items-center justify-center font-display font-bold"
-                style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--black)', border: '1px solid var(--border)', fontSize: 10, color: 'var(--gray-1)' }}
-                aria-hidden
-              >
-                {c.name.charAt(0)}
+      {/* Selector de conversación: cada contacto abre su propio hilo */}
+      <div className="px-2 py-1.5">
+        {hilos.map((c, i) => {
+          const on = i === hilo
+          return (
+            <button
+              key={c.name}
+              type="button"
+              onClick={() => abrirHilo(i)}
+              aria-pressed={on}
+              className="thread-row w-full flex items-center justify-between text-left px-2 py-2"
+              style={{
+                borderLeft: `2px solid ${on ? 'var(--red)' : 'transparent'}`,
+                background: on ? 'rgba(229,62,62,0.08)' : 'transparent',
+                transition: 'background 260ms ease, border-color 260ms ease',
+              }}
+            >
+              <span className="flex items-center gap-2.5" style={{ minWidth: 0 }}>
+                <span
+                  className="flex items-center justify-center font-display font-bold flex-shrink-0"
+                  style={{
+                    width: 22,
+                    height: 22,
+                    borderRadius: '50%',
+                    background: on ? 'rgba(229,62,62,0.18)' : 'var(--black)',
+                    border: `1px solid ${on ? 'rgba(229,62,62,0.5)' : 'var(--border)'}`,
+                    fontSize: 10,
+                    color: on ? 'var(--red)' : 'var(--gray-1)',
+                    transition: 'all 260ms ease',
+                  }}
+                  aria-hidden
+                >
+                  {c.name.charAt(0)}
+                </span>
+                <span style={{ minWidth: 0 }}>
+                  <span
+                    className="block truncate"
+                    style={{ fontSize: 11, color: on ? 'var(--white)' : 'var(--gray-1)', lineHeight: 1.2, transition: 'color 260ms ease' }}
+                  >
+                    {c.name}
+                  </span>
+                  <span className="block truncate" style={{ fontSize: 10, color: 'var(--gray-2)' }}>
+                    {c.note}
+                  </span>
+                </span>
               </span>
-              <div>
-                <div style={{ fontSize: 11, color: 'var(--gray-1)', lineHeight: 1.2 }}>{c.name}</div>
-                <div style={{ fontSize: 10, color: 'var(--gray-2)' }}>{c.note}</div>
-              </div>
-            </div>
-            <span style={{ fontSize: 9, color: 'var(--gray-2)' }}>{c.time}</span>
-          </div>
-        ))}
+              <span className="flex items-center gap-1.5 flex-shrink-0">
+                {on && <span className="animate-demo-dot" style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--red)' }} aria-hidden />}
+                <span style={{ fontSize: 9, color: 'var(--gray-2)' }}>{c.time}</span>
+              </span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
