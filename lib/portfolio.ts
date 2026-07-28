@@ -109,8 +109,14 @@ export const CASO_DESTACADO = {
     { icon: 'trend' as const, valor: '+45%', label: 'Conversión' },
     { icon: 'share' as const, valor: '+120%', label: 'Tráfico orgánico' },
   ],
-  /* La tira inferior reutiliza los placeholders hasta tener capturas reales */
-  galeria: ['/portfolio/elevate-studio.jpg', '/portfolio/flow-control.jpg', '/portfolio/rinnova-store.jpg'],
+  /* Capturas reales del sitio entregado */
+  galeria: [
+    { src: '/portfolio/datto-servicios.jpg', titulo: 'Soluciones empresariales' },
+    { src: '/portfolio/datto-catalogo.jpg', titulo: 'Catálogo de productos' },
+    { src: '/portfolio/datto-proyectos.jpg', titulo: 'Portafolio de proyectos' },
+    { src: '/portfolio/datto-planes.jpg', titulo: 'Planes Microsoft 365' },
+    { src: '/portfolio/datto-contacto.jpg', titulo: 'Contacto' },
+  ],
 }
 
 /* ── Cifras del encabezado ────────────────────────────────────────── */

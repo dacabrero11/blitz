@@ -589,3 +589,7 @@ body {
   .pf-sweep, .pf-scan { opacity: 0; }
   .pf-card:hover, .pf-cta:hover, .pf-arrow:hover { transform: none; }
 }
+
+/* Tira de miniaturas del caso destacado: sin barra de desplazamiento visible */
+.pf-thumbs { scrollbar-width: none; }
+.pf-thumbs::-webkit-scrollbar { display: none; }

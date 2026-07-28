@@ -54,7 +54,7 @@ function Contador({ valor, delay = 0 }: { valor: string; delay?: number }) {
 
 export function PortfolioHero() {
   const [slide, setSlide] = useState(0)
-  const vistas = [CASO_DESTACADO.image, ...CASO_DESTACADO.galeria]
+  const vistas = [{ src: CASO_DESTACADO.image, titulo: 'Página principal' }, ...CASO_DESTACADO.galeria]
   const mover = (d: number) => setSlide((s) => ((s + d) % vistas.length + vistas.length) % vistas.length)
 
   return (
@@ -153,11 +153,11 @@ export function PortfolioHero() {
               {/* Mockup con carrusel */}
               <div>
                 <div className="relative overflow-hidden" style={{ border: '1px solid rgba(229,62,62,0.2)', aspectRatio: '16 / 10', background: '#08080a' }}>
-                  {vistas.map((src, i) => (
+                  {vistas.map((v, i) => (
                     <Image
-                      key={`${src}-${i}`}
-                      src={src}
-                      alt=""
+                      key={v.src}
+                      src={v.src}
+                      alt={i === slide ? `Datto Business Network — ${v.titulo}` : ''}
                       fill
                       sizes="(max-width: 1023px) 90vw, 46vw"
                       priority={i === 0}
@@ -172,27 +172,43 @@ export function PortfolioHero() {
                   <span aria-hidden className="pf-scan" />
                 </div>
 
-                <div className="flex items-center gap-2 mt-3">
+                {/* Nombre de la vista, para que la miniatura no sea adivinanza */}
+                <p
+                  key={`t-${slide}`}
+                  className="font-display font-bold uppercase mt-2.5 animate-pf-in"
+                  style={{ fontSize: 9.5, letterSpacing: '0.18em', color: 'var(--gray-1)' }}
+                >
+                  <span style={{ color: 'var(--red)' }}>{String(slide + 1).padStart(2, '0')}</span>
+                  <span style={{ opacity: 0.4 }}> / {String(vistas.length).padStart(2, '0')}</span>
+                  <span style={{ marginLeft: 8 }}>{vistas[slide].titulo}</span>
+                </p>
+
+                <div className="flex items-center gap-2 mt-2">
                   <button type="button" onClick={() => mover(-1)} aria-label="Vista anterior" className="pf-arrow">
                     <ChevronLeft size={15} />
                   </button>
-                  <div className="flex gap-2 flex-1" style={{ minWidth: 0 }}>
-                    {vistas.map((src, i) => (
+                  {/* Miniaturas de ancho fijo con desplazamiento: con seis vistas,
+                      repartir a partes iguales las dejaba en ~50px */}
+                  <div className="flex gap-2 flex-1 pf-thumbs" style={{ minWidth: 0, overflowX: 'auto', scrollSnapType: 'x proximity', paddingBottom: 2 }}>
+                    {vistas.map((v, i) => (
                       <button
-                        key={`t-${src}-${i}`}
+                        key={`t-${v.src}`}
                         type="button"
                         onClick={() => setSlide(i)}
-                        aria-label={`Vista ${i + 1}`}
+                        title={v.titulo}
+                        aria-label={v.titulo}
                         aria-current={i === slide}
-                        className="relative overflow-hidden flex-1"
+                        className="relative overflow-hidden flex-shrink-0"
                         style={{
+                          width: 76,
                           aspectRatio: '16 / 10',
+                          scrollSnapAlign: 'center',
                           border: `1px solid ${i === slide ? 'var(--red)' : 'var(--border)'}`,
                           transition: 'border-color 300ms ease, transform 300ms var(--ease-out)',
                           transform: i === slide ? 'translateY(-2px)' : 'none',
                         }}
                       >
-                        <Image src={src} alt="" fill sizes="140px" className="object-cover object-top" style={{ opacity: i === slide ? 1 : 0.42, transition: 'opacity 300ms ease' }} />
+                        <Image src={v.src} alt="" fill sizes="90px" className="object-cover object-top" style={{ opacity: i === slide ? 1 : 0.42, transition: 'opacity 300ms ease' }} />
                       </button>
                     ))}
                   </div>
