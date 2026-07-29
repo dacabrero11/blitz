@@ -41,20 +41,35 @@ export function HeroSection() {
         background: '#080808',
       }}
     >
-      <Image
-        src="/hero-bg.jpg"
-        alt="BLITZ — Agentes IA"
-        fill
-        className="pointer-events-none"
-        style={{ objectFit: 'cover', objectPosition: 'center 30%', zIndex: 0 }}
-        priority
-      />
+      {/* La composición del hero es 2:1 panorámica: en un móvil vertical
+          object-cover se come el 77% del ancho y deja justo la franja del
+          personaje encima del texto. En móvil se sirve una versión vertical
+          recompuesta, con el personaje abajo a la derecha. */}
+      <picture>
+        <source media="(max-width: 767px)" srcSet="/hero-bg-movil.jpg" />
+        <img
+          src="/hero-bg.jpg"
+          alt="BLITZ — Agentes IA"
+          className="pointer-events-none absolute inset-0 w-full h-full"
+          style={{ objectFit: 'cover', objectPosition: 'center 30%', zIndex: 0 }}
+          fetchPriority="high"
+        />
+      </picture>
 
-      {/* Legibility overlay: darkens left side for text, keeps right side of the image visible */}
+      {/* Legibilidad. En desktop el texto va a la izquierda, así que el
+          gradiente es horizontal; en móvil ocupa todo el ancho y tiene que
+          ser vertical o no protege nada. */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none hero-veil-desktop"
         style={{
           background: 'linear-gradient(90deg, rgba(8,8,8,0.94) 0%, rgba(8,8,8,0.8) 32%, rgba(8,8,8,0.2) 62%, rgba(8,8,8,0.35) 100%)',
+          zIndex: 1,
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none hero-veil-movil"
+        style={{
+          background: 'linear-gradient(180deg, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.78) 38%, rgba(8,8,8,0.42) 62%, rgba(8,8,8,0.72) 100%)',
           zIndex: 1,
         }}
       />
@@ -99,11 +114,11 @@ export function HeroSection() {
           style={{ gap: 'clamp(24px, 3.5vw, 52px)', marginBottom: 'clamp(32px, 4vw, 48px)' }}
         >
           {FEATURES.map(({ icon, label, sub }) => (
-            <div key={label} className="flex items-center" style={{ gap: 14 }}>
-              <div className="flex-shrink-0 relative" style={{ width: 56, height: 56 }}>
+            <div key={label} className="hero-feature flex items-center" style={{ gap: 14 }}>
+              <div className="hero-feature-ico flex-shrink-0 relative" style={{ width: 56, height: 56 }}>
                 <Image src={icon} alt="" fill style={{ objectFit: 'contain' }} />
               </div>
-              <div>
+              <div className="hero-feature-txt">
                 <div className="font-display font-bold uppercase leading-tight" style={{ fontSize: 17, color: 'var(--white)' }}>
                   {label}
                 </div>

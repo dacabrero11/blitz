@@ -719,3 +719,29 @@ body {
 }
 .animate-core-halo { animation: core-halo 8s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .animate-core-halo { animation: none; opacity: 0.5; } }
+
+/* ─── HERO EN MÓVIL ──────────────────────────────────────────────────── */
+
+/* Los dos velos se alternan: horizontal en desktop, vertical en móvil */
+.hero-veil-movil { display: none; }
+@media (max-width: 767px) {
+  .hero-veil-desktop { display: none; }
+  .hero-veil-movil { display: block; }
+
+  /* Los tres items pasan a icono arriba y texto debajo, en una fila de 3.
+     Con flex-wrap caían 2+1 y el segundo quedaba encima del personaje. */
+  .hero-features {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px !important;
+  }
+  .hero-feature {
+    flex-direction: column;
+    align-items: center !important;
+    text-align: center;
+    gap: 8px !important;
+  }
+  .hero-feature-ico { width: 44px !important; height: 44px !important; }
+  .hero-feature-txt > div:first-child { font-size: 12.5px !important; letter-spacing: 0.01em; }
+  .hero-feature-txt > div:last-child { font-size: 10.5px !important; line-height: 1.35; }
+}
