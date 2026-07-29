@@ -69,7 +69,8 @@ export function HeroSection() {
       <div
         className="absolute inset-0 pointer-events-none hero-veil-movil"
         style={{
-          background: 'linear-gradient(180deg, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.78) 38%, rgba(8,8,8,0.42) 62%, rgba(8,8,8,0.72) 100%)',
+          background:
+            'linear-gradient(180deg, rgba(8,8,8,0.88) 0%, rgba(8,8,8,0.88) 30%, rgba(8,8,8,0.84) 48%, rgba(8,8,8,0.7) 62%, rgba(8,8,8,0.34) 80%, rgba(8,8,8,0.56) 100%)',
           zIndex: 1,
         }}
       />
