@@ -94,7 +94,7 @@ export function CoreBackdrop() {
           width: 'min(112%, 1180px)',
           aspectRatio: '3 / 2',
           transform: 'translate(-50%, -50%)',
-          opacity: entro ? 0.2 : 0,
+          opacity: entro ? 0.34 : 0,
           transition: 'opacity 2600ms ease-out',
         }}
       >
@@ -104,6 +104,70 @@ export function CoreBackdrop() {
       {/* El halo del núcleo va horneado en el entorno: como capa aparte
           costaba 11 fps medidos y la respiración ya la da la capa energética,
           que está centrada sobre el mismo punto. */}
+
+      {/* ── Trazas de energía subiendo del suelo al núcleo. Son lo que hace
+             VISIBLE que la infraestructura lo alimenta: las animaciones de 45s
+             sobre unos pocos píxeles quedaban por debajo del umbral de
+             percepción (medido: 1.4% de píxeles cambiaban en 3s). ── */}
+      {mov &&
+        [
+          { x: '22%', d: 0, h: 34 },
+          { x: '38%', d: 3400, h: 26 },
+          { x: '61%', d: 1700, h: 30 },
+          { x: '76%', d: 6200, h: 22 },
+        ].map((t) => (
+          <span
+            key={t.x}
+            aria-hidden
+            className="absolute animate-core-traza"
+            style={{
+              left: t.x,
+              bottom: '4%',
+              width: 3,
+              height: `${t.h}%`,
+              transformOrigin: 'bottom center',
+              animationDelay: `${t.d}ms`,
+              background: 'linear-gradient(to top, transparent, rgba(229,62,62,0.9), rgba(255,170,170,1) 82%, transparent)',
+              boxShadow: '0 0 14px 3px rgba(229,62,62,0.55)',
+              filter: 'blur(0.4px)',
+            }}
+          />
+        ))}
+
+      {/* ── Halo del núcleo. Área grande a propósito: el ojo detecta antes un
+             pulso amplio y tenue que un borde fino, por muy brillante que sea ── */}
+      {movDesktop && (
+        <span
+          aria-hidden
+          className="absolute animate-core-halo"
+          style={{
+            left: '50%',
+            top: '43%',
+            width: 'min(120%, 1250px)',
+            height: 'min(95%, 780px)',
+            transform: 'translate(-50%, -50%)',
+            background: 'radial-gradient(ellipse at 50% 50%, rgba(229,62,62,0.3), rgba(229,62,62,0.1) 38%, transparent 66%)',
+          }}
+        />
+      )}
+
+      {/* ── Anillo del núcleo, latiendo a 9s ── */}
+      {movDesktop && (
+        <span
+          aria-hidden
+          className="absolute animate-core-anillo"
+          style={{
+            left: '50%',
+            top: '44%',
+            width: 'min(46%, 460px)',
+            aspectRatio: '2.4 / 1',
+            transform: 'translate(-50%, -50%)',
+            borderRadius: '50%',
+            border: '1px solid rgba(229,62,62,0.55)',
+            boxShadow: '0 0 34px -6px rgba(229,62,62,0.5), inset 0 0 40px -14px rgba(229,62,62,0.6)',
+          }}
+        />
+      )}
 
       {/* ── Cierre: viñeta y asiento del texto en una sola superficie ── */}
       <div

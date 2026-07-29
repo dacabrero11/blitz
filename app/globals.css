@@ -650,8 +650,8 @@ body {
 /* Solo translate, sin scale: escalar una capa del tamaño del viewport obliga a
    re-samplearla en cada fotograma, y aquí había cuatro haciéndolo a la vez */
 @keyframes core-deriva {
-  0%, 100% { transform: translate3d(var(--mx, 0px), var(--my, 0px), 0); }
-  50%      { transform: translate3d(calc(var(--mx, 0px) + 9px), calc(var(--my, 0px) - 7px), 0); }
+  0%, 100% { transform: translate3d(calc(var(--mx, 0px) - 22px), calc(var(--my, 0px) + 14px), 0) scale(1.04); }
+  50%      { transform: translate3d(calc(var(--mx, 0px) + 24px), calc(var(--my, 0px) - 16px), 0) scale(1.04); }
 }
 /* Textura de datos: desplazamiento vertical de 60s, casi imperceptible */
 @keyframes core-datos {
@@ -661,8 +661,10 @@ body {
 /* Respiración de la capa energética: 35s */
 /* La respiración de la capa energética se hace con opacidad, no con escala */
 @keyframes core-respira {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.6; }
+  0%, 100% { opacity: 0.42; }
+  35%      { opacity: 1; }
+  50%      { opacity: 0.86; }
+  70%      { opacity: 1; }
 }
 /* Pulso del halo del núcleo: 28s */
 @keyframes core-pulso {
@@ -689,3 +691,31 @@ body {
   .animate-core-deriva, .animate-core-datos, .animate-core-respira, .animate-core-pulso { animation: none; }
   .fase-card:hover { transform: none; }
 }
+
+/* Trazas de energía que ascienden del suelo hacia el núcleo */
+@keyframes core-traza {
+  0%   { transform: translate3d(0, 0, 0) scaleY(0.35); opacity: 0; }
+  12%  { opacity: 0.75; }
+  70%  { opacity: 0.5; }
+  100% { transform: translate3d(0, -78%, 0) scaleY(1); opacity: 0; }
+}
+.animate-core-traza { animation: core-traza 11s cubic-bezier(0.4,0,0.5,1) infinite; }
+
+/* Latido del anillo del núcleo */
+@keyframes core-anillo {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.94); opacity: 0.25; }
+  50%      { transform: translate(-50%, -50%) scale(1.12); opacity: 0.7; }
+}
+.animate-core-anillo { animation: core-anillo 9s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-core-traza, .animate-core-anillo { animation: none; opacity: 0; }
+}
+
+/* Pulso del halo del núcleo: área grande, 8s */
+@keyframes core-halo {
+  0%, 100% { opacity: 0.28; }
+  50%      { opacity: 1; }
+}
+.animate-core-halo { animation: core-halo 8s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .animate-core-halo { animation: none; opacity: 0.5; } }
