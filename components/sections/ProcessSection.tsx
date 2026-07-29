@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { CoreBackdrop } from '@/components/ui/CoreBackdrop'
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
@@ -124,15 +125,8 @@ export function ProcessSection() {
   }, [])
 
   return (
-    <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)', background: '#070707' }}>
-      <div
-        className="absolute inset-0 pointer-events-none opacity-50"
-        style={{
-          backgroundImage: `linear-gradient(${ROJO}0d 1px, transparent 1px), linear-gradient(90deg, ${ROJO}0d 1px, transparent 1px)`,
-          backgroundSize: '58px 58px',
-        }}
-      />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 0%, rgba(229,62,62,0.14), transparent 68%)' }} />
+    <section className="section-padding relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-2)', background: '#050505' }}>
+      <CoreBackdrop />
 
       <div ref={wrapRef} className="container relative">
         {/* ── Encabezado ── */}
@@ -225,10 +219,11 @@ export function ProcessSection() {
           {STEPS.map((s, i) => (
             <div
               key={s.n}
-              className="flex flex-col p-5"
+              className="fase-card flex flex-col p-5"
               style={{
                 border: `1px solid ${ROJO}40`,
-                background: 'rgba(10,10,10,0.7)',
+                // algo más opaca: ahora flotan sobre la infraestructura
+                background: 'rgba(9,9,10,0.82)',
                 clipPath: 'polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px))',
                 opacity: visible ? 1 : 0,
                 transform: visible ? 'translateY(0)' : 'translateY(18px)',

@@ -642,3 +642,50 @@ body {
   .animate-ciudad-respira, .animate-ciudad-scan, .animate-ciudad-barrido { animation: none; }
   .animate-ciudad-barrido { opacity: 0; }
 }
+
+/* ─── BLITZ CORE · entorno de "Del brief al lanzamiento" ─────────────── */
+
+/* Deriva de la infraestructura: 45s, unos pocos píxeles. El micro parallax
+   entra por --mx/--my para compartir un único transform con la animación. */
+/* Solo translate, sin scale: escalar una capa del tamaño del viewport obliga a
+   re-samplearla en cada fotograma, y aquí había cuatro haciéndolo a la vez */
+@keyframes core-deriva {
+  0%, 100% { transform: translate3d(var(--mx, 0px), var(--my, 0px), 0); }
+  50%      { transform: translate3d(calc(var(--mx, 0px) + 9px), calc(var(--my, 0px) - 7px), 0); }
+}
+/* Textura de datos: desplazamiento vertical de 60s, casi imperceptible */
+@keyframes core-datos {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -2.2%, 0); }
+}
+/* Respiración de la capa energética: 35s */
+/* La respiración de la capa energética se hace con opacidad, no con escala */
+@keyframes core-respira {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+/* Pulso del halo del núcleo: 28s */
+@keyframes core-pulso {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+.animate-core-deriva  { animation: core-deriva 45s ease-in-out infinite; }
+.animate-core-datos   { animation: core-datos 60s ease-in-out infinite; }
+.animate-core-respira { animation: core-respira 35s ease-in-out infinite; }
+.animate-core-pulso   { animation: core-pulso 28s ease-in-out infinite; }
+
+/* Las tarjetas flotan dentro de la infraestructura: solo separación */
+.fase-card {
+  box-shadow: 0 22px 60px -30px rgba(0,0,0,0.95), 0 0 0 1px rgba(229,62,62,0.06), 0 0 44px -26px rgba(229,62,62,0.5);
+  transition: box-shadow 420ms ease, transform 420ms var(--ease-out);
+}
+.fase-card:hover {
+  box-shadow: 0 28px 70px -28px rgba(0,0,0,0.95), 0 0 0 1px rgba(229,62,62,0.22), 0 0 60px -22px rgba(229,62,62,0.75);
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-core-deriva, .animate-core-datos, .animate-core-respira, .animate-core-pulso { animation: none; }
+  .fase-card:hover { transform: none; }
+}
