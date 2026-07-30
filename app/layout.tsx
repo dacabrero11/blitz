@@ -43,6 +43,20 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   robots: { index: true, follow: true },
+  /* Un archivo por tamaño: a 16px el logo necesita menos margen que a 512
+     o la B no se distingue. El fondo negro de marca garantiza contraste
+     tanto en pestañas de tema claro como oscuro — el rayo del logo es
+     blanco y sobre fondo claro desaparecería. */
+  icons: {
+    icon: [
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/favicon.ico'],
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
