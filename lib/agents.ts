@@ -60,6 +60,8 @@ export interface Agent {
   heroFull?: string
   /** Etiqueta corta para el roster del selector: 'Ventas', 'Secretario'… */
   rosterLabel?: string
+  /** Hero vertical propio para móvil, con el personaje centrado (/agentes/[slug]) */
+  heroMovil?: string
   heroBgPosition?: string
   cardImage?: string
   cardIcon?: 'target' | 'clipboard' | 'tv' | 'activity' | 'crown'
@@ -94,6 +96,7 @@ export const AGENTS: Agent[] = [
     taglineShort: 'Conecta. Persuade. Cierra.',
     heroBg: '/agents/hero-striker.jpg',
     stageBg: '/agents/stage-striker.jpg',
+    heroMovil: '/agents/heromovil-striker.jpg',
     rosterImage: '/agents/roster-striker.jpg',
     heroFull: '/agents/hero2k-striker.jpg',
     rosterLabel: 'Ventas',
@@ -185,6 +188,7 @@ export const AGENTS: Agent[] = [
     taglineShort: 'Organiza. Responde. Coordina.',
     heroBg: '/agents/hero-herald.jpg',
     stageBg: '/agents/stage-herald.jpg',
+    heroMovil: '/agents/heromovil-herald.jpg',
     rosterImage: '/agents/roster-herald.jpg',
     heroFull: '/agents/hero2k-herald.jpg',
     rosterLabel: 'Secretario',
@@ -275,6 +279,7 @@ export const AGENTS: Agent[] = [
     taglineShort: 'Crea. Publica. Conecta.',
     heroBg: '/agents/hero-signal.jpg',
     stageBg: '/agents/stage-signal.jpg',
+    heroMovil: '/agents/heromovil-signal.jpg',
     rosterImage: '/agents/roster-signal.jpg',
     heroFull: '/agents/hero2k-signal.jpg',
     rosterLabel: 'Contenido',
@@ -363,6 +368,7 @@ export const AGENTS: Agent[] = [
     taglineShort: 'Mide. Predice. Decide.',
     heroBg: '/agents/hero-oracle.jpg',
     stageBg: '/agents/stage-oracle.jpg',
+    heroMovil: '/agents/heromovil-oracle.jpg',
     rosterImage: '/agents/roster-oracle.jpg',
     heroFull: '/agents/hero2k-oracle.jpg',
     rosterLabel: 'Análisis',
@@ -450,6 +456,7 @@ export const AGENTS: Agent[] = [
     taglineShort: 'Coordina. Escala. Domina.',
     heroBg: '/agents/hero-apex.jpg',
     stageBg: '/agents/stage-apex.jpg',
+    heroMovil: '/agents/heromovil-apex.jpg',
     rosterImage: '/agents/roster-apex.jpg',
     heroFull: '/agents/hero2k-apex.jpg',
     rosterLabel: 'Comando Total',

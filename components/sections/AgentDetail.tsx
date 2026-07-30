@@ -39,7 +39,7 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
 
   return (
     <section
-      className="relative overflow-hidden"
+      className={`relative overflow-hidden${hasBg ? ' agente-hero' : ''}`}
       style={{
         paddingTop: 'calc(var(--nav-h) + 40px)',
         paddingBottom: hasBg ? 64 : 56,
@@ -54,23 +54,38 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
     >
       {hasBg && (
         <>
-          <Image
-            src={agent.heroBg!}
-            alt={agent.name}
-            fill
-            className="pointer-events-none"
-            style={{ objectFit: 'cover', objectPosition: agent.heroBgPosition ?? 'center', zIndex: 0 }}
-            priority
-          />
+          {/* En móvil se sirve un hero vertical propio, con el personaje
+              centrado y el texto debajo. El de desktop es panorámico y aquí
+              object-cover dejaría solo una franja central. */}
+          <picture>
+            {agent.heroMovil && <source media="(max-width: 767px)" srcSet={agent.heroMovil} />}
+            <img
+              src={agent.heroBg!}
+              alt={agent.name}
+              className="pointer-events-none absolute inset-0 w-full h-full"
+              style={{ objectFit: 'cover', objectPosition: agent.heroBgPosition ?? 'center', zIndex: 0 }}
+              fetchPriority="high"
+            />
+          </picture>
+          {/* Velo horizontal en desktop (el texto va a la izquierda) */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none agente-veil-desktop"
             style={{
               background: 'linear-gradient(90deg, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.82) 30%, rgba(8,8,8,0.25) 60%, rgba(8,8,8,0.15) 100%)',
               zIndex: 1,
             }}
           />
+          {/* Vertical en móvil: el personaje ocupa el centro, así que el velo
+              solo cierra por abajo, donde se apoya el texto */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none agente-veil-movil"
+            style={{
+              background: 'linear-gradient(180deg, rgba(8,8,8,0.62) 0%, rgba(8,8,8,0.16) 13%, rgba(8,8,8,0.04) 30%, rgba(8,8,8,0.3) 42%, rgba(8,8,8,0.72) 51%, rgba(8,8,8,0.93) 60%, rgba(8,8,8,0.97) 100%)',
+              zIndex: 1,
+            }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none agente-veil-desktop"
             style={{ background: 'linear-gradient(0deg, rgba(8,8,8,0.7) 0%, transparent 30%)', zIndex: 1 }}
           />
         </>
@@ -78,7 +93,7 @@ export function AgentHeroV2({ agent }: { agent: Agent }) {
 
       <div className={hasBg ? 'container relative z-10' : 'container relative grid grid-cols-1 md:grid-cols-2 gap-10 items-center'}>
         {/* Text column */}
-        <div className={hasBg ? '' : 'order-2 md:order-1'} style={hasBg ? { maxWidth: 520 } : undefined}>
+        <div className={hasBg ? 'agente-hero-txt' : 'order-2 md:order-1'} style={hasBg ? { maxWidth: 520 } : undefined}>
           <Link
             href="/agentes"
             className="inline-flex items-center gap-2 mb-6 font-display font-semibold uppercase tracking-widest text-xs transition-colors hover:text-white"

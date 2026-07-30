@@ -759,3 +759,27 @@ body {
   .hero-cta { margin-bottom: 4px; }
 }
 
+
+/* ─── HERO DEL DETALLE DE AGENTE ─────────────────────────────────────── */
+
+.agente-veil-movil { display: none; }
+@media (max-width: 767px) {
+  .agente-veil-desktop { display: none; }
+  .agente-veil-movil { display: block; }
+
+  /* El hero vertical tiene al personaje del 20% al 78% del alto, así que el
+     texto no puede ir a la izquierda como en desktop: se apoya debajo, sobre
+     la franja que el velo cierra. La sección crece lo que haga falta. */
+  .agente-hero {
+    align-items: flex-start !important;
+    min-height: auto !important;
+    padding-top: calc(var(--nav-h) + 20px) !important;
+    padding-bottom: 44px !important;
+  }
+  .agente-hero-txt {
+    max-width: 100% !important;
+    padding-top: 60svh;
+  }
+  /* El nombre pierde el tamaño de titular gigante: aquí compite con la figura */
+  .agente-hero-txt h1 { font-size: clamp(46px, 13vw, 72px) !important; line-height: 0.9 !important; }
+}
