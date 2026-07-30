@@ -70,7 +70,7 @@ export function HeroSection() {
         className="absolute inset-0 pointer-events-none hero-veil-movil"
         style={{
           background:
-            'linear-gradient(180deg, rgba(8,8,8,0.88) 0%, rgba(8,8,8,0.88) 30%, rgba(8,8,8,0.84) 48%, rgba(8,8,8,0.7) 62%, rgba(8,8,8,0.34) 80%, rgba(8,8,8,0.56) 100%)',
+            'linear-gradient(180deg, rgba(8,8,8,0.62) 0%, rgba(8,8,8,0.56) 20%, rgba(8,8,8,0.22) 33%, rgba(8,8,8,0.03) 44%, rgba(8,8,8,0.03) 72%, rgba(8,8,8,0.3) 82%, rgba(8,8,8,0.55) 100%)',
           zIndex: 1,
         }}
       />
