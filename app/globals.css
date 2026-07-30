@@ -728,9 +728,18 @@ body {
   .hero-veil-desktop { display: none; }
   .hero-veil-movil { display: block; }
 
-  /* Los tres items pasan a icono arriba y texto debajo, en una fila de 3.
-     Con flex-wrap caían 2+1 y el segundo quedaba encima del personaje. */
+  /* La ilustración vertical tiene al personaje en el centro (36-76% del alto),
+     así que el contenido se reparte arriba y abajo dejándolo respirar.
+     El margin-top:auto de los items empuja iconos y CTA al fondo. */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - var(--nav-h) - 60px);
+    max-width: 100% !important;
+  }
   .hero-features {
+    margin-top: auto !important;
+    margin-bottom: 22px !important;
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px !important;
@@ -744,4 +753,9 @@ body {
   .hero-feature-ico { width: 44px !important; height: 44px !important; }
   .hero-feature-txt > div:first-child { font-size: 12.5px !important; letter-spacing: 0.01em; }
   .hero-feature-txt > div:last-child { font-size: 10.5px !important; line-height: 1.35; }
+
+  /* El tagline se pega al wordmark: los dos viven en la franja superior */
+  .hero-tagline { margin-bottom: 0 !important; }
+  .hero-cta { margin-bottom: 4px; }
 }
+

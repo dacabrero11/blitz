@@ -82,7 +82,7 @@ export function HeroSection() {
       <div className="absolute left-0 right-0 pointer-events-none animate-scanline" style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(229,62,62,0.6), transparent)', zIndex: 2 }} />
 
       {/* Content */}
-      <div className="relative z-10 max-w-[760px]">
+      <div className="hero-content relative z-10 max-w-[760px]">
         {/* Wordmark — as large as the layout allows, with a pulsing electric glow */}
         <div className="hero-wordmark animate-wordmark-glow" style={{ width: 'clamp(260px, 46vw, 720px)', marginLeft: -6 }}>
           <Image
